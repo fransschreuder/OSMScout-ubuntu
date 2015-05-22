@@ -20,7 +20,7 @@
 #include "Theme.h"
 
 #include <QApplication>
-#include <QDebug>
+//#include <QDebug>
 #include <QFont>
 #include <QFontMetrics>
 #include <QScreen>
@@ -71,7 +71,7 @@ int Theme::GetTextFontSize() const
         }
 
 #endif
-        qDebug() << "TextFontSize:" << textFontSize << "px";
+        //qDebug() << "TextFontSize:" << textFontSize << "px";
     }
 
     return textFontSize;
@@ -118,7 +118,7 @@ int Theme::GetAverageCharWidth() const
 
         averageCharWidth=metrics.averageCharWidth();
 
-        qDebug() << "Average char width:" << averageCharWidth << "px";
+        //qDebug() << "Average char width:" << averageCharWidth << "px";
     }
 
     return averageCharWidth;
@@ -147,7 +147,7 @@ int Theme::GetNumberCharWidth() const
         numberCharWidth=std::max(numberCharWidth,metrics.width('8'));
         numberCharWidth=std::max(numberCharWidth,metrics.width('9'));
 
-        qDebug() << "Number char width: " << numberCharWidth << "px";
+        //qDebug() << "Number char width: " << numberCharWidth << "px";
     }
 
     return numberCharWidth;

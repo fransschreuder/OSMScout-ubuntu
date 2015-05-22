@@ -46,7 +46,7 @@ static QObject *ThemeProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
 
     return theme;
 }
-
+#include <stdio.h>
 int main(int argc, char* argv[])
 {
 #ifdef Q_WS_X11
@@ -58,9 +58,9 @@ int main(int argc, char* argv[])
   MainWindow      *window;
   int             result;
 
-  app.setOrganizationName("libosmscout");
-  app.setOrganizationDomain("libosmscout.sf.net");
-  app.setApplicationName("OSMScout");
+  //app.setOrganizationName("libosmscout");
+  app.setOrganizationDomain("fransschreuder1");
+  app.setApplicationName("osmscout");
 
   settings=new Settings();
 

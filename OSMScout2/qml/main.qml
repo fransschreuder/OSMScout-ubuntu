@@ -1,8 +1,8 @@
 import QtQuick 2.3
-
-import QtQuick.Controls 1.2
+import Ubuntu.Components 1.1
+//import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.2
+//import QtQuick.Controls.Styles 1.2
 import QtQuick.Window 2.0
 
 import QtPositioning 5.3

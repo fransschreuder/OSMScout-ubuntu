@@ -24,7 +24,7 @@
 
 #include <QApplication>
 #include <QMutexLocker>
-#include <QDebug>
+//#include <QDebug>
 #include <QDir>
 
 #include <osmscout/util/StopClock.h>
@@ -138,15 +138,15 @@ void DBThread::Initialize()
     }
 
     if(databaseDirectory.length() == 0) {
-        qDebug() << "ERROR: map database directory not found";
+        //qDebug() << "ERROR: map database directory not found";
     }
     else {
-        qDebug() << "Loading database from " << databaseDirectory;
+        //qDebug() << "Loading database from " << databaseDirectory;
     }
 
     QString stylesheetFilename=databaseDirectory+"/standard.oss";
 
-    qDebug() << "Loading style sheet from " << stylesheetFilename;
+    //qDebug() << "Loading style sheet from " << stylesheetFilename;
 
 #else
   QStringList cmdLineArgs = QApplication::arguments();
@@ -168,17 +168,17 @@ void DBThread::Initialize()
           painter=new osmscout::MapPainterQt(styleConfig);
       }
       else {
-        qDebug() << "Cannot load style sheet!";
+        //qDebug() << "Cannot load style sheet!";
         styleConfig=NULL;
       }
     }
     else {
-      qDebug() << "TypeConfig invalid!";
+      //qDebug() << "TypeConfig invalid!";
       styleConfig=NULL;
     }
   }
   else {
-    qDebug() << "Cannot open database!";
+    //qDebug() << "Cannot open database!";
     return;
   }
 
@@ -186,7 +186,7 @@ void DBThread::Initialize()
   DatabaseLoadedResponse response;
 
   if (!database->GetBoundingBox(response.boundingBox)) {
-    qDebug() << "Cannot read initial bounding box";
+    //qDebug() << "Cannot read initial bounding box";
     return;
   }
 
