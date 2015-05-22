@@ -2,7 +2,7 @@ QT       += quick opengl
 
 TARGET = libosmscout-map-qt
 TEMPLATE = lib
-CONFIG += staticlib
+CONFIG += staticlib  c++11
 INCLUDEPATH += include ../libosmscout-map/include ../libosmscout/include
 
 macx {
@@ -15,10 +15,10 @@ SOURCES += \
 
 HEADERS +=
 
-unix {
-    target.path = /usr/lib
-    INSTALLS += target
-}
+#unix {
+#    target.path = /usr/lib
+#    INSTALLS += target
+#}
 
 
 

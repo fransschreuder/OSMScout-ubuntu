@@ -38,8 +38,7 @@ SOURCES = src/OSMScout.cpp \
           src/MainWindow.cpp \
           src/SearchLocationModel.cpp \
           src/RoutingModel.cpp \
-          ../libosmscout-map-qt/src/osmscout/MapPainterQt.cpp
-
+          
 HEADERS = src/Settings.h \
           src/Theme.h \
           src/DBThread.h \
@@ -47,10 +46,6 @@ HEADERS = src/Settings.h \
           src/MainWindow.h \
           src/SearchLocationModel.h \
           src/RoutingModel.h \
-          ../libosmscout-map-qt/include/osmscout/MapPainterQt.h  
-          ../libosmscout-map-qt/include/osmscout/MapQtFeatures.h
-          ../libosmscout-map-qt/include/osmscout/private/MapQtImportExport.h
-          
 
 QMLFILES += \
     qml/custom/MapButton.qml \
@@ -122,8 +117,6 @@ INSTALLS+=map_files
 RESOURCES += \
     res.qrc
 
-
-
 OTHER_FILES += OSMScout.apparmor \
                OSMScout.desktop \
                OSMScout.png
@@ -136,11 +129,14 @@ message($$config_files.files)
 INSTALLS+=config_files
 
 
+LIBS += libs/libosmscout.a \
+        libs/libosmscout-map.a \
+        libs/libosmscout-map-qt.a
 
-LIBS += ../libosmscout/src/.libs/libosmscout.so \
-                     ../libosmscout-map/src/.libs//libosmscoutmap.so \
-                     ../libosmscout/src/.libs/libosmscout.so.0 \
-                     ../libosmscout-map/src/.libs//libosmscoutmap.so.0
+#LIBS += ../libosmscout/src/.libs/libosmscout.so \
+#                     ../libosmscout-map/src/.libs//libosmscoutmap.so \
+#                     ../libosmscout/src/.libs/libosmscout.so.0 \
+#                     ../libosmscout-map/src/.libs//libosmscoutmap.so.0
 #                     ../libosmscout-map-qt/src/.libs/libosmscoutmapqt.so
 
 #ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
@@ -148,7 +144,7 @@ target.path = $${UBUNTU_CLICK_BINARY_PATH}
 
 INSTALLS+=target
 
-libfiles.files = $${LIBS}
-libfiles.path = $${UBUNTU_CLICK_BINARY_PATH}/..
+#libfiles.files = $${LIBS}
+#libfiles.path = $${UBUNTU_CLICK_BINARY_PATH}/..
 
-INSTALLS+=libfiles
+#xINSTALLS+=libfiles
