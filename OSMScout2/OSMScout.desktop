@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=OSMScout
+Exec=OSMScout
+Icon=OSMScout/OSMScout.png
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
+

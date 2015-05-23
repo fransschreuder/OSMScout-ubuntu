@@ -1,0 +1,15 @@
+{
+    "name": "osmscout.fransschreuder1",
+    "description": "OSMScout",
+    "architecture": "armhf",
+    "title": "OSMScout",
+    "hooks": {
+        "OSMScout": {
+            "apparmor": "OSMScout/OSMScout.apparmor",
+            "desktop": "OSMScout/OSMScout.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Frans Schreuder <fransschreuder@gmail.com>",
+    "framework": "ubuntu-sdk-14.10"
+}
