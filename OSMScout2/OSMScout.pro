@@ -65,35 +65,35 @@ CUSTOMQMLFILES += \
 PICFILES += \
     pics/DeleteText.svg
 
-MAPFILES += \
-    netherlands-osm-converted/bounding.dat \
-    netherlands-osm-converted/wayaddress.dat \
-    netherlands-osm-converted/distribution.dat \
-    netherlands-osm-converted/types.dat \
-    netherlands-osm-converted/map.ost \
-    netherlands-osm-converted/turnrestr.dat \
-    netherlands-osm-converted/standard.oss \
-    netherlands-osm-converted/wayareablack.dat \
-    netherlands-osm-converted/nodeaddress.dat \
-    netherlands-osm-converted/areasopt.dat \
-    netherlands-osm-converted/waysopt.dat \
-    netherlands-osm-converted/routecar.idx \
-    netherlands-osm-converted/routebicycle.idx \
-    netherlands-osm-converted/routefoot.idx \
-    netherlands-osm-converted/intersections.idx \
-    netherlands-osm-converted/areaaddress.dat \
-    netherlands-osm-converted/areaway.idx \
-    netherlands-osm-converted/water.idx \
-    netherlands-osm-converted/location.idx \
-    netherlands-osm-converted/intersections.dat \
-    netherlands-osm-converted/ways.idmap \
-    netherlands-osm-converted/areaarea.idx \
-    netherlands-osm-converted/location.txt \
-    netherlands-osm-converted/areanode.idx \
-    netherlands-osm-converted/routecar.dat \
-    netherlands-osm-converted/ways.dat \
-    netherlands-osm-converted/routebicycle.dat \
-    netherlands-osm-converted/routefoot.dat
+#MAPFILES += \
+#    netherlands-osm-converted/bounding.dat \
+#    netherlands-osm-converted/wayaddress.dat \
+#    netherlands-osm-converted/distribution.dat \
+#    netherlands-osm-converted/types.dat \
+#    netherlands-osm-converted/map.ost \
+#    netherlands-osm-converted/turnrestr.dat \
+#    netherlands-osm-converted/standard.oss \
+#    netherlands-osm-converted/wayareablack.dat \
+#    netherlands-osm-converted/nodeaddress.dat \
+#    netherlands-osm-converted/areasopt.dat \
+#    netherlands-osm-converted/waysopt.dat \
+#    netherlands-osm-converted/routecar.idx \
+#    netherlands-osm-converted/routebicycle.idx \
+#    netherlands-osm-converted/routefoot.idx \
+#    netherlands-osm-converted/intersections.idx \
+#    netherlands-osm-converted/areaaddress.dat \
+#    netherlands-osm-converted/areaway.idx \
+#    netherlands-osm-converted/water.idx \
+#    netherlands-osm-converted/location.idx \
+#    netherlands-osm-converted/intersections.dat \
+#    netherlands-osm-converted/ways.idmap \
+#    netherlands-osm-converted/areaarea.idx \
+#    netherlands-osm-converted/location.txt \
+#    netherlands-osm-converted/areanode.idx \
+#    netherlands-osm-converted/routecar.dat \
+#    netherlands-osm-converted/ways.dat \
+#    netherlands-osm-converted/routebicycle.dat \
+#    netherlands-osm-converted/routefoot.dat
 
 qml_files.path = /qml
 qml_files.files = $${QMLFILES}
@@ -108,11 +108,9 @@ pic_files.files = $${PICFILES}
 INSTALLS+=pic_files
 
 
-map_files.path = /
-#$${UBUNTU_CLICK_BINARY_PATH}
-map_files.files = $${MAPFILES}
-
-INSTALLS+=map_files
+#map_files.path = /
+#map_files.files = $${MAPFILES}
+#INSTALLS+=map_files
 
 RESOURCES += \
     res.qrc
