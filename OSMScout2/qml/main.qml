@@ -18,6 +18,8 @@ Window {
     visible: true
     width: 480
     height: 800
+    property int oldX: 0;
+    property int oldY: 0;
 
     function openRoutingDialog() {
         var component = Qt.createComponent("RoutingDialog.qml")
@@ -168,6 +170,50 @@ Window {
                 }
             }
 
+
+
+            PinchArea{
+                id: pinch
+                anchors.fill: parent
+                /*onHorizontalCenterChanged:
+                {
+                    console.log("Horizontal center changed");
+                }*/
+
+                onPinchFinished: {
+                    console.log(pinch.center.x + " " + pinch.center.y);
+                    console.log(pinch.scale);
+                    if(pinch.scale<1)
+                    {
+                        map.zoomOut(1/pinch.scale);
+                    }
+                    else
+                    {
+                        map.zoomIn(pinch.scale);
+                    }
+                }
+                MouseArea{
+
+                    id: mouse
+                    anchors.fill: parent
+                    onPressed:
+                    {
+                        oldX = mouse.x;
+                        oldY = mouse.y;
+                    }
+
+                    onPositionChanged:
+                    {
+                        map.move(oldX - mouse.x, oldY - mouse.y);
+
+                        oldX = mouse.x;
+                        oldY = mouse.y;
+
+
+                    }
+                }
+
+            }
             // Use PinchArea for multipoint zoom in/out?
 
             SearchDialog {
@@ -221,10 +267,7 @@ Window {
                     }
                 }
             }
-            /*PinchArea{
-                anchors.fill: parent
 
-            }*/
 
             // Bottom right column
             ColumnLayout {

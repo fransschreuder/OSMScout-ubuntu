@@ -57,6 +57,7 @@ public slots:
   void redraw();
   void zoomIn(double zoomFactor);
   void zoomOut(double zoomFactor);
+  void move(int x, int y);
   void left();
   void right();
   void up();
@@ -85,11 +86,11 @@ public:
       return center.GetLon();
   }
 
-  void mousePressEvent(QMouseEvent* event);
+  /*void mousePressEvent(QMouseEvent* event);
   void mouseMoveEvent(QMouseEvent* event);
   void mouseReleaseEvent(QMouseEvent* event);
   void wheelEvent(QWheelEvent* event);
-
+*/
   void paint(QPainter *painter);
 };
 

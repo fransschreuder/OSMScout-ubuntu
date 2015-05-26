@@ -33,7 +33,7 @@ MapWidget::MapWidget(QQuickItem* parent)
 
 {
     setOpaquePainting(true);
-    setAcceptedMouseButtons(Qt::LeftButton);
+    //setAcceptedMouseButtons(Qt::LeftButton);
 
     DBThread *dbThread=DBThread::GetInstance();
     //setFocusPolicy(Qt::StrongFocus);
@@ -99,7 +99,7 @@ void MapWidget::TriggerMapRendering()
 }
 
 
-void MapWidget::HandleMouseMove(QMouseEvent* event)
+/*void MapWidget::HandleMouseMove(QMouseEvent* event)
 {
     osmscout::MercatorProjection projection=startProjection;
 
@@ -154,7 +154,7 @@ void MapWidget::wheelEvent(QWheelEvent* event)
     }
 
     event->accept();
-}
+}*/
 
 void MapWidget::paint(QPainter *painter)
 {
@@ -201,6 +201,24 @@ void MapWidget::zoomOut(double zoomFactor)
     else {
         magnification.SetMagnification(magnification.GetMagnification()/zoomFactor);
     }
+
+    TriggerMapRendering();
+}
+
+void MapWidget::move(int x, int y)
+{
+    DBThread                     *dbThread=DBThread::GetInstance();
+    osmscout::MercatorProjection projection;
+
+    dbThread->GetProjection(projection);
+
+    if(x<0) projection.MoveLeft(-1*x);
+    else    projection.MoveRight(x);
+
+    if(y<0) projection.MoveUp(-1*y);
+    else    projection.MoveDown(y);
+
+    center=projection.GetCenter();
 
     TriggerMapRendering();
 }
