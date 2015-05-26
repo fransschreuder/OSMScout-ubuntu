@@ -1,6 +1,6 @@
 QT       += quick opengl
 
-TARGET = libosmscout-map-qt
+TARGET = osmscout-map-qt
 TEMPLATE = lib
 CONFIG += staticlib  c++11
 INCLUDEPATH += include ../libosmscout-map/include ../libosmscout/include

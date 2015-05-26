@@ -1,4 +1,4 @@
-TARGET = libosmscout
+TARGET = osmscout
 TEMPLATE = lib
 CONFIG += staticlib c++11
 INCLUDEPATH += include 
