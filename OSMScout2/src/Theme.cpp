@@ -59,7 +59,7 @@ qreal Theme::GetDPI() const
 int Theme::GetTextFontSize() const
 {
     if (textFontSize==0) {
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined (__UBUNTU__)
         textFontSize=(int)mmToPixel(2.0);
 #else
         QFont font;

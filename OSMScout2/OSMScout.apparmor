@@ -3,7 +3,8 @@
         "networking",
         "location",
         "audio",
-        "webview"
+        "webview",
+        "picture_files_read"
     ],
     "policy_version": 1.2
 }

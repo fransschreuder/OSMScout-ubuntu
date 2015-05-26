@@ -117,8 +117,15 @@ bool DBThread::AssureRouter(osmscout::Vehicle vehicle)
 
 void DBThread::Initialize()
 {
-#ifdef __ANDROID__
+#ifdef __UBUNTU__
     QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+
+    QDir removablePath("/media/phablet");
+    QStringList removableList = removablePath.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
+    for(int i=0; i<removableList.size(); i++)
+    {
+        docPaths.append("/media/phablet/"+removableList[i]+"/Pictures/");
+    }
 
     QString databaseDirectory;
 
@@ -128,6 +135,7 @@ void DBThread::Initialize()
         list_filters << "osmscout";
 
         QDir path(docPaths[i]);
+        std::cout<<"Looking in path: "<<docPaths[i].toUtf8().constData()<<std::endl;
         QStringList list_files = path.entryList(list_filters,QDir::NoDotAndDotDot | QDir::Dirs);
 
         if(!(list_files.size() == 1)) {
@@ -138,21 +146,54 @@ void DBThread::Initialize()
     }
 
     if(databaseDirectory.length() == 0) {
-        //qDebug() << "ERROR: map database directory not found";
+        std::cout<<  "ERROR: map database directory not found"<<std::endl;
     }
     else {
         //qDebug() << "Loading database from " << databaseDirectory;
+        std::cout<<"Loading database from " << databaseDirectory.toUtf8().constData();
     }
 
     QString stylesheetFilename=databaseDirectory+"/standard.oss";
 
     //qDebug() << "Loading style sheet from " << stylesheetFilename;
-
 #else
-  QStringList cmdLineArgs = QApplication::arguments();
-  QString databaseDirectory = cmdLineArgs.size() > 1 ? cmdLineArgs.at(1) : QDir::currentPath();
-  QString stylesheetFilename = cmdLineArgs.size() > 2 ? cmdLineArgs.at(2) : databaseDirectory + QDir::separator() + "standard.oss";
-  iconDirectory = cmdLineArgs.size() > 3 ? cmdLineArgs.at(3) : databaseDirectory + QDir::separator() + "icons";
+    #ifdef __ANDROID__
+        QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+
+        QString databaseDirectory;
+
+        // look for standard.oss in each directory
+        for(int i=0; i < docPaths.size(); i++) {
+            QStringList list_filters;
+            list_filters << "osmscout";
+
+            QDir path(docPaths[i]);
+            QStringList list_files = path.entryList(list_filters,QDir::NoDotAndDotDot | QDir::Dirs);
+
+            if(!(list_files.size() == 1)) {
+                continue;
+            }
+
+            databaseDirectory=path.canonicalPath()+"/osmscout";
+        }
+
+        if(databaseDirectory.length() == 0) {
+            qDebug() << "ERROR: map database directory not found";
+        }
+        else {
+            qDebug() << "Loading database from " << databaseDirectory;
+        }
+
+        QString stylesheetFilename=databaseDirectory+"/standard.oss";
+
+        qDebug() << "Loading style sheet from " << stylesheetFilename;
+
+    #else
+      QStringList cmdLineArgs = QApplication::arguments();
+      QString databaseDirectory = cmdLineArgs.size() > 1 ? cmdLineArgs.at(1) : QDir::currentPath();
+      QString stylesheetFilename = cmdLineArgs.size() > 2 ? cmdLineArgs.at(2) : databaseDirectory + QDir::separator() + "standard.oss";
+      iconDirectory = cmdLineArgs.size() > 3 ? cmdLineArgs.at(3) : databaseDirectory + QDir::separator() + "icons";
+    #endif
 #endif
 
   if (database->Open(databaseDirectory.toLocal8Bit().data())) {

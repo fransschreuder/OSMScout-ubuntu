@@ -221,6 +221,10 @@ Window {
                     }
                 }
             }
+            /*PinchArea{
+                anchors.fill: parent
+
+            }*/
 
             // Bottom right column
             ColumnLayout {

@@ -95,6 +95,8 @@ PICFILES += \
 #    netherlands-osm-converted/routebicycle.dat \
 #    netherlands-osm-converted/routefoot.dat
 
+DEFINES += "__UBUNTU__"
+
 qml_files.path = /qml
 qml_files.files = $${QMLFILES}
 INSTALLS+=qml_files

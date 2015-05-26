@@ -101,12 +101,13 @@ namespace osmscout {
       log.Error() << "File '" << filename << "' already opened, cannot open it again!";
       return false;
     }
-
+    log.Error()<<"File open...";
     this->filename=filename;
 
     file=fopen(filename.c_str(),"rb");
 
     if (file==NULL) {
+      log.Error() << "FileScanner.cpp: could not open "<<filename;
       hasError=true;
       return false;
     }
@@ -240,7 +241,7 @@ namespace osmscout {
 #endif
 
     hasError=file==NULL;
-
+    log.Error()<<"HasError: "<<hasError;
     return !hasError;
   }
 
