@@ -34,7 +34,7 @@ MapDialog {
 
                 Layout.minimumWidth: Theme.averageCharWidth*20
                 Layout.preferredWidth: Theme.averageCharWidth*40
-                Layout.maximumWidth: Theme.averageCharWidth*60
+                Layout.maximumWidth: Theme.averageCharWidth*40
 
                 horizontalAlignment: TextInput.AlignLeft
             }
@@ -51,7 +51,7 @@ MapDialog {
 
                 Layout.minimumWidth: Theme.averageCharWidth*20
                 Layout.preferredWidth: Theme.averageCharWidth*40
-                Layout.maximumWidth: Theme.averageCharWidth*60
+                Layout.maximumWidth: Theme.averageCharWidth*40
 
                 horizontalAlignment: TextInput.AlignLeft
             }

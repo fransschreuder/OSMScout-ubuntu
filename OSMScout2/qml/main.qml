@@ -74,6 +74,7 @@ Window {
 
             if (position.latitudeValid) {
                 console.log("  latitude: " + position.coordinate.latitude)
+                map.showCoordinates(position.coordinate.latitude, position.coordinate.longitude);
             }
 
             if (position.longitudeValid) {

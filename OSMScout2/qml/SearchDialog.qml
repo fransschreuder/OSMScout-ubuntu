@@ -36,8 +36,8 @@ FocusScope {
 
                 Layout.fillWidth: true
                 Layout.minimumWidth: Theme.averageCharWidth*5
-                Layout.preferredWidth: Theme.averageCharWidth*45
-                Layout.maximumWidth: Theme.averageCharWidth*60
+                Layout.preferredWidth: Theme.averageCharWidth*25
+                Layout.maximumWidth: Theme.averageCharWidth*40
 
                 desktop: searchDialog.desktop
                 desktopFreeSpace: searchDialog.desktopFreeSpace
