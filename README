@@ -22,8 +22,9 @@ build the project
 Create Click package and install on device.
 
 When running, the application requires a map to start. 
-For now, the map files should go into /opt/click.ubuntu.com/osmscout.fransschreuder1/current
+For now, the map files should go into /media/phablet/<SD_CARD>/Pictures/osmscout
 The files should be imported on a PC using the Import tool, please refer to the libosmscout documentation for instructions
+
 
 
 You can find detailed instruction how to get libraries and applications
