@@ -84,6 +84,7 @@ void MapWidget::initialisationFinished(const DatabaseLoadedResponse& response)
 void MapWidget::TriggerMapRendering()
 {
     DBThread         *dbThread=DBThread::GetInstance();
+    if(!dbThread->IsOpened())return;
     RenderMapRequest request;
 
     request.lat=center.GetLat();
@@ -208,6 +209,7 @@ void MapWidget::zoomOut(double zoomFactor)
 void MapWidget::move(int x, int y)
 {
     DBThread                     *dbThread=DBThread::GetInstance();
+    if(!dbThread->IsOpened()) return;
     osmscout::MercatorProjection projection;
 
     dbThread->GetProjection(projection);
@@ -378,6 +380,7 @@ void MapWidget::showLocation(Location* location)
 double MapWidget::geoToPixelX(double lon, double lat)
 {
     DBThread                     *dbThread=DBThread::GetInstance();
+    if(!dbThread->IsOpened()) return 0;
     double X,Y;
     osmscout::MercatorProjection projection;
 
@@ -389,9 +392,17 @@ double MapWidget::geoToPixelX(double lon, double lat)
 double MapWidget::geoToPixelY(double lon, double lat)
 {
     DBThread                     *dbThread=DBThread::GetInstance();
+    if(!dbThread->IsOpened()) return 0;
     double X,Y;
     osmscout::MercatorProjection projection;
     dbThread->GetProjection(projection);
     projection.GeoToPixel(lon, lat, X, Y);
     return Y;
+}
+
+bool MapWidget::isValid()
+{
+    DBThread                     *dbThread=DBThread::GetInstance();
+    return dbThread->IsOpened();
+
 }

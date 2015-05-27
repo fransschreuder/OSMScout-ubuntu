@@ -48,10 +48,10 @@ Rectangle {
   Icon{
       width: parent.width/2
       height: parent.height/2
-
       anchors.centerIn: parent
       name: mapButton.iconName
-
+      color: "#000000"
+      visible: iconName.length>0
   }
 
 }

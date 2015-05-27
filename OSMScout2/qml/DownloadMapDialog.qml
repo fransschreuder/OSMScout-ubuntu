@@ -9,7 +9,7 @@ import "custom"
 MapDialog {
     id: dialog
 
-    label: "About..."
+    label: "Download Maps..."
 
     content : ColumnLayout {
         id: mainFrame
@@ -18,7 +18,7 @@ MapDialog {
         Text {
             Layout.fillWidth: true
 
-            text: "<b>OSMScout</b>"
+            text: "<b>Download Maps</b>"
             font.pixelSize: Theme.textFontSize*1.2
             horizontalAlignment: Text.AlignHCenter
         }
@@ -26,15 +26,8 @@ MapDialog {
         Text {
             Layout.fillWidth: true
 
-            text: "Ubuntu Touch version of OSMScout<br/>See <br/><a href=https://github.com/fransschreuder/libosmscout>https://github.com/fransschreuder/libosmscout</a><br/>Ubuntu modifications by Schreuder Electronics"
-            font.pixelSize: Theme.textFontSize
-            horizontalAlignment: Text.AlignHCenter
-        }
-
-        Text {
-            Layout.fillWidth: true
-
-            text: "All geographic data:<br/>© OpenStreetMap contributors<br/>See www.openstreetmap.org/copyright"
+            text: "This applications requires a preprocessed map,<br/> please download or generate a map<br/> and put the files in <br/>&lt;SD_CARD&gt;/Pictures/osmscout/<br/><br/>"+
+                  "For instructions please see <br/>http://wiki.openstreetmap.org/wiki/<br/>Libosmscout#Converting_OSM_Data";
             font.pixelSize: Theme.textFontSize
             horizontalAlignment: Text.AlignHCenter
         }

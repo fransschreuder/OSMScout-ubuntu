@@ -26,6 +26,7 @@
 #include <QMutexLocker>
 //#include <QDebug>
 #include <QDir>
+#include <QMessageBox>
 
 #include <osmscout/util/StopClock.h>
 
@@ -125,6 +126,8 @@ void DBThread::Initialize()
     for(int i=0; i<removableList.size(); i++)
     {
         docPaths.append("/media/phablet/"+removableList[i]+"/Pictures/");
+        //Apparmor doesn't give me rights to do the following:
+        //docPaths.append("/media/phablet/"+removableList[i]+"/Maps/");
     }
 
     QString databaseDirectory;
@@ -147,6 +150,7 @@ void DBThread::Initialize()
 
     if(databaseDirectory.length() == 0) {
         std::cout<<  "ERROR: map database directory not found"<<std::endl;
+        return;
     }
     else {
         //qDebug() << "Loading database from " << databaseDirectory;
@@ -764,4 +768,9 @@ void DBThread::FreeInstance()
   delete dbThreadInstance;
 
   dbThreadInstance=NULL;
+}
+
+bool DBThread::IsOpened()
+{
+    return database->IsOpen();
 }

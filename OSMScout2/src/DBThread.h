@@ -126,6 +126,8 @@ private:
   void FreeMaps();
   bool AssureRouter(osmscout::Vehicle vehicle);
 public:
+  bool IsOpened();
+
   void GetProjection(osmscout::MercatorProjection& projection);
 
   void UpdateRenderRequest(const RenderMapRequest& request);

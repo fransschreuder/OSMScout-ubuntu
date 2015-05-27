@@ -40,6 +40,15 @@ Window{
         dialog.open()
     }
 
+    function openDownloadMapDialog() {
+        var component = Qt.createComponent("DownloadMapDialog.qml")
+        var dialog = component.createObject(mainWindow, {})
+
+        dialog.opened.connect(onDialogOpened)
+        dialog.closed.connect(onDialogClosed)
+        dialog.open()
+    }
+
     function showLocation(location) {
         map.showLocation(location)
     }
@@ -289,6 +298,13 @@ Window{
                 y: parent.height-height-Theme.vertSpace
 
                 spacing: Theme.mapButtonSpace
+                MapButton {
+                    id: downloadButton
+                    iconName: "save"
+                    onClicked: {
+                        openDownloadMapDialog();
+                    }
+                }
 
                 MapButton {
                     id: about

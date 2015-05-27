@@ -51,6 +51,7 @@ QMLFILES += \
     qml/main.qml \
     qml/RoutingDialog.qml \
     qml/AboutDialog.qml \
+    qml/DownloadMapDialog.qml \
     qml/SearchDialog.qml
 
 CUSTOMQMLFILES += \

@@ -51,5 +51,7 @@ Rectangle {
       anchors.centerIn: parent
       width: parent.width/2;
       height: parent.height/2;
+      color: "#000000"
+      visible: iconName.length>0
   }
 }
