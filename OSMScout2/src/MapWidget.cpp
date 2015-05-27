@@ -301,6 +301,9 @@ void MapWidget::rotateRight()
     TriggerMapRendering();
 }
 
+
+
+
 void MapWidget::showCoordinates(double lat, double lon)
 {
     center=osmscout::GeoCoord(lat,lon);
@@ -370,4 +373,25 @@ void MapWidget::showLocation(Location* location)
 
         TriggerMapRendering();
     }
+}
+
+double MapWidget::geoToPixelX(double lon, double lat)
+{
+    DBThread                     *dbThread=DBThread::GetInstance();
+    double X,Y;
+    osmscout::MercatorProjection projection;
+
+    dbThread->GetProjection(projection);
+    projection.GeoToPixel(lon, lat, X, Y);
+    return X;
+}
+
+double MapWidget::geoToPixelY(double lon, double lat)
+{
+    DBThread                     *dbThread=DBThread::GetInstance();
+    double X,Y;
+    osmscout::MercatorProjection projection;
+    dbThread->GetProjection(projection);
+    projection.GeoToPixel(lon, lat, X, Y);
+    return Y;
 }

@@ -66,6 +66,8 @@ public slots:
   void rotateRight();
   void showCoordinates(double lat, double lon);
   void showLocation(Location* location);
+  double geoToPixelX(double lon, double lat);
+  double geoToPixelY(double lon, double lat);
 
 private:
   void TriggerMapRendering();

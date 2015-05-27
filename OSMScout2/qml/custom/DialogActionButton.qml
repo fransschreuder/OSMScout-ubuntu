@@ -1,6 +1,7 @@
 import QtQuick 2.2
 
 import net.sf.libosmscout.map 1.0
+import Ubuntu.Components 1.1
 
 Rectangle {
   id: dialogActionButton
@@ -9,7 +10,7 @@ Rectangle {
   property color contentHoverColor: Qt.darker(contentColor, 1.1)
   property color borderColor: Qt.darker(contentColor, 1.1)
   property color textColor: "black"
-
+  property string iconName: ""
   property alias text: label.text
   
   signal clicked
@@ -19,6 +20,7 @@ Rectangle {
   color: contentColor
   border.color: borderColor
   border.width: 1
+  radius: units.gu(1)
 
   MouseArea {
     id: mouseArea
@@ -43,5 +45,11 @@ Rectangle {
     font.pixelSize: Theme.textFontSize
     anchors.centerIn: parent
     color: textColor
+  }
+  Icon {
+      name : iconName
+      anchors.centerIn: parent
+      width: parent.width/2;
+      height: parent.height/2;
   }
 }

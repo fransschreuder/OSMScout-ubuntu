@@ -266,6 +266,7 @@ void DBThread::UpdateRenderRequest(const RenderMapRequest& request)
 
 void DBThread::TriggerMapRendering()
 {
+  std::cout<<"TriggerMapRendering"<<std::endl;
   RenderMapRequest request;
   {
     QMutexLocker locker(&mutex);
@@ -292,7 +293,7 @@ void DBThread::TriggerMapRendering()
   currentLat=request.lat;
   currentAngle=request.angle;
   currentMagnification=request.magnification;
-
+  QPainter p;
   if (database->IsOpen() &&
       styleConfig) {
     osmscout::MapParameter        drawParameter;
@@ -342,7 +343,7 @@ void DBThread::TriggerMapRendering()
 
     osmscout::StopClock drawTimer;
 
-    QPainter p;
+
 
     p.begin(currentImage);
     p.setRenderHint(QPainter::Antialiasing);
@@ -363,8 +364,6 @@ void DBThread::TriggerMapRendering()
   }
   else {
     std::cout << "Cannot draw map: " << database->IsOpen() << " " << styleConfig.Valid() << std::endl;
-
-    QPainter p;
 
     p.begin(currentImage);
     p.setRenderHint(QPainter::Antialiasing);

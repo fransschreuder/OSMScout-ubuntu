@@ -1183,7 +1183,7 @@ namespace osmscout {
       return roundaboutReader->IsSet(way->GetFeatureValueBuffer());
     }
     else {
-      assert(false);
+      //assert(false);
 
       return false;
     }

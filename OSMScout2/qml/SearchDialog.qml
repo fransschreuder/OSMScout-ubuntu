@@ -2,6 +2,7 @@ import QtQuick 2.3
 import QtQuick.Layouts 1.1
 
 import net.sf.libosmscout.map 1.0
+import Ubuntu.Components 1.1
 
 import "custom"
 
@@ -14,30 +15,27 @@ FocusScope {
     property alias location: searchEdit.location;
 
     signal showLocation(Location location)
+    width: desktop.width - 2* Theme.horizSpace
 
-    width: searchRectangle.width
-    height: searchRectangle.height
-
-    Rectangle {
+    Item {
         id: searchRectangle;
 
-        width: searchContent.width;
-        height: searchContent.height;
+        width: searchDialog.width;
+        height: searchDialog.height;
 
-        RowLayout {
+        Row {
             id: searchContent
-
-            spacing: 0
+            width: parent.width
+            height: parent.heights
+            spacing: Theme.horizSpace
 
             LocationSearch {
                 id: searchEdit;
 
                 focus: true
 
-                Layout.fillWidth: true
-                Layout.minimumWidth: Theme.averageCharWidth*5
-                Layout.preferredWidth: Theme.averageCharWidth*25
-                Layout.maximumWidth: Theme.averageCharWidth*40
+                width: searchDialog.width-(units.gu(4)+Theme.horizSpace)
+                height: units.gu(4)
 
                 desktop: searchDialog.desktop
                 desktopFreeSpace: searchDialog.desktopFreeSpace
@@ -51,11 +49,11 @@ FocusScope {
             DialogActionButton {
                 id: searchButton
 
-                width: searchEdit.height
-                height: searchEdit.height
-                contentColor: "#0000ff"
+                width: units.gu(4)
+                height: units.gu(4)
+                contentColor: UbuntuColors.orange
                 textColor: "white"
-                text: "o"
+                iconName: "search"
 
                 onClicked: {
                     searchEdit.enforceLocationValue();

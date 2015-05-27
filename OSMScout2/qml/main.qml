@@ -25,7 +25,7 @@ Window{
     function openRoutingDialog() {
         var component = Qt.createComponent("RoutingDialog.qml")
         var dialog = component.createObject(mainWindow, {})
-
+        positionSource.stop();
         dialog.opened.connect(onDialogOpened)
         dialog.closed.connect(onDialogClosed)
         dialog.open()
@@ -54,6 +54,7 @@ Window{
         navigation.visible = true
 
         map.focus = true
+        positionSource.start();
     }
 
     PositionSource {
@@ -76,7 +77,9 @@ Window{
             if (position.latitudeValid) {
                 console.log("  latitude: " + position.coordinate.latitude)
                 if(followMe==true)
+                {
                     map.showCoordinates(position.coordinate.latitude, position.coordinate.longitude);
+                }
             }
 
             if (position.longitudeValid) {
@@ -173,7 +176,20 @@ Window{
                 }
             }
 
+            Item{
+                id: positionCursor
+                x: positionSource.position.latitudeValid?map.geoToPixelX(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-width/2:0
+                y: positionSource.position.latitudeValid?map.geoToPixelY(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-height:0
 
+                width: units.gu(3)
+                height: units.gu(3)
+                Icon{
+                    visible: positionSource.position.latitudeValid
+                    anchors.fill: parent
+                    name: "location"
+
+                }
+            }
 
             PinchArea{
                 id: pinch
@@ -190,6 +206,8 @@ Window{
                     {
                         map.zoomIn(pinch.scale);
                     }
+                    positionCursor.update;
+                    followMe = false;
                 }
                 MouseArea{
 
@@ -204,9 +222,11 @@ Window{
                     onPositionChanged:
                     {
                         map.move(oldX - mouse.x, oldY - mouse.y);
-
+                        if(Math.abs(oldX - mouse.x)>20||Math.abs(oldY - mouse.y)>20)
+                            followMe = false;
                         oldX = mouse.x;
                         oldY = mouse.y;
+                        positionCursor.update;
 
 
                     }
@@ -217,13 +237,12 @@ Window{
 
             SearchDialog {
                 id: searchDialog
-
                 y: Theme.vertSpace
-
+                width: parent.width - 2* Theme.horizSpace
+                height: units.gu(4)
                 anchors.horizontalCenter: parent.horizontalCenter
-
+                desktopFreeSpace:  Qt.rect(Theme.horizSpace,Theme.vertSpace+searchDialog.height+Theme.vertSpace,map.width-2*Theme.horizSpace,map.height-searchDialog.y-searchDialog.height-3*Theme.vertSpace)
                 desktop: map
-
                 onShowLocation: {
                     map.showLocation(location)
                 }
@@ -240,10 +259,16 @@ Window{
 
                 MapButton {
                     id: routeButton
-                    label: "#"
+                    //label: "#"
 
                     onClicked: {
                         openRoutingDialog()
+                    }
+                    Image {
+                        width: parent.width*0.66
+                        height: parent.height*0.66
+                        anchors.centerIn: parent
+                        source: "qrc:///pics/route.svg"
                     }
                 }
                 MapButton {
@@ -275,13 +300,27 @@ Window{
                 }
             }
 
+            Rectangle {
+                id: osmCopyright
+                anchors {
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+                height: units.gu(2)
+                width: units.gu(24)
+                opacity: 0.7
+                Label {
+                    text: " © OpenStreetMap contributors"
+                    fontSize: "small"
+                }
+            }
 
             // Bottom right column
             ColumnLayout {
                 id: navigation
 
                 x: parent.width-width-Theme.horizSpace
-                y: parent.height-height-Theme.vertSpace
+                y: parent.height-height-Theme.vertSpace*2 - osmCopyright.height
 
                 spacing: Theme.mapButtonSpace
 

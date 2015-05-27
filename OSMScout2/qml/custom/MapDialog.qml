@@ -1,5 +1,6 @@
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
+import Ubuntu.Components 1.1
 
 import net.sf.libosmscout.map 1.0
 
@@ -98,9 +99,10 @@ Item {
     ColumnLayout {
         id: mainLayout
 
-        x: (parent.width-width)/2
+        x: 2*Theme.horizSpace
         y: 2*Theme.vertSpace
-        Layout.minimumWidth: 4*Theme.horizSpace
+        width: parent.width-4*Theme.horizSpace
+        Layout.minimumWidth: parent.width-4*Theme.horizSpace
         Layout.minimumHeight: 4*Theme.vertSpace
         Layout.maximumWidth: parent.width-4*Theme.horizSpace
         Layout.maximumHeight: parent.height-4*Theme.vertSpace

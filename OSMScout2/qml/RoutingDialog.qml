@@ -2,6 +2,7 @@ import QtQuick 2.2
 import QtQuick.Layouts 1.1
 
 import net.sf.libosmscout.map 1.0
+import Ubuntu.Components 1.1
 
 import "custom"
 
@@ -19,10 +20,10 @@ MapDialog {
 
         GridLayout {
             Layout.fillWidth: true
-
             columns: 2
 
             Text {
+                id: startText
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBaseline
 
                 text: "Start:"
@@ -30,16 +31,15 @@ MapDialog {
             }
 
             LocationEdit {
+                width: targetInput.width
+                height: units.gu(4)
                 id: startInput
-
-                Layout.minimumWidth: Theme.averageCharWidth*20
-                Layout.preferredWidth: Theme.averageCharWidth*40
-                Layout.maximumWidth: Theme.averageCharWidth*40
-
+                anchors.right: targetInput.right
                 horizontalAlignment: TextInput.AlignLeft
             }
 
             Text {
+                id: targetText
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBaseline
 
                 text: "Target:"
@@ -47,20 +47,18 @@ MapDialog {
             }
 
             LocationEdit {
+                width: units.gu(32)//parent.width-targetText.width - Theme.horizSpace
+                height: units.gu(4)
                 id: targetInput
-
-                Layout.minimumWidth: Theme.averageCharWidth*20
-                Layout.preferredWidth: Theme.averageCharWidth*40
-                Layout.maximumWidth: Theme.averageCharWidth*40
-
                 horizontalAlignment: TextInput.AlignLeft
             }
+
         }
 
-        RowLayout {
+        Row {
             id: buttonRow
             Layout.fillWidth: true
-            spacing: 10
+            spacing: Theme.horizSpace
 
             Item {
                 Layout.fillWidth: true
@@ -68,7 +66,7 @@ MapDialog {
                 width: 1
             }
 
-            DialogActionButton {
+            Button {
                 id: route
                 text: "Route"
 
@@ -83,7 +81,7 @@ MapDialog {
                 }
             }
 
-            DialogActionButton {
+            Button {
                 id: close
                 text: "Close"
 

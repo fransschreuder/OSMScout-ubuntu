@@ -5,7 +5,6 @@ load(ubuntu-click)
 # packaging and for the IDE to create runconfigurations
 UBUNTU_MANIFEST_FILE=manifest.json.in
 #QT_CONFIG -= no-pkg-config
-CONFIG += release
 CONFIG += qt thread c++11
 
 QT += core gui widgets qml quick svg positioning
@@ -63,7 +62,8 @@ CUSTOMQMLFILES += \
     qml/custom/MapDialog.qml
 
 PICFILES += \
-    pics/DeleteText.svg
+    pics/DeleteText.svg \
+    pics/route.svg
 
 #MAPFILES += \
 #    netherlands-osm-converted/bounding.dat \

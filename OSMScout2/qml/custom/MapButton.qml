@@ -46,8 +46,8 @@ Rectangle {
     text: label
   }
   Icon{
-      width: parent.width
-      height: parent.height
+      width: parent.width/2
+      height: parent.height/2
 
       anchors.centerIn: parent
       name: mapButton.iconName
