@@ -20,6 +20,7 @@ Window {
     height: 800
     property int oldX: 0;
     property int oldY: 0;
+    property bool followMe: true;
 
     function openRoutingDialog() {
         var component = Qt.createComponent("RoutingDialog.qml")
@@ -74,7 +75,8 @@ Window {
 
             if (position.latitudeValid) {
                 console.log("  latitude: " + position.coordinate.latitude)
-                map.showCoordinates(position.coordinate.latitude, position.coordinate.longitude);
+                if(followMe==true)
+                    map.showCoordinates(position.coordinate.latitude, position.coordinate.longitude);
             }
 
             if (position.longitudeValid) {
@@ -246,6 +248,22 @@ Window {
 
                     onClicked: {
                         openRoutingDialog()
+                    }
+                }
+                MapButton{
+                    id: follow
+                    label: "O"
+                    onClicked: {
+                        if(followMe)
+                        {
+                            followMe = false;
+                            label = "X";
+                        }
+                        else
+                        {
+                            followMe = true;
+                            label = "O";
+                        }
                     }
                 }
             }
