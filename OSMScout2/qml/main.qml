@@ -10,14 +10,14 @@ import QtPositioning 5.3
 import net.sf.libosmscout.map 1.0
 
 import "custom"
+Window{
+    width: units.gu(100)
+    height: units.gu(160)
 
-Window {
     id: mainWindow
-    objectName: "main"
+    //objectName: "main"
     title: "OSMScout"
     visible: true
-    width: 480
-    height: 800
     property int oldX: 0;
     property int oldY: 0;
     property bool followMe: true;
@@ -178,10 +178,6 @@ Window {
             PinchArea{
                 id: pinch
                 anchors.fill: parent
-                /*onHorizontalCenterChanged:
-                {
-                    console.log("Horizontal center changed");
-                }*/
 
                 onPinchFinished: {
                     console.log(pinch.center.x + " " + pinch.center.y);
@@ -243,28 +239,20 @@ Window {
                 spacing: Theme.mapButtonSpace
 
                 MapButton {
-                    id: route
+                    id: routeButton
                     label: "#"
 
                     onClicked: {
                         openRoutingDialog()
                     }
                 }
-                MapButton{
-                    id: follow
-                    label: "O"
+                MapButton {
+                    id: followButton
+
                     onClicked: {
-                        if(followMe)
-                        {
-                            followMe = false;
-                            label = "X";
-                        }
-                        else
-                        {
-                            followMe = true;
-                            label = "O";
-                        }
+                        followMe = !followMe;
                     }
+                    iconName: followMe ? "stock_website" : "location"
                 }
             }
 

@@ -2,26 +2,25 @@ import QtQuick 2.2
 import QtGraphicalEffects 1.0
 
 import net.sf.libosmscout.map 1.0
+import Ubuntu.Components 1.1
 
 Rectangle {
   id: mapButton
   
-  property color defaultColor: "white"
-  property color hoverColor: Qt.darker(defaultColor, 1.1)
+  property color defaultColor: UbuntuColors.warmGrey
+  property color hoverColor: UbuntuColors.orange
   property string label
+  property string iconName
 
   property alias font: mapButtonLabel.font
 
   signal clicked
-  
-  width: Theme.mapButtonWidth
-  height: Theme.mapButtonHeight
+  radius: units.gu(1)
+  width: units.gu(4)
+  height: units.gu(4)
   color: defaultColor
-  border.color: "grey"
-  border.width: 1
   opacity: 0.8
-  
-  
+
   MouseArea {
     id: mapButtonMouseArea
     anchors.fill: parent
@@ -44,15 +43,15 @@ Rectangle {
     id: mapButtonLabel
     anchors.centerIn: parent
     color: "black"
-    font.pixelSize: Theme.mapButtonFontSize
     text: label
   }
-  
-  scale: mapButtonMouseArea.pressed ? 1.2 : 1.0
-  
-  Behavior on scale {
-    NumberAnimation { 
-      duration: 55
-    }
+  Icon{
+      width: parent.width
+      height: parent.height
+
+      anchors.centerIn: parent
+      name: mapButton.iconName
+
   }
+
 }
