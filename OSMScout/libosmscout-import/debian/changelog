@@ -1,4 +1,4 @@
-libosmscout-import (0.1-0) trusty; urgency=medium
+libosmscoutimport (0.1-0) trusty; urgency=medium
 
   * Debian build for 0.1
 

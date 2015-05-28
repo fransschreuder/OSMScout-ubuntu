@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 9~),
                automake,
                autoconf,
                libosmscout-dev
-               libosmscout-import-dev
+               libosmscoutimport-dev
 Standards-Version: 3.9.5
 Vcs-Browser: https://github.com/fransschreuder/libosmscout
 Vcs-Git: https://github.com/fransschreuder/libosmscout.git
@@ -20,6 +20,6 @@ Multi-Arch: same
 Section: devel
 Depends: ${misc:Depends},
          libosmscout0 (= ${binary:Version}),
-         libosmscout-import0 (= ${binary:Version})
+         libosmscoutimport0 (= ${binary:Version})
 Pre-Depends: ${misc:Pre-Depends}
 Description: Tool to convert OpenStreetmaps data to binary data for OSMScout

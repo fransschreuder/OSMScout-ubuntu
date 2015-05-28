@@ -33,7 +33,7 @@ echo exporting git tree...
 #svn export boot release/firmware/boot1.0
 git clone ./ release/
 mv release/OSMScout/libosmscout release/libosmscout-$RELEASE
-mv release/OSMScout/libosmscout-import release/libosmscout-import-$RELEASE
+mv release/OSMScout/libosmscout-import release/libosmscoutimport-$RELEASE
 mv release/OSMScout/Import release/osmscoutimport-$RELEASE
 rm release/LICENSE
 rm release/README
@@ -64,7 +64,7 @@ done
 cd ..
 ##################
 echo creating autogen files
-cd libosmscout-import-$RELEASE
+cd libosmscoutimport-$RELEASE
 ./autogen.sh
 ./configure
 make distclean
@@ -72,10 +72,10 @@ rm -rf autom4te.cache
 
 cd ..
 echo creating source archive...
-tar -zcvhf libosmscout-import_$RELEASE.orig.tar.gz libosmscout-import-$RELEASE
-rm -rf libosmscout-import-$RELEASE
-tar -zxvf libosmscout-import_$RELEASE.orig.tar.gz
-cd libosmscout-import-$RELEASE
+tar -zcvhf libosmscoutimport_$RELEASE.orig.tar.gz libosmscoutimport-$RELEASE
+rm -rf libosmscoutimport-$RELEASE
+tar -zxvf libosmscoutimport_$RELEASE.orig.tar.gz
+cd libosmscoutimport-$RELEASE
 
 COUNT=0
 for DIST in ${DISTS} ; do
