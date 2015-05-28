@@ -16,6 +16,7 @@ override_dh_auto_install:
 override_dh_install:
 	rm `find debian/tmp -name '*.la'`
 	d-shlibmove --commit \
+		    --override s/libgomp1-dev// \
 		    --devunversioned \
 		    --multiarch \
 		    --movedev debian/tmp/usr/include/* usr/include \

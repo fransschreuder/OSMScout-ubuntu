@@ -12,17 +12,17 @@ Vcs-Browser: https://github.com/fransschreuder/libosmscout
 Vcs-Git: https://github.com/fransschreuder/libosmscout.git
 Homepage: https://github.com/fransschreuder/libosmscout
 
-Package: libosmscout-0.1-dev
+Package: libosmscout-dev
 Architecture: any
 Section: libdevel
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         libosmscout-0.1-0 (= ${binary:Version})
+         libosmscout0 (= ${binary:Version})
 Breaks: libosmscout-dev
 Provides: libosmscout-dev
 Description: Library for managing OpenStreetmaps files in a binary form
 
-Package: libosmscout-0.1-0
+Package: libosmscout0
 Architecture: any
 Multi-Arch: same
 Section: libs
@@ -31,12 +31,12 @@ Depends: ${shlibs:Depends},
 Pre-Depends: ${misc:Pre-Depends}
 Description: Library for managing OpenStreetmaps files in a binary form
 
-Package: libosmscout-0.1-0-dbg
+Package: libosmscout-dbg
 Architecture: any
 Multi-Arch: same
 Section: debug
 Priority: extra
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         libosmscout-0.1-0 (= ${binary:Version})
+         libosmscout0 (= ${binary:Version})
 Description: Library for managing OpenStreetmaps files in a binary form
