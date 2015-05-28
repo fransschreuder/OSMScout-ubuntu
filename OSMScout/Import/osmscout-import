@@ -6,8 +6,7 @@ if [ $# -lt 1 ]; then
 fi
 
 scriptDirectory="${BASH_SOURCE%/*}"
-echo $scriptDirectory
-exit 0
+ostDirectory="${BASH_SOURCE%/../share/osmscoutimport/}"
 
 if [[ ! -d "$scriptDirectory" ]]; then scriptDirectory="$PWD"; fi
 
@@ -61,6 +60,6 @@ echo " $outputFile" | tee -a $outputFile
 echo "Options:" | tee -a $outputFile
 echo " $options" | tee -a $outputFile
 echo "Call:" | tee -a $outputFile
-echo " ../Import/src/Import $options --typefile ../stylesheets/map.ost --destinationDirectory $targetDirectory $@" | tee -a $outputFile
+echo " osmscoutimport $options --typefile $ostDirectory/map.ost --destinationDirectory $targetDirectory $@" | tee -a $outputFile
 
-../Import/src/Import $options --typefile ../stylesheets/map.ost --destinationDirectory "$targetDirectory" "$@" 2>&1 | tee -a $outputFile
+osmscoutimport $options --typefile $ostDirectory/map.ost --destinationDirectory "$targetDirectory" "$@" 2>&1 | tee -a $outputFile
