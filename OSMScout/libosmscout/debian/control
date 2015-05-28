@@ -4,12 +4,9 @@ Uploaders: Frans Schreuder <info@schreuderelectronics.com>
 Section: libs
 Priority: optional
 Build-Depends: debhelper (>= 9~),
-               hardening-wrapper,
                libtool,
                automake,
-               autoconf,
-               d-shlibs,
-               gobject-introspection
+               autoconf
 Standards-Version: 3.9.5
 Vcs-Browser: https://github.com/fransschreuder/libosmscout
 Vcs-Git: https://github.com/fransschreuder/libosmscout.git
