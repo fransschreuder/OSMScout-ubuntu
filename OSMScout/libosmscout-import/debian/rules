@@ -18,7 +18,7 @@ override_dh_install:
 	rm `find debian/tmp -name 'Config.h'`
 	d-shlibmove --commit \
 		    --override s/libgomp1-dev// \
-		    --override s/libosmscout0-dev/libosmscout-dev/ \
+		    --override s/libosmscout0-dev// \
 		    --override s/libprotobuf8-dev/libprotobuf-dev/ \
 		    --devunversioned \
 		    --multiarch \
