@@ -12,7 +12,6 @@ override_dh_auto_configure:
 
 override_dh_auto_install:
 	dh_auto_install
-	dh_girepository
 
 override_dh_install:
 	rm `find debian/tmp -name '*.la'`
@@ -27,7 +26,7 @@ override_dh_auto_clean:
 	rm -rf docs/reference/tmpl/
 
 override_dh_strip:
-	dh_strip --keep-debug --dbg-package=libosmscout0.0-0-dbg
+	dh_strip --keep-debug
 
 %:
 	dh $@
