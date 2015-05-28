@@ -127,7 +127,7 @@ void DBThread::Initialize()
     {
         docPaths.append("/media/phablet/"+removableList[i]+"/Pictures/");
         //Apparmor doesn't give me rights to do the following:
-        //docPaths.append("/media/phablet/"+removableList[i]+"/Maps/");
+        docPaths.append("/media/phablet/"+removableList[i]+"/Maps/");
     }
 
     QString databaseDirectory;

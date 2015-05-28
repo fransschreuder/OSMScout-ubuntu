@@ -1,28 +1,13 @@
 For Ubuntu Touch:
 Open ubuntu-sdk and use the Ubuntu kit > 15.04
 
-open libosmscout/libosmscout.pro
-run qmake
-build project
-copy the resulting libosmscout.a to OSMScout2/libs/libosmscout.a
-
-open libosmscout-map/libosmscout-map.pro
-run qmake
-build project
-copy the resulting libosmscout-map.a to OSMScout2/libs/libosmscout-map.a
-
-open libosmscout-map-qt/libosmscout-map-qt.pro
-run qmake
-build project
-copy the resulting libosmscout-map-qt.a to OSMScout2/libs/libosmscout-map-qt.a
-
-Now open OSMScout2/OSMScout.pro
+Now open OSMScout/OSMScout.pro
 run qmake
 build the project
 Create Click package and install on device.
 
 When running, the application requires a map to start. 
-For now, the map files should go into /media/phablet/<SD_CARD>/Pictures/osmscout
+For now, the map files should go into /media/phablet/<SD_CARD>/Maps/osmscout
 The files should be imported on a PC using the Import tool, please refer to the libosmscout documentation for instructions
 
 

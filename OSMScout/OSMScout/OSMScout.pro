@@ -130,9 +130,9 @@ message($$config_files.files)
 INSTALLS+=config_files
 
 
-LIBS += libs/libosmscout-map-qt.a \
-        libs/libosmscout-map.a \
-        libs/libosmscout.a
+LIBS += ../libosmscout-map-qt/libosmscout-map-qt.a \
+        ../libosmscout-map/libosmscout-map.a \
+        ../libosmscout/libosmscout.a
 
 
 #LIBS += ../libosmscout/src/.libs/libosmscout.so \
