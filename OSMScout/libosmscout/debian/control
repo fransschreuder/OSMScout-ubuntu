@@ -6,7 +6,8 @@ Priority: optional
 Build-Depends: debhelper (>= 9~),
                libtool,
                automake,
-               autoconf
+               autoconf,
+               d-shlibs
 Standards-Version: 3.9.5
 Vcs-Browser: https://github.com/fransschreuder/libosmscout
 Vcs-Git: https://github.com/fransschreuder/libosmscout.git
