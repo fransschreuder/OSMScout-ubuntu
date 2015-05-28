@@ -17,6 +17,7 @@ override_dh_install:
 	rm `find debian/tmp -name '*.la'`
 	d-shlibmove --commit \
 		    --devunversioned \
+		    --multiarch \
 		    --movedev debian/tmp/usr/include/* usr/include \
 		    debian/tmp/usr/lib/*/lib*.so
 	dh_install
