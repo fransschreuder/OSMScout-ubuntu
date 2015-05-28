@@ -1,0 +1,34 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+export DEB_BUILD_HARDENING=1
+
+override_dh_auto_configure:
+	NOCONFIGURE=y ./autogen.sh
+	dh_auto_configure
+
+override_dh_auto_install:
+	dh_auto_install
+
+override_dh_install:
+	rm `find debian/tmp -name '*.la'`
+	d-shlibmove --commit \
+		    --override s/libgomp1-dev// \
+		    --devunversioned \
+		    --multiarch \
+		    --movedev debian/tmp/usr/include/* usr/include \
+		    debian/tmp/usr/lib/*/lib*.so
+	dh_install
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -rf docs/reference/tmpl/
+
+override_dh_strip:
+	dh_strip --keep-debug
+
+%:
+	dh $@
