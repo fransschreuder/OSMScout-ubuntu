@@ -17,6 +17,8 @@ override_dh_install:
 	rm `find debian/tmp -name '*.la'`
 	d-shlibmove --commit \
 		    --override s/libgomp1-dev// \
+		    --override s/libosmscout0-dev/libosmscout-dev/ \
+		    --override s/libprotobuf8-dev/libprotobuf-dev/ \
 		    --devunversioned \
 		    --multiarch \
 		    --movedev debian/tmp/usr/include/* usr/include \

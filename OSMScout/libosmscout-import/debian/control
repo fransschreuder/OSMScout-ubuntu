@@ -1,4 +1,4 @@
-Source: libosmscout-import
+Source: libosmscoutimport
 Maintainer: Frans Schreuder <info@schreuderelectronics.com>
 Uploaders: Frans Schreuder <info@schreuderelectronics.com>
 Section: libs
@@ -13,34 +13,34 @@ Vcs-Browser: https://github.com/fransschreuder/libosmscout
 Vcs-Git: https://github.com/fransschreuder/libosmscout.git
 Homepage: https://github.com/fransschreuder/libosmscout
 
-Package: libosmscout-import-dev
+Package: libosmscoutimport-dev
 Architecture: any
 Section: libdevel
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         libosmscout-import0 (= ${binary:Version}),
-         libosmscout0 (= ${binary:Version})
-Breaks: libosmscout-import-dev
-Provides: libosmscout-import-dev
+         libosmscoutimport0,
+         libosmscout0
+Breaks: libosmscoutimport-dev
+Provides: libosmscoutimport-dev
 Description: Library for managing OpenStreetmaps files in a binary form
 
-Package: libosmscout-import0
+Package: libosmscoutimport0
 Architecture: any
 Multi-Arch: same
 Section: libs
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         libosmscout0 (= ${binary:Version})
+         libosmscout0 
 Pre-Depends: ${misc:Pre-Depends}
 Description: Library for managing OpenStreetmaps files in a binary form
 
-Package: libosmscout-import-dbg
+Package: libosmscoutimport-dbg
 Architecture: any
 Multi-Arch: same
 Section: debug
 Priority: extra
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         libosmscout-import0 (= ${binary:Version}),
-         libosmscout0 (= ${binary:Version})
+         libosmscoutimport0,
+         libosmscout0
 Description: Library for managing OpenStreetmaps files in a binary form

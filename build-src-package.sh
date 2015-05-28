@@ -58,7 +58,7 @@ COUNT=0
 
 for DIST in ${DISTS} ; do
 	COUNT=$(($COUNT-1))
-	dch -D $DIST -m -v $RELEASE$COUNT -b
+	dch -D $DIST -m -v $RELEASE$COUNT -b "Released $RELEASE"
 	debuild -S -k8AD5905E
 done
 cd ..
@@ -80,7 +80,7 @@ cd libosmscout-import-$RELEASE
 COUNT=0
 for DIST in ${DISTS} ; do
 	COUNT=$(($COUNT-1))
-	dch -D $DIST -m -v $RELEASE$COUNT -b
+	dch -D $DIST -m -v $RELEASE$COUNT -b "Released $RELEASE"
 	debuild -S -k8AD5905E
 done
 
@@ -102,7 +102,7 @@ cd osmscoutimport-$RELEASE
 COUNT=0
 for DIST in ${DISTS} ; do
 	COUNT=$(($COUNT-1))
-	dch -D $DIST -m -v $RELEASE$COUNT -b
+	dch -D $DIST -m -v $RELEASE$COUNT -b "Released $RELEASE"
 	debuild -S -k8AD5905E
 done
 cd ..
