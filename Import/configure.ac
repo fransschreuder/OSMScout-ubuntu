@@ -1,9 +1,9 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.56)
-AC_INIT([Import],
+AC_INIT([osmscout-import],
         [0.1],
         [Send bugreports to <tim@teulings.org>],
-        [Import])
+        [osmscout-import])
 
 AC_CONFIG_SRCDIR(src/Import.cpp)
 AC_CONFIG_MACRO_DIR([m4])

@@ -1,10 +1,10 @@
-bin_PROGRAMS = Import
+bin_PROGRAMS = osmscoutimport
 
-Import_SOURCES = Import.cpp
+osmscoutimport_SOURCES = Import.cpp
 
-Import_CXXFLAGS=-I. $(LIBOSMSCOUT_CFLAGS)
+osmscoutimport_CXXFLAGS=-I. $(LIBOSMSCOUT_CFLAGS)
                     
-Import_LDADD= $(LIBOSMSCOUT_LIBS)
+osmscoutimport_LDADD= $(LIBOSMSCOUT_LIBS)
 
 
 
