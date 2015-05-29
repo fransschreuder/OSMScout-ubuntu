@@ -5,7 +5,7 @@
 /* #undef HAVE_ALTIVEC */
 
 /* Support AVX (Advanced Vector Extensions) instructions */
-#define HAVE_AVX /**/
+/* #undef HAVE_AVX */
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
@@ -41,7 +41,7 @@
 #define HAVE_MMAP 1
 
 /* Support mmx instructions */
-#define HAVE_MMX /**/
+/* #undef HAVE_MMX */
 
 /* Define to 1 if you have the `posix_fadvise' function. */
 #define HAVE_POSIX_FADVISE 1
@@ -50,22 +50,22 @@
 #define HAVE_POSIX_MADVISE 1
 
 /* Support SSE (Streaming SIMD Extensions) instructions */
-#define HAVE_SSE /**/
+/* #undef HAVE_SSE */
 
 /* Support SSE2 (Streaming SIMD Extensions 2) instructions */
-#define HAVE_SSE2 /**/
+/* #undef HAVE_SSE2 */
 
 /* Support SSE3 (Streaming SIMD Extensions 3) instructions */
-#define HAVE_SSE3 /**/
+/* #undef HAVE_SSE3 */
 
 /* Support SSSE4.1 (Streaming SIMD Extensions 4.1) instructions */
-#define HAVE_SSE4_1 /**/
+/* #undef HAVE_SSE4_1 */
 
 /* Support SSSE4.2 (Streaming SIMD Extensions 4.2) instructions */
-#define HAVE_SSE4_2 /**/
+/* #undef HAVE_SSE4_2 */
 
 /* Support SSSE3 (Supplemental Streaming SIMD Extensions 3) instructions */
-#define HAVE_SSSE3 /**/
+/* #undef HAVE_SSSE3 */
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
@@ -157,7 +157,7 @@
 #define OSMSCOUT_HAVE_MUTEX 1
 
 /* SSE2 processor extension available */
-#define OSMSCOUT_HAVE_SSE2 1
+/* #undef OSMSCOUT_HAVE_SSE2 */
 
 /* system header <stdint.h> is available */
 #define OSMSCOUT_HAVE_STDINT_H 1
@@ -219,7 +219,7 @@
 #endif
 
 /* Number of bits in a file offset, on hosts where this is settable. */
-/* #undef _FILE_OFFSET_BITS */
+#define _FILE_OFFSET_BITS 64
 
 /* Define to 1 to make fseeko visible on some hosts (e.g. glibc 2.2). */
 /* #undef _LARGEFILE_SOURCE */

@@ -33,7 +33,7 @@
 #define OSMSCOUT_HAVE_UINT64_T 1
 
 /* SSE2 processor extension available */
-#define OSMSCOUT_HAVE_SSE2 1
+/* #undef OSMSCOUT_HAVE_SSE2 */
 
 /* libosmscout needs to include <assert.h> */
 /* #undef OSMSCOUT_REQUIRES_ASSERTH */
