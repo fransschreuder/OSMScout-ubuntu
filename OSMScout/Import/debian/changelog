@@ -1,4 +1,4 @@
-osmscoutimport (0.1-0) trusty; urgency=medium
+osmscoutimport (0.0-0) trusty; urgency=medium
 
   * Debian build for 0.1
 

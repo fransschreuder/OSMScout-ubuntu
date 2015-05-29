@@ -55,11 +55,12 @@ tar -zxvf libosmscout_$RELEASE.orig.tar.gz
 cd libosmscout-$RELEASE
 
 COUNT=0
-
+INCLUDESRC=-sa
 for DIST in ${DISTS} ; do
 	COUNT=$(($COUNT-1))
 	dch -D $DIST -m -v $RELEASE$COUNT -b "Released $RELEASE"
-	debuild -S -k8AD5905E
+	debuild -S -k8AD5905E $INCLUDESRC
+	INCLUDESRC=-sd
 done
 cd ..
 ##################
@@ -78,10 +79,12 @@ tar -zxvf libosmscoutimport_$RELEASE.orig.tar.gz
 cd libosmscoutimport-$RELEASE
 
 COUNT=0
+INCLUDESRC=-sa
 for DIST in ${DISTS} ; do
 	COUNT=$(($COUNT-1))
 	dch -D $DIST -m -v $RELEASE$COUNT -b "Released $RELEASE"
-	debuild -S -k8AD5905E
+	debuild -S -k8AD5905E $INCLUDESRC
+	INCLUDESRC=-sd
 done
 
 cd ..
@@ -100,9 +103,11 @@ tar -zxvf osmscoutimport_$RELEASE.orig.tar.gz
 cd osmscoutimport-$RELEASE
 
 COUNT=0
+INCLUDESRC=-sa
 for DIST in ${DISTS} ; do
 	COUNT=$(($COUNT-1))
 	dch -D $DIST -m -v $RELEASE$COUNT -b "Released $RELEASE"
-	debuild -S -k8AD5905E
+	debuild -S -k8AD5905E $INCLUDESRC
+	INCLUDESRC=-sd
 done
 cd ..

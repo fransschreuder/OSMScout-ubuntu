@@ -1,3 +1,21 @@
+libosmscout (0.1-3) vivid; urgency=medium
+
+  * Released 0.1
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 28 May 2015 23:16:39 +0200
+
+libosmscout (0.1-2) utopic; urgency=medium
+
+  * Released 0.1
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 28 May 2015 23:16:36 +0200
+
+libosmscout (0.1-1) trusty; urgency=medium
+
+  * Released 0.1
+
+ -- Frans Schreuder <info@schreuderelectronics.com>  Thu, 28 May 2015 23:16:34 +0200
+
 libosmscout (0.1-0) trusty; urgency=medium
 
   * Debian build for 0.1
