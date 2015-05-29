@@ -6,7 +6,11 @@ if [ $# -lt 1 ]; then
 fi
 
 scriptDirectory="${BASH_SOURCE%/*}"
-ostDirectory="${BASH_SOURCE%/../share/osmscoutimport/}"
+
+ostDirectory=$(pwd)
+if [[ -d /usr/share/osmscoutimport/ ]]; then ostDirectory="/usr/share/osmscoutimport/"; fi
+if [[ -d /usr/local/share/osmscoutimport/ ]]; then ostDirectory="/usr/local/share/osmscoutimport/"; fi
+
 
 if [[ ! -d "$scriptDirectory" ]]; then scriptDirectory="$PWD"; fi
 
@@ -47,19 +51,59 @@ elif [ -f "$defaultOpt" ]; then
   . "$defaultOpt"
 fi
 
+tempDirectory=$targetDirectory"_tmp"
+
+
+if [ ! -d "$tempDirectory" ]; then
+  echo "Creating target directory $tempDirectory..."
+  mkdir "$tempDirectory"
+fi
 
 if [ ! -d "$targetDirectory" ]; then
   echo "Creating target directory $targetDirectory..."
   mkdir "$targetDirectory"
 fi
 
+
+
 echo "Target directory:" | tee -a $outputFile
 echo " $targetDirectory" | tee -a $outputFile
+echo "Temp directory:"   | tee -a $outputFile
+echo " $tempDirectory"   | tee -a $outputFile
 echo "Outputfile:"  | tee -a $outputFile
 echo " $outputFile" | tee -a $outputFile
 echo "Options:" | tee -a $outputFile
 echo " $options" | tee -a $outputFile
 echo "Call:" | tee -a $outputFile
-echo " osmscoutimport $options --typefile $ostDirectory/map.ost --destinationDirectory $targetDirectory $@" | tee -a $outputFile
+echo " osmscoutimport $options --typefile $ostDirectory/map.ost --destinationDirectory $tempDirectory $@" | tee -a $outputFile
 
-osmscoutimport $options --typefile $ostDirectory/map.ost --destinationDirectory "$targetDirectory" "$@" 2>&1 | tee -a $outputFile
+cp $ostDirectory/standard.oss $tempDirectory
+osmscoutimport $options --typefile $ostDirectory/map.ost --destinationDirectory "$tempDirectory" "$@" 2>&1 | tee -a $outputFile
+
+mapFiles="types.dat \
+          bounding.dat \
+          nodes.dat \
+          areas.dat \
+          ways.dat \
+          areanode.idx \
+          areaarea.idx \
+          areaway.idx \
+          areasopt.dat \
+          waysopt.dat \
+          location.idx \
+          water.idx \
+          intersections.dat \
+          intersections.idx \
+          routefoot.dat \
+          routefoot.idx \
+          routebicycle.dat \
+          routebicycle.idx \
+          routecar.dat \
+          routecar.idx \
+          standard.oss"
+         
+for f in $mapFiles
+do
+  mv $tempDirectory/$f $targetDirectory/$f
+done
+
