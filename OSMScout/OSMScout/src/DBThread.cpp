@@ -270,7 +270,6 @@ void DBThread::UpdateRenderRequest(const RenderMapRequest& request)
 
 void DBThread::TriggerMapRendering()
 {
-  std::cout<<"TriggerMapRendering"<<std::endl;
   RenderMapRequest request;
   {
     QMutexLocker locker(&mutex);
@@ -411,9 +410,9 @@ bool DBThread::RenderMapQuick(QPainter& painter,
     sz*=zoomLevel;
     int x=0,y=0;
     QSize diffsz = finishedImage->size()-sz;
-    x = diffsz.width()/2+
+    x = diffsz.width()/2-
             dx;
-    y = diffsz.height()/2+
+    y = diffsz.height()/2-
             dy  ;
     QImage scaledImage = finishedImage->scaled(sz);
 

@@ -50,6 +50,9 @@ MapWidget::MapWidget(QQuickItem* parent)
     connect(dbThread,SIGNAL(Redraw()),
             this,SLOT(redraw()));
     quickZooming = false;
+    quickMoveX = 0;
+    quickMoveY = 0;
+    quickZoomFactor = 1;
 }
 
 MapWidget::~MapWidget()
@@ -59,6 +62,7 @@ MapWidget::~MapWidget()
 
 void MapWidget::redraw()
 {
+    std::cout<<"redraw..."<<std::endl;
     update();
 }
 
@@ -107,6 +111,7 @@ void MapWidget::paint(QPainter *painter)
     {
         DBThread         *dbThread=DBThread::GetInstance();
         dbThread->RenderMapQuick(*painter, quickMoveX, quickMoveY, quickZoomFactor);
+        std::cout<<"quickRender"<<std::endl;
     }
     else
     {
@@ -140,7 +145,6 @@ void MapWidget::zoomQuick(double zoomFactor)
 void MapWidget::zoomIn(double zoomFactor)
 {
     osmscout::Magnification maxMag;
-    quickZooming = false;
     maxMag.SetLevel(20);
 
     if (magnification.GetMagnification()*zoomFactor>maxMag.GetMagnification()) {
@@ -149,13 +153,17 @@ void MapWidget::zoomIn(double zoomFactor)
     else {
         magnification.SetMagnification(magnification.GetMagnification()*zoomFactor);
     }
-
     TriggerMapRendering();
+    quickZooming = false;
+    quickMoveX = 0;
+    quickMoveY = 0;
+    quickZoomFactor = 1;
+
+
 }
 
 void MapWidget::zoomOut(double zoomFactor)
 {
-    quickZooming = false;
     if (magnification.GetMagnification()/zoomFactor<1) {
         magnification.SetMagnification(1);
     }
@@ -164,12 +172,18 @@ void MapWidget::zoomOut(double zoomFactor)
     }
 
     TriggerMapRendering();
+    quickZooming = false;
+    quickMoveX = 0;
+    quickMoveY = 0;
+    quickZoomFactor = 1;
+
 }
 
 void MapWidget::move(int x, int y)
 {
     quickMoveX = 0;
     quickMoveY = 0;
+    quickZoomFactor = 1;
     quickZooming = false;
     DBThread                     *dbThread=DBThread::GetInstance();
     if(!dbThread->IsOpened()) return;
@@ -194,6 +208,7 @@ void MapWidget::moveQuick(int x, int y)
 
     quickMoveX = x;
     quickMoveY = y;
+    redraw();
 }
 
 void MapWidget::left()
@@ -201,6 +216,7 @@ void MapWidget::left()
     quickMoveX = 0;
     quickMoveY = 0;
     quickZooming = false;
+    quickZoomFactor = 1;
     DBThread                     *dbThread=DBThread::GetInstance();
     osmscout::MercatorProjection projection;
 
@@ -218,6 +234,7 @@ void MapWidget::right()
     quickMoveX = 0;
     quickMoveY = 0;
     quickZooming = false;
+    quickZoomFactor = 1;
     DBThread                     *dbThread=DBThread::GetInstance();
     osmscout::MercatorProjection projection;
 
@@ -232,6 +249,11 @@ void MapWidget::right()
 
 void MapWidget::up()
 {
+    quickMoveX = 0;
+    quickMoveY = 0;
+    quickZooming = false;
+    quickZoomFactor = 1;
+
     DBThread                     *dbThread=DBThread::GetInstance();
     osmscout::MercatorProjection projection;
 
@@ -246,6 +268,11 @@ void MapWidget::up()
 
 void MapWidget::down()
 {
+    quickMoveX = 0;
+    quickMoveY = 0;
+    quickZooming = false;
+    quickZoomFactor = 1;
+
     DBThread                     *dbThread=DBThread::GetInstance();
     osmscout::MercatorProjection projection;
 

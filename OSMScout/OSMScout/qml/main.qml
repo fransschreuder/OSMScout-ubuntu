@@ -81,10 +81,10 @@ Window{
         }
 
         onPositionChanged: {
-            console.log("Position changed:")
+            //console.log("Position changed:")
 
             if (position.latitudeValid) {
-                console.log("  latitude: " + position.coordinate.latitude)
+                //console.log("  latitude: " + position.coordinate.latitude)
                 if(followMe==true)
                 {
                     map.showCoordinates(position.coordinate.latitude, position.coordinate.longitude);
@@ -92,23 +92,23 @@ Window{
             }
 
             if (position.longitudeValid) {
-                console.log("  longitude: " + position.coordinate.longitude)
+                //console.log("  longitude: " + position.coordinate.longitude)
             }
 
             if (position.altitudeValid) {
-                console.log("  altitude: " + position.coordinate.altitude)
+                //console.log("  altitude: " + position.coordinate.altitude)
             }
 
             if (position.speedValid) {
-                console.log("  speed: " + position.speed)
+                //console.log("  speed: " + position.speed)
             }
 
             if (position.horizontalAccuracyValid) {
-                console.log("  horizontal accuracy: " + position.horizontalAccuracy)
+                //console.log("  horizontal accuracy: " + position.horizontalAccuracy)
             }
 
             if (position.verticalAccuracyValid) {
-                console.log("  vertical accuracy: " + position.verticalAccuracy)
+                //console.log("  vertical accuracy: " + position.verticalAccuracy)
             }
         }
     }
@@ -204,17 +204,22 @@ Window{
             PinchArea{
                 id: pinch
                 anchors.fill: parent
-                //pinch.dragAxis: Pinch.XAndYAxis
+                pinch.dragAxis: Pinch.XAndYAxis
                 onPinchStarted: {
                     console.log("Pinch started" );
                 }
                 onPinchUpdated: {
                     map.zoomQuick(pinch.scale);
+                    map.moveQuick(pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
+                    positionCursor.update;
                 }
 
                 onPinchFinished: {
                     console.log(pinch.center.x + " " + pinch.center.y);
                     console.log(pinch.scale);
+                    positionCursor.update;
+                    followMe = false;
+                    map.move(pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
                     if(pinch.scale<1)
                     {
                         map.zoomOut(1/pinch.scale);
@@ -223,8 +228,7 @@ Window{
                     {
                         map.zoomIn(pinch.scale);
                     }
-                    positionCursor.update;
-                    followMe = false;
+
                 }
                 MouseArea{
 
@@ -239,8 +243,9 @@ Window{
                     onPositionChanged:
                     {
                         map.moveQuick(oldX - mouse.x, oldY - mouse.y);
-                        oldX = mouse.x;
-                        oldY = mouse.y;
+                        positionCursor.update;
+                        /*oldX = mouse.x;
+                        oldY = mouse.y;*/
 
 
 
