@@ -200,9 +200,17 @@ Window{
                 }
             }
 
+
             PinchArea{
                 id: pinch
                 anchors.fill: parent
+                //pinch.dragAxis: Pinch.XAndYAxis
+                onPinchStarted: {
+                    console.log("Pinch started" );
+                }
+                onPinchUpdated: {
+                    map.zoomQuick(pinch.scale);
+                }
 
                 onPinchFinished: {
                     console.log(pinch.center.x + " " + pinch.center.y);
@@ -230,19 +238,26 @@ Window{
 
                     onPositionChanged:
                     {
+                        map.moveQuick(oldX - mouse.x, oldY - mouse.y);
+                        oldX = mouse.x;
+                        oldY = mouse.y;
+
+
+
+                    }
+
+                    onReleased:
+                    {
                         map.move(oldX - mouse.x, oldY - mouse.y);
                         if(Math.abs(oldX - mouse.x)>20||Math.abs(oldY - mouse.y)>20)
                             followMe = false;
                         oldX = mouse.x;
                         oldY = mouse.y;
                         positionCursor.update;
-
-
                     }
                 }
 
             }
-            // Use PinchArea for multipoint zoom in/out?
 
             SearchDialog {
                 id: searchDialog

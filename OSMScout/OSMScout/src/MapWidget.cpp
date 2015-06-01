@@ -49,6 +49,7 @@ MapWidget::MapWidget(QQuickItem* parent)
 
     connect(dbThread,SIGNAL(Redraw()),
             this,SLOT(redraw()));
+    quickZooming = false;
 }
 
 MapWidget::~MapWidget()
@@ -100,88 +101,46 @@ void MapWidget::TriggerMapRendering()
 }
 
 
-/*void MapWidget::HandleMouseMove(QMouseEvent* event)
-{
-    osmscout::MercatorProjection projection=startProjection;
-
-    if (!projection.Move(startX-event->x(),
-                         event->y()-startY)) {
-        return;
-    }
-
-    center=projection.GetCenter();
-}
-
-void MapWidget::mousePressEvent(QMouseEvent* event)
-{
-    if (event->button()==1) {
-        DBThread *dbThread=DBThread::GetInstance();
-
-        dbThread->GetProjection(startProjection);
-
-        startX=event->x();
-        startY=event->y();
-
-        setFocus(true);
-    }
-}
-
-void MapWidget::mouseMoveEvent(QMouseEvent* event)
-{
-    HandleMouseMove(event);
-    requestNewMap=false;
-    update();
-}
-
-void MapWidget::mouseReleaseEvent(QMouseEvent* event)
-{
-    if (event->button()==1) {
-        HandleMouseMove(event);
-        requestNewMap=true;
-        update();
-    }
-}
-
-void MapWidget::wheelEvent(QWheelEvent* event)
-{
-    int numDegrees=event->delta()/8;
-    int numSteps=numDegrees/15;
-
-    if (numSteps>=0) {
-        zoomIn(numSteps*1.35);
-    }
-    else {
-        zoomOut(-numSteps*1.35);
-    }
-
-    event->accept();
-}*/
-
 void MapWidget::paint(QPainter *painter)
 {
-    RenderMapRequest request;
-    DBThread         *dbThread=DBThread::GetInstance();
-    QRectF           boundingBox=contentsBoundingRect();
-
-    request.lat=center.GetLat();
-    request.lon=center.GetLon();
-    request.angle=angle;
-    request.magnification=magnification;
-    request.width=boundingBox.width();
-    request.height=boundingBox.height();
-
-    if (!dbThread->RenderMap(*painter,request) &&
-            requestNewMap) {
-        TriggerMapRendering();
+    if(quickZooming) //just zoom the already rendered Qimage and repaint
+    {
+        DBThread         *dbThread=DBThread::GetInstance();
+        dbThread->RenderMapQuick(*painter, quickMoveX, quickMoveY, quickZoomFactor);
     }
+    else
+    {
+        RenderMapRequest request;
+        DBThread         *dbThread=DBThread::GetInstance();
+        QRectF           boundingBox=contentsBoundingRect();
 
-    requestNewMap=true;
+        request.lat=center.GetLat();
+        request.lon=center.GetLon();
+        request.angle=angle;
+        request.magnification=magnification;
+        request.width=boundingBox.width();
+        request.height=boundingBox.height();
+
+        if (!dbThread->RenderMap(*painter,request) &&
+                requestNewMap) {
+            TriggerMapRendering();
+        }
+
+        requestNewMap=true;
+    }
+}
+
+void MapWidget::zoomQuick(double zoomFactor)
+{
+    quickZooming = true;
+    quickZoomFactor = zoomFactor;
+    redraw();
 }
 
 void MapWidget::zoomIn(double zoomFactor)
 {
     osmscout::Magnification maxMag;
-
+    quickZooming = false;
     maxMag.SetLevel(20);
 
     if (magnification.GetMagnification()*zoomFactor>maxMag.GetMagnification()) {
@@ -196,6 +155,7 @@ void MapWidget::zoomIn(double zoomFactor)
 
 void MapWidget::zoomOut(double zoomFactor)
 {
+    quickZooming = false;
     if (magnification.GetMagnification()/zoomFactor<1) {
         magnification.SetMagnification(1);
     }
@@ -208,6 +168,9 @@ void MapWidget::zoomOut(double zoomFactor)
 
 void MapWidget::move(int x, int y)
 {
+    quickMoveX = 0;
+    quickMoveY = 0;
+    quickZooming = false;
     DBThread                     *dbThread=DBThread::GetInstance();
     if(!dbThread->IsOpened()) return;
     osmscout::MercatorProjection projection;
@@ -225,8 +188,19 @@ void MapWidget::move(int x, int y)
     TriggerMapRendering();
 }
 
+void MapWidget::moveQuick(int x, int y)
+{
+    quickZooming = true;
+
+    quickMoveX = x;
+    quickMoveY = y;
+}
+
 void MapWidget::left()
 {
+    quickMoveX = 0;
+    quickMoveY = 0;
+    quickZooming = false;
     DBThread                     *dbThread=DBThread::GetInstance();
     osmscout::MercatorProjection projection;
 
@@ -241,6 +215,9 @@ void MapWidget::left()
 
 void MapWidget::right()
 {
+    quickMoveX = 0;
+    quickMoveY = 0;
+    quickZooming = false;
     DBThread                     *dbThread=DBThread::GetInstance();
     osmscout::MercatorProjection projection;
 

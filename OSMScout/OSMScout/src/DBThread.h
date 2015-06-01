@@ -132,6 +132,7 @@ public:
 
   void UpdateRenderRequest(const RenderMapRequest& request);
 
+  bool RenderMapQuick(QPainter& painter, int dx, int dy, double zoomLevel);
   bool RenderMap(QPainter& painter,
                  const RenderMapRequest& request);
 

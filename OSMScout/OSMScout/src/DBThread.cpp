@@ -404,6 +404,23 @@ void DBThread::TriggerMapRendering()
   emit HandleMapRenderingResult();
 }
 
+bool DBThread::RenderMapQuick(QPainter& painter,
+                              int dx, int dy, double zoomLevel)
+{
+    QSize sz=finishedImage->size();
+    sz*=zoomLevel;
+    int x=0,y=0;
+    QSize diffsz = finishedImage->size()-sz;
+    x = diffsz.width()/2+
+            dx;
+    y = diffsz.height()/2+
+            dy  ;
+    QImage scaledImage = finishedImage->scaled(sz);
+
+    painter.drawImage(x,y,scaledImage);
+    return true;
+}
+
 bool DBThread::RenderMap(QPainter& painter,
                          const RenderMapRequest& request)
 {

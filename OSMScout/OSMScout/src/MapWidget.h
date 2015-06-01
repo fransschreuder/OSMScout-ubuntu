@@ -46,6 +46,10 @@ private:
 
   // Controlling rerendering...
   bool                          requestNewMap;
+  bool                          quickZooming;
+  double                        quickZoomFactor;
+  int                           quickMoveX;
+  int                           quickMoveY;
 
 signals:
   void TriggerMapRenderingSignal();
@@ -55,9 +59,11 @@ signals:
 public slots:
   void initialisationFinished(const DatabaseLoadedResponse& response);
   void redraw();
+  void zoomQuick(double zoomFactor);
   void zoomIn(double zoomFactor);
   void zoomOut(double zoomFactor);
   void move(int x, int y);
+  void moveQuick(int x, int y);
   void left();
   void right();
   void up();
