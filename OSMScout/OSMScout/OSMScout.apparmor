@@ -1,5 +1,10 @@
 {
+    "policy_groups": [
+        "location",
+        "networking"
+    ],
     "policy_version": 1.2,
-    "template": "unconfined",
-    "policy_groups": []
+    "read_path": [
+        "/media/phablet/*/Maps/*/*"
+    ]
 }

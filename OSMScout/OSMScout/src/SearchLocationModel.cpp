@@ -73,7 +73,6 @@ Location::~Location()
 void Location::addReference(const osmscout::ObjectFileRef reference)
 {
     assert(type==typeObject);
-    std::cout<<"addReference: "<<reference.GetName()<<std::endl;
     references.push_back(reference);
 }
 

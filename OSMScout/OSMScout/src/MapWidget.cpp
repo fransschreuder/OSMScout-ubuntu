@@ -62,7 +62,6 @@ MapWidget::~MapWidget()
 
 void MapWidget::redraw()
 {
-    std::cout<<"redraw..."<<std::endl;
     update();
 }
 
@@ -111,7 +110,6 @@ void MapWidget::paint(QPainter *painter)
     {
         DBThread         *dbThread=DBThread::GetInstance();
         dbThread->RenderMapQuick(*painter, quickMoveX, quickMoveY, quickZoomFactor);
-        std::cout<<"quickRender"<<std::endl;
     }
     else
     {
