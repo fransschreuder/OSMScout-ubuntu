@@ -98,7 +98,7 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
     Q_INVOKABLE Location* get(int row) const;
-    Q_INVOKABLE Location* fromGeo(double lat, double lon) const;
+    //Q_INVOKABLE Location* fromGeo(double lat, double lon) const;
 };
 
 #endif

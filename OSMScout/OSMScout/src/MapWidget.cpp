@@ -153,7 +153,7 @@ void MapWidget::zoomIn(double zoomFactor)
     else {
         magnification.SetMagnification(magnification.GetMagnification()*zoomFactor);
     }
-    TriggerMapRendering();
+    //TriggerMapRendering();
     quickZooming = false;
     quickMoveX = 0;
     quickMoveY = 0;
@@ -171,7 +171,7 @@ void MapWidget::zoomOut(double zoomFactor)
         magnification.SetMagnification(magnification.GetMagnification()/zoomFactor);
     }
 
-    TriggerMapRendering();
+    //TriggerMapRendering();
     quickZooming = false;
     quickMoveX = 0;
     quickMoveY = 0;

@@ -427,33 +427,57 @@ void RoutingListModel::setStartAndTarget(Location* start,
 
   osmscout::ObjectFileRef targetObject;
   size_t                  targetNodeIndex;
-  if (!DBThread::GetInstance()->GetClosestRoutableNode(start->getReferences().front(),
-                                                       vehicle,
-                                                       1000,
-                                                       startObject,
-                                                       startNodeIndex)) {
-    std::cerr << "There was an error while routing!" << std::endl;
-  }
-  if (!startObject.Valid()) {
-    std::cerr << "Cannot find a routing node close to the start location" << std::endl;
+
+  if(start->getReferences().size()>0)
+  {
+      if (!DBThread::GetInstance()->GetClosestRoutableNode(start->getReferences().front(),
+                                                           vehicle,
+                                                           1000,
+                                                           startObject,
+                                                           startNodeIndex)) {
+        std::cerr << "There was an error while routing!" << std::endl;
+      }
   }
   else
   {
-      std::cout << "Startobject: "<< startObject.GetName()<<std::endl;
+       if (!DBThread::GetInstance()->GetClosestRoutableNode(start->getCoord().GetLat(),
+                                                            start->getCoord().GetLon(),
+                                                            vehicle,
+                                                            1000,
+                                                            startObject,
+                                                            startNodeIndex)) {
+         std::cerr << "There was an error while routing!" << std::endl;
+       }
   }
 
-  if (!DBThread::GetInstance()->GetClosestRoutableNode(target->getReferences().front(),
-                                                       vehicle,
-                                                       1000,
-                                                       targetObject,
-                                                       targetNodeIndex)) {
-    std::cerr << "There was an error while routing!" << std::endl;
+  if (!startObject.Valid()) {
+    std::cerr << "Cannot find a routing node close to the start location" << std::endl;
+  }
+  if(target->getReferences().size()>0)
+  {
+      if (!DBThread::GetInstance()->GetClosestRoutableNode(target->getReferences().front(),
+                                                           vehicle,
+                                                           1000,
+                                                           targetObject,
+                                                           targetNodeIndex)) {
+        std::cerr << "There was an error while routing!" << std::endl;
+      }
+  }
+  else
+  {
+      if (!DBThread::GetInstance()->GetClosestRoutableNode(target->getCoord().GetLat(),
+                                                           target->getCoord().GetLon(),
+                                                           vehicle,
+                                                           1000,
+                                                           targetObject,
+                                                           targetNodeIndex)) {
+        std::cerr << "There was an error while routing!" << std::endl;
+      }
   }
 
   if (!targetObject.Valid()) {
     std::cerr << "Cannot find a routing node close to the target location" << std::endl;
   }
-
   if (!DBThread::GetInstance()->CalculateRoute(vehicle,
                                                routingProfile,
                                                startObject,

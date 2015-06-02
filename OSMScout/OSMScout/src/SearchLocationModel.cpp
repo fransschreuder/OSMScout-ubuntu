@@ -73,6 +73,7 @@ Location::~Location()
 void Location::addReference(const osmscout::ObjectFileRef reference)
 {
     assert(type==typeObject);
+    std::cout<<"addReference: "<<reference.GetName()<<std::endl;
     references.push_back(reference);
 }
 
@@ -467,10 +468,10 @@ Location* LocationListModel::get(int row) const
     return new Location(*location);
 }
 
-Location* LocationListModel::fromGeo(double lat, double lon) const
+/*Location* LocationListModel::fromGeo(double lat, double lon) const
 {
     Location* location = new Location("Current location", "curloc", osmscout::GeoCoord(lat, lon));
     osmscout::ObjectFileRef *ref = new osmscout::ObjectFileRef();
     location->addReference(*ref);
     return location;
-}
+}*/

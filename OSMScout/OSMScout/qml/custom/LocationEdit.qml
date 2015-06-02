@@ -44,8 +44,13 @@ LineEdit {
         {
             var lat = positionSource.position.coordinate.latitude;
             var lon = positionSource.position.coordinate.longitude;
-            var location=suggestionModel.fromGeo(lat, lon);
-            locationEdit.location = location;
+            var locString = (lat>0?"N":"S")+Math.abs(lat)+" "+(lon>0?"E":"W")+Math.abs(lon);
+            suggestionModel.setPattern(locString);
+            if (suggestionModel.count>=1) {
+                location=suggestionModel.get(0);
+                locationEdit.location = location;
+
+            }
             return;
         }
 
@@ -62,8 +67,14 @@ LineEdit {
         {
             var lat = positionSource.position.coordinate.latitude;
             var lon = positionSource.position.coordinate.longitude;
-            var location=suggestionModel.fromGeo(lat, lon);
-            locationEdit.location = location;
+            var locString = (lat>0?"N":"S")+Math.abs(lat)+" "+(lon>0?"E":"W")+Math.abs(lon);
+            suggestionModel.setPattern(locString);
+            if (suggestionModel.count>=1) {
+                location=suggestionModel.get(0);
+                locationEdit.location = location;
+
+            }
+            return;
         }
         else
         {

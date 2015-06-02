@@ -407,6 +407,9 @@ bool DBThread::RenderMapQuick(QPainter& painter,
                               int dx, int dy, double zoomLevel)
 {
     QSize sz=finishedImage->size();
+    painter.setBrush(Qt::cyan);
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(0,0,sz.width(), sz.height());
     sz*=zoomLevel;
     int x=0,y=0;
     QSize diffsz = finishedImage->size()-sz;
@@ -763,6 +766,27 @@ std::cout << 9 <<std::endl;
     return true;
   }
 }
+
+bool DBThread::GetClosestRoutableNode(double lat, double lon,
+                                      const osmscout::Vehicle& vehicle,
+                                      double radius,
+                                      osmscout::ObjectFileRef& object,
+                                      size_t& nodeIndex)
+{
+  QMutexLocker locker(&mutex);
+  if (!AssureRouter(vehicle)) {
+    return false;
+  }
+  object.Invalidate();
+    return router->GetClosestRoutableNode(lat,
+                                          lon,
+                                          vehicle,
+                                          radius,
+                                          object,
+                                          nodeIndex);
+
+}
+
 
 static DBThread* dbThreadInstance=NULL;
 

@@ -226,7 +226,6 @@ Window{
                     console.log(pinch.scale);
                     positionCursor.update;
                     followMe = false;
-                    map.move(pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
                     if(pinch.scale<1)
                     {
                         map.zoomOut(1/pinch.scale);
@@ -235,6 +234,7 @@ Window{
                     {
                         map.zoomIn(pinch.scale);
                     }
+                    map.move(pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
 
                 }
                 MouseArea{
