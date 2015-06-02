@@ -31,6 +31,7 @@ MapDialog {
             }
 
             LocationEdit {
+                text: mainWindow.routeFrom
                 width: targetInput.width
                 height: units.gu(4)
                 id: startInput
@@ -47,6 +48,7 @@ MapDialog {
             }
 
             LocationEdit {
+                text: mainWindow.routeTo
                 width: units.gu(32)//parent.width-targetText.width - Theme.horizSpace
                 height: units.gu(4)
                 id: targetInput
@@ -78,7 +80,10 @@ MapDialog {
                         routingModel.setStartAndTarget(startInput.location,
                                                        targetInput.location)
                     }
+                    mainWindow.routeTo = targetInput.text;
+                    mainWindow.routeFrom = startInput.text;
                 }
+
             }
 
             Button {
@@ -86,6 +91,8 @@ MapDialog {
                 text: "Close"
 
                 onClicked: {
+                    mainWindow.routeTo = targetInput.text;
+                    mainWindow.routeFrom = startInput.text;
                     dialog.close()
                 }
             }
@@ -98,9 +105,7 @@ MapDialog {
             border.color: "lightgrey"
             border.width: 1
 
-            RoutingListModel {
-                id: routingModel
-            }
+
 
             ListView {
                 id: routeView

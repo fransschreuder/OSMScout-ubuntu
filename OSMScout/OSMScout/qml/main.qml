@@ -21,6 +21,8 @@ Window{
     property int oldX: 0;
     property int oldY: 0;
     property bool followMe: true;
+    property string routeFrom: "<current position>";
+    property string routeTo: "";
 
     function openRoutingDialog() {
         var component = Qt.createComponent("RoutingDialog.qml")
@@ -54,15 +56,16 @@ Window{
     }
 
     function onDialogOpened() {
-        menu.visible = false
-        navigation.visible = false
+        menu.visible = false;
+        navigation.visible = false;
+        positionSource.stop();
     }
 
     function onDialogClosed() {
-        menu.visible = true
-        navigation.visible = true
+        menu.visible = true;
+        navigation.visible = true;
 
-        map.focus = true
+        map.focus = true;
         positionSource.start();
     }
 
@@ -183,6 +186,10 @@ Window{
                     openRoutingDialog()
                     event.accepted = true
                 }
+            }
+
+            RoutingListModel {
+                id: routingModel
             }
 
             Item{

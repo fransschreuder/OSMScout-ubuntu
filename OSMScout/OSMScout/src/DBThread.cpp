@@ -700,21 +700,24 @@ bool DBThread::GetClosestRoutableNode(const osmscout::ObjectFileRef& refObject,
                                       size_t& nodeIndex)
 {
   QMutexLocker locker(&mutex);
-
+std::cout << 5 <<std::endl;
   if (!AssureRouter(vehicle)) {
     return false;
   }
-
+std::cout << 6 <<std::endl;
   object.Invalidate();
-
+std::cout << 7 <<std::endl;
   if (refObject.GetType()==osmscout::refNode) {
     osmscout::NodeRef node;
 
     if (!database->GetNodeByOffset(refObject.GetFileOffset(),
                                    node)) {
+        std::cout<<node->GetCoords().GetLat()<<std::endl;
+        std::cout<<node->GetCoords().GetLon()<<std::endl;
+
       return false;
     }
-
+std::cout << 8 <<std::endl;
     return router->GetClosestRoutableNode(node->GetCoords().GetLat(),
                                           node->GetCoords().GetLon(),
                                           vehicle,
@@ -748,7 +751,7 @@ bool DBThread::GetClosestRoutableNode(const osmscout::ObjectFileRef& refObject,
                                   way)) {
       return false;
     }
-
+std::cout << 9 <<std::endl;
     return router->GetClosestRoutableNode(way->nodes[0].GetLat(),
                                           way->nodes[0].GetLon(),
                                           vehicle,

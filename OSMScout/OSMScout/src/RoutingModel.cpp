@@ -405,7 +405,6 @@ void RoutingListModel::setStartAndTarget(Location* start,
   osmscout::FastestPathRoutingProfile routingProfile(typeConfig);
   osmscout::Way                       routeWay;
   osmscout::Vehicle                   vehicle=osmscout::vehicleCar;//settings->GetRoutingVehicle();
-
   if (vehicle==osmscout::vehicleFoot) {
     routingProfile.ParametrizeForFoot(*typeConfig,
                                       5.0);
@@ -423,13 +422,11 @@ void RoutingListModel::setStartAndTarget(Location* start,
                                      speedMap,
                                      160.0);
   }
-
   osmscout::ObjectFileRef startObject;
   size_t                  startNodeIndex;
 
   osmscout::ObjectFileRef targetObject;
   size_t                  targetNodeIndex;
-
   if (!DBThread::GetInstance()->GetClosestRoutableNode(start->getReferences().front(),
                                                        vehicle,
                                                        1000,
@@ -437,9 +434,12 @@ void RoutingListModel::setStartAndTarget(Location* start,
                                                        startNodeIndex)) {
     std::cerr << "There was an error while routing!" << std::endl;
   }
-
   if (!startObject.Valid()) {
     std::cerr << "Cannot find a routing node close to the start location" << std::endl;
+  }
+  else
+  {
+      std::cout << "Startobject: "<< startObject.GetName()<<std::endl;
   }
 
   if (!DBThread::GetInstance()->GetClosestRoutableNode(target->getReferences().front(),

@@ -466,3 +466,11 @@ Location* LocationListModel::get(int row) const
 
     return new Location(*location);
 }
+
+Location* LocationListModel::fromGeo(double lat, double lon) const
+{
+    Location* location = new Location("Current location", "curloc", osmscout::GeoCoord(lat, lon));
+    osmscout::ObjectFileRef *ref = new osmscout::ObjectFileRef();
+    location->addReference(*ref);
+    return location;
+}

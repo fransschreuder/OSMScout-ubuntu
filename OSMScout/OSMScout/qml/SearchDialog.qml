@@ -61,6 +61,7 @@ FocusScope {
                     if (searchEdit.location !== null) {
                         showLocation(searchEdit.location);
                     }
+                    mainWindow.routeTo = searchEdit.text;
                 }
             }
         }

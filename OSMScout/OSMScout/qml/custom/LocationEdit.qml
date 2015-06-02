@@ -40,6 +40,14 @@ LineEdit {
         if (location != null) {
             return;
         }
+        if(text==="<current position>")
+        {
+            var lat = positionSource.position.coordinate.latitude;
+            var lon = positionSource.position.coordinate.longitude;
+            var location=suggestionModel.fromGeo(lat, lon);
+            locationEdit.location = location;
+            return;
+        }
 
         suggestionModel.setPattern(locationEdit.text)
 
@@ -50,9 +58,19 @@ LineEdit {
     }
 
     onTextChanged: {
-        location = null;
+        if(text==="<current position>")
+        {
+            var lat = positionSource.position.coordinate.latitude;
+            var lon = positionSource.position.coordinate.longitude;
+            var location=suggestionModel.fromGeo(lat, lon);
+            locationEdit.location = location;
+        }
+        else
+        {
+            location = null;
 
-        suggestionTimer.restart()
+            suggestionTimer.restart();
+        }
     }
 
     onLocationChanged: {
