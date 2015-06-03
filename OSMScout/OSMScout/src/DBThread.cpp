@@ -125,8 +125,6 @@ void DBThread::Initialize()
     QStringList removableList = removablePath.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
     for(int i=0; i<removableList.size(); i++)
     {
-        docPaths.append("/media/phablet/"+removableList[i]+"/Pictures/");
-        //Apparmor doesn't give me rights to do the following:
         docPaths.append("/media/phablet/"+removableList[i]+"/Maps/");
     }
 
@@ -811,4 +809,124 @@ void DBThread::FreeInstance()
 bool DBThread::IsOpened()
 {
     return database->IsOpen();
+}
+
+
+/////////////////////////////////
+
+MapListItem::MapListItem( const QString& name,
+             const QString& path,
+             QObject* parent): QObject(parent)
+{
+    m_name = name;
+    m_path = path;
+}
+
+MapListItem::~MapListItem()
+{
+
+}
+
+
+QString MapListItem::getName() const
+{
+    return m_name;
+}
+
+QString MapListItem::getPath() const
+{
+    return m_path;
+}
+
+////////////////////////
+MapListModel::MapListModel(QObject* parent): QAbstractListModel(parent)
+{
+
+    QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+
+    QDir removablePath("/media/phablet");
+    QStringList removableList = removablePath.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
+    for(int i=0; i<removableList.size(); i++)
+    {
+        docPaths.append("/media/phablet/"+removableList[i]+"/Maps/");
+    }
+
+    // look for standard.oss in each directory
+    for(int i=0; i < docPaths.size(); i++) {
+        QStringList list_filters;
+        list_filters << "*";
+
+        QDir path(docPaths[i]);
+        std::cout<<"Looking in path: "<<docPaths[i].toUtf8().constData()<<std::endl;
+        QStringList list_files = path.entryList(list_filters,QDir::NoDotAndDotDot | QDir::Dirs);
+        for(int j=0; j<list_files.size(); j++)
+        {
+            MapListItem* item = new MapListItem(list_files[i], list_files[i]);
+            mapListItems.append(item);
+        }
+
+
+
+    }
+
+
+}
+
+MapListModel::~MapListModel()
+{
+    for (QList<MapListItem*>::iterator item=mapListItems.begin();
+         item!=mapListItems.end();
+         ++item) {
+        delete *item;
+    }
+
+    mapListItems.clear();
+}
+
+QVariant MapListModel::data(const QModelIndex &index, int role) const
+{
+    if(index.row() < 0 || index.row() >= mapListItems.size()) {
+        return QVariant();
+    }
+
+    MapListItem* item = mapListItems.at(index.row());
+    switch (role) {
+    case Qt::DisplayRole:
+    case NameRole:
+        return item->getName();
+    case PathRole:
+        return item->getPath();
+    default:
+        break;
+    }
+
+    return QVariant();
+}
+
+int MapListModel::rowCount(const QModelIndex &parent) const
+{
+    return mapListItems.size();
+}
+
+Qt::ItemFlags MapListModel::flags(const QModelIndex &index) const
+{
+    if(!index.isValid()) {
+        return Qt::ItemIsEnabled;
+    }
+
+    return QAbstractListModel::flags(index) | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
+
+QHash<int, QByteArray> MapListModel::roleNames() const
+{
+    QHash<int, QByteArray> roles=QAbstractListModel::roleNames();
+
+    roles[PathRole]="path";
+
+    return roles;
+}
+
+MapListItem* MapListModel::get(int row) const
+{
+    return mapListItems.at(row);
 }

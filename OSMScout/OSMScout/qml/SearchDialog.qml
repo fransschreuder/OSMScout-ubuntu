@@ -42,7 +42,8 @@ FocusScope {
                 location: location
 
                 onShowLocation: {
-                    searchDialog.showLocation(location)
+                    searchDialog.showLocation(location);
+                    mainWindow.routeTo = searchEdit.text;
                 }
             }
 
@@ -61,7 +62,6 @@ FocusScope {
                     if (searchEdit.location !== null) {
                         showLocation(searchEdit.location);
                     }
-                    mainWindow.routeTo = searchEdit.text;
                 }
             }
         }

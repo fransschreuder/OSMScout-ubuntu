@@ -5,6 +5,6 @@
     ],
     "policy_version": 1.2,
     "read_path": [
-        "/media/phablet/*/Maps/*/*"
+        "/media/*/*/[Mm][Aa][Pp][Ss]/"
     ]
 }
