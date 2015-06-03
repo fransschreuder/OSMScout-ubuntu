@@ -861,7 +861,7 @@ MapListModel::MapListModel(QObject* parent): QAbstractListModel(parent)
         QStringList list_files = path.entryList(list_filters,QDir::NoDotAndDotDot | QDir::Dirs);
         for(int j=0; j<list_files.size(); j++)
         {
-            MapListItem* item = new MapListItem(list_files[i], list_files[i]);
+            MapListItem* item = new MapListItem(list_files[j], list_files[j]);
             mapListItems.append(item);
         }
 

@@ -72,6 +72,7 @@ int main(int argc, char* argv[])
   qmlRegisterType<LocationListModel>("net.sf.libosmscout.map", 1, 0, "LocationListModel");
   qmlRegisterType<RouteStep>("net.sf.libosmscout.map", 1, 0, "RouteStep");
   qmlRegisterType<RoutingListModel>("net.sf.libosmscout.map", 1, 0, "RoutingListModel");
+  qmlRegisterType<MapListModel>("net.sf.libosmscout.map", 1, 0, "MapListModel");
 
   qmlRegisterSingletonType<Theme>("net.sf.libosmscout.map", 1, 0, "Theme", ThemeProvider);
 
