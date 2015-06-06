@@ -27,6 +27,7 @@
 //#include <QDebug>
 #include <QDir>
 #include <QMessageBox>
+#include <QSettings>
 
 #include <osmscout/util/StopClock.h>
 
@@ -116,88 +117,71 @@ bool DBThread::AssureRouter(osmscout::Vehicle vehicle)
   return true;
 }
 
-void DBThread::Initialize()
+QStringList DBThread::findValidMapDirs() const
 {
-#ifdef __UBUNTU__
+
     QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
 
-    QDir removablePath("/media/phablet");
-    QStringList removableList = removablePath.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
-    for(int i=0; i<removableList.size(); i++)
+#ifdef __UBUNTU__
+    QDir mediaPath("/media");
+    QStringList removableUserList = mediaPath.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
+    for(int i=0; i<removableUserList.size(); i++) //find <user directories in media
     {
-        docPaths.append("/media/phablet/"+removableList[i]+"/Maps/");
-    }
-
-    QString databaseDirectory;
-
-    // look for standard.oss in each directory
-    for(int i=0; i < docPaths.size(); i++) {
-        QStringList list_filters;
-        list_filters << "osmscout";
-
-        QDir path(docPaths[i]);
-        std::cout<<"Looking in path: "<<docPaths[i].toUtf8().constData()<<std::endl;
-        QStringList list_files = path.entryList(list_filters,QDir::NoDotAndDotDot | QDir::Dirs);
-
-        if(!(list_files.size() == 1)) {
-            continue;
+        std::cout<<"Found user: "<<removableUserList[i].toLocal8Bit().data()<<std::endl;
+        QDir removablePath("/media/"+removableUserList[i]);
+        QStringList removablePaths = removablePath.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
+        for(int j=0; j<removablePaths.size(); j++)
+        {
+            std::cout<<"Found removable path: "<<("/media/"+removableUserList[i]+"/"+removablePaths[j]).toLocal8Bit().data()<<std::endl;
+            docPaths.append("/media/"+removableUserList[i]+"/"+removablePaths[j]);
         }
-
-        databaseDirectory=path.canonicalPath()+"/osmscout";
     }
-
-    if(databaseDirectory.length() == 0) {
-        std::cout<<  "ERROR: map database directory not found"<<std::endl;
-        return;
-    }
-    else {
-        //qDebug() << "Loading database from " << databaseDirectory;
-        std::cout<<"Loading database from " << databaseDirectory.toUtf8().constData();
-    }
-
-    QString stylesheetFilename=databaseDirectory+"/standard.oss";
-
-    //qDebug() << "Loading style sheet from " << stylesheetFilename;
-#else
-    #ifdef __ANDROID__
-        QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
-
-        QString databaseDirectory;
-
-        // look for standard.oss in each directory
-        for(int i=0; i < docPaths.size(); i++) {
-            QStringList list_filters;
-            list_filters << "osmscout";
-
-            QDir path(docPaths[i]);
-            QStringList list_files = path.entryList(list_filters,QDir::NoDotAndDotDot | QDir::Dirs);
-
-            if(!(list_files.size() == 1)) {
-                continue;
-            }
-
-            databaseDirectory=path.canonicalPath()+"/osmscout";
-        }
-
-        if(databaseDirectory.length() == 0) {
-            qDebug() << "ERROR: map database directory not found";
-        }
-        else {
-            qDebug() << "Loading database from " << databaseDirectory;
-        }
-
-        QString stylesheetFilename=databaseDirectory+"/standard.oss";
-
-        qDebug() << "Loading style sheet from " << stylesheetFilename;
-
-    #else
-      QStringList cmdLineArgs = QApplication::arguments();
-      QString databaseDirectory = cmdLineArgs.size() > 1 ? cmdLineArgs.at(1) : QDir::currentPath();
-      QString stylesheetFilename = cmdLineArgs.size() > 2 ? cmdLineArgs.at(2) : databaseDirectory + QDir::separator() + "standard.oss";
-      iconDirectory = cmdLineArgs.size() > 3 ? cmdLineArgs.at(3) : databaseDirectory + QDir::separator() + "icons";
-    #endif
 #endif
 
+    QStringList validMapDirs;
+    for(int i=0; i<docPaths.size(); i++)
+    {
+        docPaths[i].append("/Maps");
+        std::cout<<"Looking into path: "<<docPaths[i].toLocal8Bit().data()<<std::endl;
+        QDir mapsPath(docPaths[i]);
+        QStringList mapsSubDirs = mapsPath.entryList(QDir::NoDotAndDotDot | QDir::Dirs); //find all different map subfolders in the Maps folder
+        for(int j=0; j<mapsSubDirs.size(); j++)
+        {
+            QDir mapFilesPath(docPaths[i]+"/"+mapsSubDirs[j]);
+            QStringList mapFiles = mapFilesPath.entryList(QDir::Files);
+            for(int k=0; k< mapFiles.size(); k++)
+            {
+                if(mapFiles[k] == "standard.oss")
+                {
+                    validMapDirs.append(docPaths[i]+"/"+mapsSubDirs[j]);
+                }
+            }
+        }
+
+    }
+    return validMapDirs;
+}
+
+void DBThread::Initialize()
+{
+    //QSettings settings;//(QSettings::UserScope, "fransschreuder", "osmscout");
+    //std::cout<<"Settings.status: "<<settings.status()<<std::endl;
+    int selectedMap = 0;//settings.value("selectedmap", 0).toInt();
+    //settings.setValue("selectedmap", 2);//selectedMap);
+
+
+    QStringList mapDirs = findValidMapDirs();
+    if(mapDirs.size()<=0)
+    {
+        std::cout<<"Could not find valid map dir"<<std::endl;
+        return;
+    }
+    if(selectedMap>=mapDirs.size())
+    {
+        selectedMap = 0;
+    }
+    QString databaseDirectory = mapDirs[selectedMap];
+    QString stylesheetFilename=databaseDirectory+"/standard.oss";
   if (database->Open(databaseDirectory.toLocal8Bit().data())) {
     osmscout::TypeConfigRef typeConfig=database->GetTypeConfig();
 

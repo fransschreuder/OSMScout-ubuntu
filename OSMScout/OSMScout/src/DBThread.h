@@ -85,6 +85,7 @@ public slots:
   void Finalize();
 
 private:
+  QStringList findValidMapDirs() const;
   double                        dpi;
 
   mutable QMutex                mutex;

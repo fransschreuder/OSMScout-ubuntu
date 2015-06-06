@@ -2,7 +2,7 @@
     "name": "osmscout.fransschreuder",
     "description": "OSMScout",
     "architecture": "armhf",
-    "title": "OSMScout",
+    "title": "osmscout",
     "hooks": {
         "OSMScout": {
             "apparmor": "OSMScout/OSMScout.apparmor",

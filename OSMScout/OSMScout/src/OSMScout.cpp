@@ -59,10 +59,9 @@ int main(int argc, char* argv[])
   int             result;
 
   //app.setOrganizationName("libosmscout");
-  app.setOrganizationDomain("fransschreuder1");
+  app.setOrganizationDomain("fransschreuder");
   app.setApplicationName("osmscout");
 
-  settings=new Settings();
 
   //qRegisterMetaType<RenderMapRequest>();
   qRegisterMetaType<DatabaseLoadedResponse>();
