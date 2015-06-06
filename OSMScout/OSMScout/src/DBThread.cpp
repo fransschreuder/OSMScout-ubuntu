@@ -164,10 +164,11 @@ QStringList DBThread::findValidMapDirs() const
 
 void DBThread::Initialize()
 {
-    //QSettings settings;//(QSettings::UserScope, "fransschreuder", "osmscout");
-    //std::cout<<"Settings.status: "<<settings.status()<<std::endl;
-    int selectedMap = 0;//settings.value("selectedmap", 0).toInt();
-    //settings.setValue("selectedmap", 2);//selectedMap);
+    QSettings settings;//(QSettings::UserScope, "osmscout.fransschreuder", "osmscout");
+    std::cout<<"Settings.status: "<<settings.status()<<std::endl;
+    int selectedMap = settings.value("selectedmap", 0).toInt();
+    settings.setValue("selectedmap", selectedMap);
+    std::cout<<"Settings filename "<<settings.fileName().toLocal8Bit().data()<<std::endl;
 
 
     QStringList mapDirs = findValidMapDirs();
@@ -825,35 +826,13 @@ QString MapListItem::getPath() const
 ////////////////////////
 MapListModel::MapListModel(QObject* parent): QAbstractListModel(parent)
 {
-
-    QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
-
-    QDir removablePath("/media/phablet");
-    QStringList removableList = removablePath.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
-    for(int i=0; i<removableList.size(); i++)
+    QStringList list_files = DBThread::GetInstance()->findValidMapDirs();
+    for(int j=0; j<list_files.size(); j++)
     {
-        docPaths.append("/media/phablet/"+removableList[i]+"/Maps/");
+        QString name = list_files[j].split("/").back();
+        MapListItem* item = new MapListItem(name, list_files[j]);
+        mapListItems.append(item);
     }
-
-    // look for standard.oss in each directory
-    for(int i=0; i < docPaths.size(); i++) {
-        QStringList list_filters;
-        list_filters << "*";
-
-        QDir path(docPaths[i]);
-        std::cout<<"Looking in path: "<<docPaths[i].toUtf8().constData()<<std::endl;
-        QStringList list_files = path.entryList(list_filters,QDir::NoDotAndDotDot | QDir::Dirs);
-        for(int j=0; j<list_files.size(); j++)
-        {
-            MapListItem* item = new MapListItem(list_files[j], list_files[j]);
-            mapListItems.append(item);
-        }
-
-
-
-    }
-
-
 }
 
 MapListModel::~MapListModel()
@@ -906,6 +885,7 @@ QHash<int, QByteArray> MapListModel::roleNames() const
     QHash<int, QByteArray> roles=QAbstractListModel::roleNames();
 
     roles[PathRole]="path";
+    roles[NameRole]="name";
 
     return roles;
 }

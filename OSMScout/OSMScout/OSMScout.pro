@@ -60,41 +60,12 @@ CUSTOMQMLFILES += \
     qml/custom/LocationEdit.qml \
     qml/custom/LocationSearch.qml \
     qml/custom/ScrollIndicator.qml \
-    qml/custom/MapDialog.qml
+    qml/custom/MapDialog.qml \
+    qml/custom/ListItemWithActions.qml
 
 PICFILES += \
     pics/DeleteText.svg \
     pics/route.svg
-
-#MAPFILES += \
-#    netherlands-osm-converted/bounding.dat \
-#    netherlands-osm-converted/wayaddress.dat \
-#    netherlands-osm-converted/distribution.dat \
-#    netherlands-osm-converted/types.dat \
-#    netherlands-osm-converted/map.ost \
-#    netherlands-osm-converted/turnrestr.dat \
-#    netherlands-osm-converted/standard.oss \
-#    netherlands-osm-converted/wayareablack.dat \
-#    netherlands-osm-converted/nodeaddress.dat \
-#    netherlands-osm-converted/areasopt.dat \
-#    netherlands-osm-converted/waysopt.dat \
-#    netherlands-osm-converted/routecar.idx \
-#    netherlands-osm-converted/routebicycle.idx \
-#    netherlands-osm-converted/routefoot.idx \
-#    netherlands-osm-converted/intersections.idx \
-#    netherlands-osm-converted/areaaddress.dat \
-#    netherlands-osm-converted/areaway.idx \
-#    netherlands-osm-converted/water.idx \
-#    netherlands-osm-converted/location.idx \
-#    netherlands-osm-converted/intersections.dat \
-#    netherlands-osm-converted/ways.idmap \
-#    netherlands-osm-converted/areaarea.idx \
-#    netherlands-osm-converted/location.txt \
-#    netherlands-osm-converted/areanode.idx \
-#    netherlands-osm-converted/routecar.dat \
-#    netherlands-osm-converted/ways.dat \
-#    netherlands-osm-converted/routebicycle.dat \
-#    netherlands-osm-converted/routefoot.dat
 
 DEFINES += "__UBUNTU__"
 

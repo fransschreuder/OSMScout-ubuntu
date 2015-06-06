@@ -5,6 +5,9 @@
     ],
     "policy_version": 1.2,
     "read_path": [
+        "/media/"
+    ],
+    "write_path": [
         "/media/*/*/[Mm][Aa][Pp][Ss]/"
     ]
 }

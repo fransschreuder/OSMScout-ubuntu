@@ -85,7 +85,6 @@ public slots:
   void Finalize();
 
 private:
-  QStringList findValidMapDirs() const;
   double                        dpi;
 
   mutable QMutex                mutex;
@@ -127,6 +126,7 @@ private:
   void FreeMaps();
   bool AssureRouter(osmscout::Vehicle vehicle);
 public:
+  QStringList findValidMapDirs() const;
   bool IsOpened();
 
   void GetProjection(osmscout::MercatorProjection& projection);

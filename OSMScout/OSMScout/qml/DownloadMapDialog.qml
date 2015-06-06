@@ -1,6 +1,7 @@
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.1
+import Qt.labs.settings 1.0
 
 import net.sf.libosmscout.map 1.0
 
@@ -10,7 +11,14 @@ MapDialog {
     id: dialog
 
     label: "Download Maps..."
+    Settings{
+        id: settings
+        property int selectedmap: 0
+    }
 
+    MapListModel{
+        id: mapsModel
+    }
 
     content : Column {
         id: mainFrame
@@ -38,14 +46,12 @@ MapDialog {
 
 
         Text{
+            width: parent.width
             id: tAvMaps
             text: "<b>Available maps:</b>"
         }
 
 
-        MapListModel{
-            id: mapsModel
-        }
 
         ListView {
             id: mapsView
@@ -54,25 +60,38 @@ MapDialog {
             width: parent.width
             //anchors.fill: parent
             height: units.gu(30) //parent.height-tAvMaps.height-ok.height-text1.height-text2.height
-            clip: true
+            //clip: true
+            delegate:ListItemWithActions
+            {
+                leftSideAction: Action {
+                    iconName: "delete"
+                    text: i18n.tr("Delete")
+                    onTriggered: {
+                        console.log("Delete" + index);
+                    }
+                }
+                onItemClicked: {
+                    settings.selectedmap = index;
+                }
+                width: parent.width; height: col.height
+                color: settings.selectedmap==index?UbuntuColors.green:UbuntuColors.lightGrey
+                contents: Column {
+                    id: col
+                    spacing: units.gu(0.5)
+                    Label {
+                        text: model.name
+                        fontSize: "medium"
+                        font.bold: settings.selectedmap==index
+                    }
+                    Label
+                    {
+                        text: model.path
+                        fontSize: "small"
+                    }
 
-            delegate: Item {
-                id: item
-                width: parent.width;
-                anchors.right: parent.right;
-                anchors.left: parent.left;
-                height: text.implicitHeight+5
-
-                Text {
-                    id: text
-
-                    y:2
-                    x: 2
-                    width: parent.width-4
-                    text: path
-                    font.pixelSize: Theme.textFontSize
                 }
             }
+
         }
         Button {
             id: ok

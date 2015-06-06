@@ -58,8 +58,8 @@ int main(int argc, char* argv[])
   MainWindow      *window;
   int             result;
 
-  //app.setOrganizationName("libosmscout");
-  app.setOrganizationDomain("fransschreuder");
+  app.setOrganizationName("osmscout.fransschreuder");
+  app.setOrganizationDomain("osmscout.fransschreuder");
   app.setApplicationName("osmscout");
 
 

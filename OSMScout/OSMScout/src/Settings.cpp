@@ -21,7 +21,7 @@
 
 Settings::Settings()
 {
-  // no code
+  settings = new QSettings("osmscout.fransschreuder");
 }
 
 Settings::~Settings()
@@ -31,16 +31,17 @@ Settings::~Settings()
 
 size_t Settings::GetDPI() const
 {
-  return (size_t)settings.value("settings/dpi",92).toUInt();
+  return (size_t)settings->value("settings/dpi",92).toUInt();
 }
 
 osmscout::Vehicle Settings::GetRoutingVehicle() const
 {
-  return (osmscout::Vehicle)settings.value("routing/vehicle",osmscout::vehicleCar).toUInt();
+  return (osmscout::Vehicle)settings->value("routing/vehicle",osmscout::vehicleCar).toUInt();
 }
 
 void Settings::SetRoutingVehicle(const osmscout::Vehicle& vehicle)
 {
-  settings.setValue("routing/vehicle", (unsigned int)vehicle);
+  settings->setValue("routing/vehicle", (unsigned int)vehicle);
 }
+
 
