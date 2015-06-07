@@ -5,9 +5,11 @@
     ],
     "policy_version": 1.2,
     "read_path": [
-        "/media/"
+        "/media/",
+        "@{HOME}/Documents/[Mm][Aa][Pp][Ss]/"
     ],
     "write_path": [
-        "/media/*/*/[Mm][Aa][Pp][Ss]/"
+        "/media/*/*/[Mm][Aa][Pp][Ss]/",
+        "@{HOME}/Documents/[Mm][Aa][Pp][Ss]/"
     ]
 }

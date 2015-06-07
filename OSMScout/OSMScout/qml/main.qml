@@ -20,6 +20,8 @@ Window{
     visible: true
     property int oldX: 0;
     property int oldY: 0;
+    property int previousX: 0;
+    property int previousY: 0;
     property bool followMe: true;
     property string routeFrom: "<current position>";
     property string routeTo: "";
@@ -87,6 +89,9 @@ Window{
             //console.log("Position changed:")
 
             if (position.latitudeValid) {
+                positionCursor.x = map.geoToPixelX(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.width/2;
+                positionCursor.y = map.geoToPixelY(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.height;
+
                 //console.log("  latitude: " + position.coordinate.latitude)
                 if(followMe==true)
                 {
@@ -141,13 +146,13 @@ Window{
                 updateFreeRect()
             }
 
-            Keys.onPressed: {
+            /*Keys.onPressed: {
                 if (event.key === Qt.Key_Plus) {
-                    map.zoomIn(2.0)
+                    map.zoom(2.0)
                     event.accepted = true
                 }
                 else if (event.key === Qt.Key_Minus) {
-                    map.zoomOut(2.0)
+                    map.zoom(0.5)
                     event.accepted = true
                 }
                 else if (event.key === Qt.Key_Up) {
@@ -186,7 +191,7 @@ Window{
                     openRoutingDialog()
                     event.accepted = true
                 }
-            }
+            }*/
 
             RoutingListModel {
                 id: routingModel
@@ -211,30 +216,27 @@ Window{
             PinchArea{
                 id: pinch
                 anchors.fill: parent
-                pinch.dragAxis: Pinch.XAndYAxis
+                //pinch.dragAxis: Pinch.XAndYAxis
                 onPinchStarted: {
                     console.log("Pinch started" );
                 }
                 onPinchUpdated: {
                     map.zoomQuick(pinch.scale);
                     map.moveQuick(pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
-                    positionCursor.update;
+                    var hw = map.width/2;
+                    var hh = map.height/2;
+
+                    positionCursor.x += (pinch.center.x - pinch.previousCenter.x)/(pinch.scale/pinch.previousScale);
+                    positionCursor.y += (pinch.center.y - pinch.previousCenter.y)/(pinch.scale/pinch.previousScale);
+
+
                 }
 
                 onPinchFinished: {
-                    console.log(pinch.center.x + " " + pinch.center.y);
-                    console.log(pinch.scale);
-                    positionCursor.update;
+                    //console.log(pinch.center.x + " " + pinch.center.y);
+                    //console.log(pinch.scale);
                     followMe = false;
-                    if(pinch.scale<1)
-                    {
-                        map.zoomOut(1/pinch.scale);
-                    }
-                    else
-                    {
-                        map.zoomIn(pinch.scale);
-                    }
-                    map.move(pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
+                    map.zoom(pinch.scale, pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
 
                 }
                 MouseArea{
@@ -245,17 +247,20 @@ Window{
                     {
                         oldX = mouse.x;
                         oldY = mouse.y;
+                        previousX = mouse.x;
+                        previousY = mouse.y;
+
                     }
 
                     onPositionChanged:
                     {
                         map.moveQuick(oldX - mouse.x, oldY - mouse.y);
-                        positionCursor.update;
-                        /*oldX = mouse.x;
-                        oldY = mouse.y;*/
 
+                        positionCursor.x += (mouse.x - previousX);
+                        positionCursor.y += (mouse.y - previousY);
 
-
+                        previousX = mouse.x;
+                        previousY = mouse.y;
                     }
 
                     onReleased:
@@ -265,7 +270,6 @@ Window{
                             followMe = false;
                         oldX = mouse.x;
                         oldY = mouse.y;
-                        positionCursor.update;
                     }
                 }
 
@@ -358,7 +362,7 @@ Window{
                 }
             }
 
-            // Bottom right column
+            /*// Bottom right column
             ColumnLayout {
                 id: navigation
 
@@ -372,7 +376,7 @@ Window{
                     label: "+"
 
                     onClicked: {
-                        map.zoomIn(2.0)
+                        map.zoom(2.0)
                     }
                 }
 
@@ -381,10 +385,10 @@ Window{
                     label: "-"
 
                     onClicked: {
-                        map.zoomOut(2.0)
+                        map.zoom(0.5)
                     }
                 }
-            }
+            }*/
         }
     }
 }

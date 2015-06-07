@@ -128,12 +128,15 @@ private:
 public:
   QStringList findValidMapDirs() const;
   bool IsOpened();
+  bool IsRendering(){
+      return doRender;
+  }
 
   void GetProjection(osmscout::MercatorProjection& projection);
 
   void UpdateRenderRequest(const RenderMapRequest& request);
 
-  bool RenderMapQuick(QPainter& painter, int dx, int dy, double zoomLevel);
+  bool RenderMapQuick(QPainter& painter, double dx, double dy, double zoomLevel);
   bool RenderMap(QPainter& painter,
                  const RenderMapRequest& request);
 

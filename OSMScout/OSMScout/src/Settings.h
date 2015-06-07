@@ -27,7 +27,7 @@
 class Settings : public osmscout::Referencable
 {
 private:
-  QSettings *settings;
+  QSettings settings;
 
 public:
   Settings();

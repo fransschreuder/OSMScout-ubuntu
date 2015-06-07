@@ -60,6 +60,14 @@ MapWidget::~MapWidget()
     // no code
 }
 
+void MapWidget::reopenMap(void)
+{
+    quickZooming = true; //render using QImage in stead of database
+    DBThread *dbThread=DBThread::GetInstance();
+    dbThread->Finalize();
+    dbThread->Initialize();
+}
+
 void MapWidget::redraw()
 {
     update();
@@ -67,6 +75,7 @@ void MapWidget::redraw()
 
 void MapWidget::initialisationFinished(const DatabaseLoadedResponse& response)
 {
+    quickZooming = false;
     size_t zoom=1;
     double dlat=360;
     double dlon=180;
@@ -108,6 +117,7 @@ void MapWidget::paint(QPainter *painter)
 {
     if(quickZooming) //just zoom the already rendered Qimage and repaint
     {
+        std::cout<<"Quick zooming"<<std::endl;
         DBThread         *dbThread=DBThread::GetInstance();
         dbThread->RenderMapQuick(*painter, quickMoveX, quickMoveY, quickZoomFactor);
     }
@@ -140,8 +150,25 @@ void MapWidget::zoomQuick(double zoomFactor)
     redraw();
 }
 
-void MapWidget::zoomIn(double zoomFactor)
+void MapWidget::zoom(double zoomFactor, double dx, double dy)
 {
+    DBThread                     *dbThread=DBThread::GetInstance();
+    quickZooming = false;
+    quickMoveX = 0;
+    quickMoveY = 0;
+    quickZoomFactor = 1;
+    if(!dbThread->IsOpened()) return;
+    osmscout::MercatorProjection projection;
+
+    dbThread->GetProjection(projection);
+
+    if(dx<0) projection.MoveLeft(-1*dx/zoomFactor);
+    else    projection.MoveRight(dx/zoomFactor);
+
+    if(dy<0) projection.MoveUp(-1*dy/zoomFactor);
+    else    projection.MoveDown(dy/zoomFactor);
+
+    center=projection.GetCenter();
     osmscout::Magnification maxMag;
     maxMag.SetLevel(20);
 
@@ -149,35 +176,17 @@ void MapWidget::zoomIn(double zoomFactor)
         magnification.SetMagnification(maxMag.GetMagnification());
     }
     else {
-        magnification.SetMagnification(magnification.GetMagnification()*zoomFactor);
+        if (magnification.GetMagnification()*zoomFactor<1) {
+            magnification.SetMagnification(1);
+        }
+        else {
+            magnification.SetMagnification(magnification.GetMagnification()*zoomFactor);
+        }
     }
-    //TriggerMapRendering();
-    quickZooming = false;
-    quickMoveX = 0;
-    quickMoveY = 0;
-    quickZoomFactor = 1;
-
-
+    TriggerMapRendering();
 }
 
-void MapWidget::zoomOut(double zoomFactor)
-{
-    if (magnification.GetMagnification()/zoomFactor<1) {
-        magnification.SetMagnification(1);
-    }
-    else {
-        magnification.SetMagnification(magnification.GetMagnification()/zoomFactor);
-    }
-
-    //TriggerMapRendering();
-    quickZooming = false;
-    quickMoveX = 0;
-    quickMoveY = 0;
-    quickZoomFactor = 1;
-
-}
-
-void MapWidget::move(int x, int y)
+void MapWidget::move(double x, double y)
 {
     quickMoveX = 0;
     quickMoveY = 0;
@@ -200,7 +209,7 @@ void MapWidget::move(int x, int y)
     TriggerMapRendering();
 }
 
-void MapWidget::moveQuick(int x, int y)
+void MapWidget::moveQuick(double x, double y)
 {
     quickZooming = true;
 
@@ -312,8 +321,9 @@ void MapWidget::showCoordinates(double lat, double lon)
 {
     center=osmscout::GeoCoord(lat,lon);
     this->magnification=osmscout::Magnification::magVeryClose;
-
-    TriggerMapRendering();
+    DBThread* dbThread = DBThread::GetInstance();
+    if(!dbThread->IsRendering())
+        TriggerMapRendering();
 }
 
 void MapWidget::showLocation(Location* location)

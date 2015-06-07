@@ -98,7 +98,8 @@ MapDialog {
             text: "OK"
             width: parent.width
             onClicked: {
-                close()
+                map.reopenMap();
+                close();
             }
         }
     }

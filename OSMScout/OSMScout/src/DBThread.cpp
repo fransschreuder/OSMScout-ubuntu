@@ -119,7 +119,8 @@ bool DBThread::AssureRouter(osmscout::Vehicle vehicle)
 
 QStringList DBThread::findValidMapDirs() const
 {
-
+    ///TODO: search removable drives using QStorageInfo, will be available in Vivid
+    //QList<QStorageInfo> volumes = QStorageInfo::mountedVolumes();
     QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
 
 #ifdef __UBUNTU__
@@ -217,7 +218,6 @@ void DBThread::Initialize()
     //qDebug() << "Cannot read initial bounding box";
     return;
   }
-
   emit InitialisationFinished(response);
 }
 
@@ -262,7 +262,7 @@ void DBThread::TriggerMapRendering()
       return;
     }
 
-    doRender=false;
+
 
     renderBreaker->Reset();
   }
@@ -382,19 +382,19 @@ void DBThread::TriggerMapRendering()
   std::swap(currentLat,finishedLat);
   std::swap(currentAngle,finishedAngle);
   std::swap(currentMagnification,finishedMagnification);
-
+  doRender=false;
   emit HandleMapRenderingResult();
 }
 
 bool DBThread::RenderMapQuick(QPainter& painter,
-                              int dx, int dy, double zoomLevel)
+                              double dx, double dy, double zoomLevel)
 {
     QSize sz=finishedImage->size();
     painter.setBrush(Qt::cyan);
     painter.setPen(Qt::NoPen);
     painter.drawRect(0,0,sz.width(), sz.height());
     sz*=zoomLevel;
-    int x=0,y=0;
+    double x=0,y=0;
     QSize diffsz = finishedImage->size()-sz;
     x = diffsz.width()/2-
             dx;

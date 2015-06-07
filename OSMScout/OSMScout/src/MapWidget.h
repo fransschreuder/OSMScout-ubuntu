@@ -48,8 +48,8 @@ private:
   bool                          requestNewMap;
   bool                          quickZooming;
   double                        quickZoomFactor;
-  int                           quickMoveX;
-  int                           quickMoveY;
+  double                        quickMoveX;
+  double                        quickMoveY;
 
 signals:
   void TriggerMapRenderingSignal();
@@ -60,10 +60,9 @@ public slots:
   void initialisationFinished(const DatabaseLoadedResponse& response);
   void redraw();
   void zoomQuick(double zoomFactor);
-  void zoomIn(double zoomFactor);
-  void zoomOut(double zoomFactor);
-  void move(int x, int y);
-  void moveQuick(int x, int y);
+  void zoom(double zoomFactor, double dx=0, double dy=0);
+  void move(double x, double y);
+  void moveQuick(double x, double y);
   void left();
   void right();
   void up();
@@ -84,6 +83,8 @@ private:
 public:
   MapWidget(QQuickItem* parent = 0);
   virtual ~MapWidget();
+
+  Q_INVOKABLE void reopenMap(void);
 
   inline double GetLat() const
   {
