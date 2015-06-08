@@ -693,6 +693,18 @@ bool DBThread::TransformRouteDataToWay(osmscout::Vehicle vehicle,
   return router->TransformRouteDataToWay(data,way);
 }
 
+bool DBThread::TransformRouteDataToPoints(osmscout::Vehicle vehicle,
+                                          const osmscout::RouteData& data,
+                                          std::list<osmscout::Point>& points)
+{
+    QMutexLocker locker(&mutex);
+    if (!AssureRouter(vehicle)) {
+      return false;
+    }
+
+    return router->TransformRouteDataToPoints(data, points);
+}
+
 
 void DBThread::ClearRoute()
 {

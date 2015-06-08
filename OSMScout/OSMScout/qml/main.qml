@@ -73,6 +73,12 @@ Window{
         map.focus = true;
         positionSource.start();
     }
+    Timer{
+        active: true
+        onTriggered: {
+
+        }
+    }
 
     PositionSource {
         id: positionSource
@@ -92,6 +98,7 @@ Window{
             //console.log("Position changed:")
 
             if (position.latitudeValid) {
+                routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
                 positionCursor.x = map.geoToPixelX(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.width/2;
                 positionCursor.y = map.geoToPixelY(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.height;
 
@@ -323,16 +330,6 @@ Window{
                     }
                     iconName: followMe ? "stock_website" : "location"
                 }
-            }
-
-            // Bottom left column
-            ColumnLayout {
-                id: info
-
-                x: Theme.horizSpace
-                y: parent.height-height-Theme.vertSpace
-
-                spacing: Theme.mapButtonSpace
                 MapButton {
                     id: downloadButton
                     iconName: "save"
@@ -351,16 +348,63 @@ Window{
                 }
             }
 
+            /*// Bottom left column
+            ColumnLayout {
+                id: info
+
+                x: Theme.horizSpace
+                y: parent.height-height-Theme.vertSpace
+
+                spacing: Theme.mapButtonSpace
+
+            }*/
+            Item{
+                anchors {
+                    left: parent.left
+                    bottom: parent.bottom
+                }
+                width: parent.width
+                height: units.gu(6)
+
+                id: routingInstructions
+                Rectangle {
+                    anchors.fill: parent
+                    color: "black"
+                    opacity: 0.5
+                }
+                Row{
+                    anchors.fill: parent
+                    Label{
+                        id: routInstructionText
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        text: "<b>No route</b>"
+                        color: "white"
+                    }
+                    Label{
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        text: positionSource.position.speedValid?(positionSource.position.speed*3.6).toFixed(2)+" km/h":""
+                        color: "white"
+                    }
+
+                }
+            }
+
+
             Rectangle {
                 id: osmCopyright
                 anchors {
                     right: parent.right
-                    bottom: parent.bottom
+                    bottom: routingInstructions.top
                 }
-                height: units.gu(2)
-                width: units.gu(24)
-                opacity: 0.7
+                height: copyLabel.width; //units.gu(2)
+                width: copyLabel.height; //units.gu(24)
+                opacity: 0.5
                 Label {
+                    anchors.centerIn: parent
+                    id: copyLabel
+                    rotation: 270
                     text: " © OpenStreetMap contributors"
                     fontSize: "small"
                 }

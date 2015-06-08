@@ -726,3 +726,25 @@ RouteStep* RoutingListModel::get(int row) const
 
     return new RouteStep(step);
 }
+
+RouteStep* RoutingListModel::getNext(double lat, double lon)
+{
+    std::list<osmscout::Point> points;
+    osmscout::Vehicle                   vehicle=osmscout::vehicleCar;//settings->GetRoutingVehicle();
+    int i=0;
+    if (DBThread::GetInstance()->TransformRouteDataToPoints(vehicle, route.routeData, points)){
+        for(std::list<osmscout::Point>::iterator point = points.begin(); point!= points.end(); point++)
+        {
+            std::cout<<"Route coords: "<<point->GetCoords().GetLat() << ", "<< point->GetCoords().GetLon()<<std::endl;
+
+        }
+    }
+    else {
+      return  NULL;
+    }
+
+
+
+
+
+}

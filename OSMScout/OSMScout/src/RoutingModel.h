@@ -138,6 +138,7 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
     Q_INVOKABLE RouteStep* get(int row) const;
+    Q_INVOKABLE RouteStep* getNext(double lat, double lon);
 };
 
 #endif

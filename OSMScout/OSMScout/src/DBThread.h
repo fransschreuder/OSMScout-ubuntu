@@ -174,6 +174,10 @@ public:
                                const osmscout::RouteData& data,
                                osmscout::Way& way);
 
+  bool TransformRouteDataToPoints(osmscout::Vehicle vehicle,
+                                  const osmscout::RouteData& data,
+                                  std::list<osmscout::Point>& points);
+
   bool GetClosestRoutableNode(const osmscout::ObjectFileRef& refObject,
                               const osmscout::Vehicle& vehicle,
                               double radius,
