@@ -390,9 +390,30 @@ bool DBThread::RenderMapQuick(QPainter& painter,
                               double dx, double dy, double zoomLevel)
 {
     QSize sz=finishedImage->size();
-    painter.setBrush(Qt::cyan);
-    painter.setPen(Qt::NoPen);
-    painter.drawRect(0,0,sz.width(), sz.height());
+
+
+    osmscout::FillStyleRef unknownFillStyle;
+    osmscout::Color        backgroundColor;
+
+    styleConfig->GetUnknownFillStyle(projection,
+                                     unknownFillStyle);
+
+    if (unknownFillStyle.Valid()) {
+      backgroundColor=unknownFillStyle->GetFillColor();
+    }
+    else {
+        backgroundColor=osmscout::Color(0,0,0);
+    }
+
+    painter.fillRect(0,
+                     0,
+                     projection.GetWidth(),
+                     projection.GetHeight(),
+                     QColor::fromRgbF(backgroundColor.GetR(),
+                                      backgroundColor.GetG(),
+                                      backgroundColor.GetB(),
+                                      backgroundColor.GetA()));
+
     sz*=zoomLevel;
     double x=0,y=0;
     QSize diffsz = finishedImage->size()-sz;
@@ -480,8 +501,9 @@ bool DBThread::RenderMap(QPainter& painter,
       }
   }
 
-  if (dx!=0 ||
-      dy!=0) {
+  if ((dx!=0 ||
+      dy!=0)||
+         finishedMagnification.GetMagnification()>request.magnification.GetMagnification() ) {
     osmscout::FillStyleRef unknownFillStyle;
     osmscout::Color        backgroundColor;
 
@@ -505,7 +527,22 @@ bool DBThread::RenderMap(QPainter& painter,
                                       backgroundColor.GetA()));
   }
 
-  painter.drawImage(dx,dy,*finishedImage);
+  if(finishedMagnification.GetMagnification()!=request.magnification.GetMagnification())
+  {
+    double zoomLevel = request.magnification.GetMagnification() / finishedMagnification.GetMagnification();
+    QSize sz=finishedImage->size();
+    sz*=zoomLevel;
+    double x=0,y=0;
+    QSize diffsz = finishedImage->size()-sz;
+    x = diffsz.width()/2-
+            dx;
+    y = diffsz.height()/2-
+            dy  ;
+    painter.drawImage(x,y,finishedImage->scaled(sz));
+  }
+  else
+    painter.drawImage(dx,dy,*finishedImage);
+
 
   return finishedImage->width()==(int)request.width &&
          finishedImage->height()==(int)request.height &&

@@ -6,11 +6,14 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
 
 import QtPositioning 5.3
+import QtSystemInfo 5.0
 
 import net.sf.libosmscout.map 1.0
 
 import "custom"
 Window{
+    //Avoid screen from going blank after some time...
+    ScreenSaver { screenSaverEnabled: false }
     width: units.gu(100)
     height: units.gu(160)
 
@@ -222,12 +225,13 @@ Window{
                 }
                 onPinchUpdated: {
                     map.zoomQuick(pinch.scale);
-                    map.moveQuick(pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
+                    //map.moveQuick(pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
                     var hw = map.width/2;
                     var hh = map.height/2;
-
-                    positionCursor.x += (pinch.center.x - pinch.previousCenter.x)/(pinch.scale/pinch.previousScale);
-                    positionCursor.y += (pinch.center.y - pinch.previousCenter.y)/(pinch.scale/pinch.previousScale);
+                    positionCursor.x = (positionCursor.x - hw) +(positionCursor.x - hw)/(pinch.scale/pinch.previousScale);
+                    positionCursor.y = (positionCursor.y - hh) +(positionCursor.y - hh)/(pinch.scale/pinch.previousScale);
+                    //positionCursor.x += (pinch.center.x - pinch.previousCenter.x)/(pinch.scale/pinch.previousScale);
+                    //positionCursor.y += (pinch.center.y - pinch.previousCenter.y)/(pinch.scale/pinch.previousScale);
 
 
                 }
@@ -236,7 +240,7 @@ Window{
                     //console.log(pinch.center.x + " " + pinch.center.y);
                     //console.log(pinch.scale);
                     followMe = false;
-                    map.zoom(pinch.scale, pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
+                    map.zoom(pinch.scale);//, pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
 
                 }
                 MouseArea{
