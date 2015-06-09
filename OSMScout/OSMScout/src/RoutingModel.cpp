@@ -732,19 +732,20 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
     std::list<osmscout::Point> points;
     osmscout::Vehicle                   vehicle=osmscout::vehicleCar;//settings->GetRoutingVehicle();
     int i=0;
-    if (DBThread::GetInstance()->TransformRouteDataToPoints(vehicle, route.routeData, points)){
-        for(std::list<osmscout::Point>::iterator point = points.begin(); point!= points.end(); point++)
+    std::cout<<"RoutingListModel::getNext"<<std::endl;
+    DBThread* dbThread = DBThread::GetInstance();
+    if (dbThread->TransformRouteDataToPoints(vehicle, route.routeData, points)){
+        for(std::list<osmscout::Point>::iterator point = points.begin(); point!= points.end(); ++point)
         {
-            std::cout<<"Route coords: "<<point->GetCoords().GetLat() << ", "<< point->GetCoords().GetLon()<<std::endl;
+            std::cout<<"Route coords: "<<i++<<" "<<point->GetCoords().GetLat() << ", "<< point->GetCoords().GetLon()<<std::endl;
 
         }
     }
     else {
+      std::cout<<"No routing points found"<<std::endl;
       return  NULL;
     }
-
-
-
-
-
+    std::cout<<"That's all"<<std::endl;
+    RouteStep* step = new RouteStep();
+    return step;
 }

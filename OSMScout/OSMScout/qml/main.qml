@@ -62,20 +62,26 @@ Window{
 
     function onDialogOpened() {
         menu.visible = false;
-        navigation.visible = false;
+        //navigation.visible = false;
         positionSource.stop();
     }
 
     function onDialogClosed() {
         menu.visible = true;
-        navigation.visible = true;
-
+        //navigation.visible = true;
+        timer.running = true;
         map.focus = true;
         positionSource.start();
     }
     Timer{
-        active: true
+        id: timer
+        repeat: true
+        interval: 1000
+        running: false
         onTriggered: {
+            console.log("Timer...");
+
+            routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
 
         }
     }
