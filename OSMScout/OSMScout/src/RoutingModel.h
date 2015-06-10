@@ -46,6 +46,7 @@ public:
   QString time;
   QString timeDelta;
   QString description;
+  osmscout::GeoCoord coord;
 
 public:
   RouteStep();
@@ -97,6 +98,8 @@ private:
     };
 
     RouteSelection route;
+    int nextStepIndex;
+    bool awayFromRoute;
 
 public:
     enum Roles {
@@ -139,6 +142,7 @@ public:
 
     Q_INVOKABLE RouteStep* get(int row) const;
     Q_INVOKABLE RouteStep* getNext(double lat, double lon);
+    Q_INVOKABLE bool       getAwayFromRoute(void){return awayFromRoute;}
 };
 
 #endif

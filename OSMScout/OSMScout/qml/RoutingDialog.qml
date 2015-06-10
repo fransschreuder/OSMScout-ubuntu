@@ -82,6 +82,18 @@ MapDialog {
                     }
                     mainWindow.routeTo = targetInput.text;
                     mainWindow.routeFrom = startInput.text;
+                    if(routingModel.count === 0)
+                    {
+                        noRouteText.visible = true;
+                        routeView.visible = false;
+                    }
+                    else
+                    {
+                        noRouteText.visible = false;
+                        routeView.visible = true;
+                    }
+
+                    console.log("routingModel.size: "+ routingModel.count);
                 }
 
             }
@@ -105,7 +117,11 @@ MapDialog {
             border.color: "lightgrey"
             border.width: 1
 
-
+            Label{
+                id: noRouteText
+                text: "No route found"
+                visible: false
+            }
 
             ListView {
                 id: routeView

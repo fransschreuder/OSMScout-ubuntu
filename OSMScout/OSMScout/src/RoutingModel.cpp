@@ -22,13 +22,14 @@
 #include <cmath>
 #include <iostream>
 #include <iomanip>
+#include <osmscout/util/Geometry.h>
 
 static QString DistanceToString(double distance)
 {
   std::ostringstream stream;
 
   stream.setf(std::ios::fixed);
-  stream.precision(1);
+  stream.precision(3);
   stream << distance << "km";
 
   return QString::fromStdString(stream.str());
@@ -138,7 +139,8 @@ RouteStep::RouteStep(const RouteStep& other)
       distanceDelta(other.distanceDelta),
       time(other.time),
       timeDelta(other.timeDelta),
-      description(other.description)
+      description(other.description),
+      coord(other.coord)
 {
     // no code
 }
@@ -146,6 +148,7 @@ RouteStep::RouteStep(const RouteStep& other)
 RoutingListModel::RoutingListModel(QObject* parent)
 : QAbstractListModel(parent)
 {
+    nextStepIndex = 0; //Start routing at begin of route
     // no code
 }
 
@@ -158,6 +161,7 @@ RouteStep& RouteStep::operator=(const RouteStep& other)
       time=other.time;
       timeDelta=other.timeDelta;
       description=other.description;
+      coord=other.coord;
     }
 
     return *this;
@@ -395,6 +399,7 @@ void RoutingListModel::DumpNameChangedDescription(const osmscout::RouteDescripti
 void RoutingListModel::setStartAndTarget(Location* start,
                                          Location* target)
 {
+  nextStepIndex = 0; //Start routing at begin of route
   beginResetModel();
 
   route.routeSteps.clear();
@@ -443,7 +448,7 @@ void RoutingListModel::setStartAndTarget(Location* start,
        if (!DBThread::GetInstance()->GetClosestRoutableNode(start->getCoord().GetLat(),
                                                             start->getCoord().GetLon(),
                                                             vehicle,
-                                                            1000,
+                                                            10000,
                                                             startObject,
                                                             startNodeIndex)) {
          std::cerr << "There was an error while routing!" << std::endl;
@@ -468,7 +473,7 @@ void RoutingListModel::setStartAndTarget(Location* start,
       if (!DBThread::GetInstance()->GetClosestRoutableNode(target->getCoord().GetLat(),
                                                            target->getCoord().GetLon(),
                                                            vehicle,
-                                                           1000,
+                                                           10000,
                                                            targetObject,
                                                            targetNodeIndex)) {
         std::cerr << "There was an error while routing!" << std::endl;
@@ -640,7 +645,7 @@ void RoutingListModel::setStartAndTarget(Location* start,
     else {
         currentStepIndex=0;
     }
-
+    route.routeSteps[currentStepIndex].coord=node->GetLocation();
     if (currentStepIndex>=0) {
       route.routeSteps[currentStepIndex].distance=DistanceToString(node->GetDistance());
       route.routeSteps[currentStepIndex].time=TimeToString(node->GetTime());
@@ -727,25 +732,72 @@ RouteStep* RoutingListModel::get(int row) const
     return new RouteStep(step);
 }
 
+
 RouteStep* RoutingListModel::getNext(double lat, double lon)
 {
-    std::list<osmscout::Point> points;
-    osmscout::Vehicle                   vehicle=osmscout::vehicleCar;//settings->GetRoutingVehicle();
-    int i=0;
-    std::cout<<"RoutingListModel::getNext"<<std::endl;
-    DBThread* dbThread = DBThread::GetInstance();
-    if (dbThread->TransformRouteDataToPoints(vehicle, route.routeData, points)){
-        for(std::list<osmscout::Point>::iterator point = points.begin(); point!= points.end(); ++point)
-        {
-            std::cout<<"Route coords: "<<i++<<" "<<point->GetCoords().GetLat() << ", "<< point->GetCoords().GetLon()<<std::endl;
+    awayFromRoute = false;
+    if(route.routeSteps.size()<=0)
+    {
+        RouteStep* step = new RouteStep();
+        step->description = "No Route data available";
+        return step;
+    }
 
+    double closestPoint = 7000; //more than largest possible distance
+    int closestIndex = 0; //start position.
+    for(int i=0; i<route.routeSteps.size(); i++)
+    {
+        if(!route.routeSteps[i].description.startsWith("Drive along '"))
+        {
+            double d = osmscout::GetSphericalDistance(lon, lat, route.routeSteps[i].coord.GetLon(), route.routeSteps[i].coord.GetLat());
+            if(d<closestPoint)
+            {
+                closestIndex=i;
+                closestPoint=d;
+                if(d<0.05) //within 50M?
+                {
+                    if(i+1>=route.routeSteps.size())
+                        nextStepIndex = route.routeSteps.size()-1;
+                    else
+                        nextStepIndex= i+1;
+                }
+            }
         }
     }
-    else {
-      std::cout<<"No routing points found"<<std::endl;
-      return  NULL;
+    /**
+     * Check whether we are still on the track...
+     */
+    DBThread* dbThread = DBThread::GetInstance();
+    std::list<osmscout::Point> points;
+    std::list<osmscout::Point>::iterator lastPoint=points.begin();
+    osmscout::Vehicle                   vehicle=osmscout::vehicleCar;//settings->GetRoutingVehicle();
+    dbThread->TransformRouteDataToPoints(vehicle, route.routeData, points);
+    double closestDistToSegment=7000;
+    for(std::list<osmscout::Point>::iterator point = points.begin(); point!=points.end(); ++point)
+    {
+        std::cout<<"lastPoint: "<<lastPoint->GetLat()<<", "<<lastPoint->GetLon()<< " point:  "<<point->GetLat()<<", "<<point->GetLon()<<std::endl;
+        if(lastPoint->GetLat()==point->GetLat()&&lastPoint->GetLon()==point->GetLon())
+            continue; //for the first step, coordinates are equal.
+        double r, qx, qy;
+        double distToSegment = osmscout::distanceToSegment(lon, lat, lastPoint->GetLon(), lastPoint->GetLat(), point->GetLon(), point->GetLat(), r, qx, qy)*(6371.01/360)*2*M_PI;
+        if(distToSegment<closestDistToSegment)
+        {
+            closestDistToSegment = distToSegment;
+        }
+        lastPoint = point;
     }
-    std::cout<<"That's all"<<std::endl;
-    RouteStep* step = new RouteStep();
+
+    if(closestDistToSegment > 0.05)
+    {
+        RouteStep* step = new RouteStep();
+        step->description = "Recalulating route...";
+        awayFromRoute = true;
+        return step;
+    }
+
+    RouteStep* step = new RouteStep(route.routeSteps[nextStepIndex]);
+    step->distance=DistanceToString(osmscout::GetSphericalDistance(lon, lat, step->coord.GetLon(), step->coord.GetLat()));
     return step;
+
+
 }

@@ -21,13 +21,13 @@ Window{
     //objectName: "main"
     title: "OSMScout"
     visible: true
-    property int oldX: 0;
-    property int oldY: 0;
-    property int previousX: 0;
-    property int previousY: 0;
+    property double oldX: 0;
+    property double oldY: 0;
+    property double previousX: 0;
+    property double previousY: 0;
     property bool followMe: true;
-    property string routeFrom: "<current position>";
-    property string routeTo: "";
+    property string routeFrom: "Amsterdam";// <current position>";
+    property string routeTo: "Almere";
 
     function openRoutingDialog() {
         var component = Qt.createComponent("RoutingDialog.qml")
@@ -69,11 +69,11 @@ Window{
     function onDialogClosed() {
         menu.visible = true;
         //navigation.visible = true;
-        timer.running = true;
+        //timer.running = true;
         map.focus = true;
         positionSource.start();
     }
-    Timer{
+    /*Timer{
         id: timer
         repeat: true
         interval: 1000
@@ -84,7 +84,7 @@ Window{
             routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
 
         }
-    }
+    }*/
 
     PositionSource {
         id: positionSource
@@ -104,7 +104,14 @@ Window{
             //console.log("Position changed:")
 
             if (position.latitudeValid) {
-                routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
+                var routeStep = routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
+                var awayFromRoute = routingModel.getAwayFromRoute();
+                if(awayFromRoute===true)
+                {
+                    console.log("Recalculating route");
+                }
+
+                routeInstructionText.text = "<b>"+ routeStep.description + "</b><br/>"+routeStep.distance;
                 positionCursor.x = map.geoToPixelX(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.width/2;
                 positionCursor.y = map.geoToPixelY(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.height;
 
@@ -381,7 +388,8 @@ Window{
                 Row{
                     anchors.fill: parent
                     Label{
-                        id: routInstructionText
+                        wrapMode: Label.WordWrap
+                        id: routeInstructionText
                         anchors.left: parent.left
                         anchors.top: parent.top
                         text: "<b>No route</b>"
