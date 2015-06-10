@@ -65,7 +65,11 @@ CUSTOMQMLFILES += \
 
 PICFILES += \
     pics/DeleteText.svg \
-    pics/route.svg
+    pics/route.svg \
+    pics/bicycle.svg \
+    pics/car.svg \
+    pics/bicycle_selected.svg \
+    pics/car_selected.svg
 
 DEFINES += "__UBUNTU__"
 

@@ -14,5 +14,9 @@
         <file>qml/custom/ScrollIndicator.qml</file>
         <file>pics/DeleteText.svg</file>
         <file>pics/route.svg</file>
+        <file>pics/bicycle.svg</file>
+        <file>pics/car.svg</file>
+        <file>pics/bicycle_selected.svg</file>
+        <file>pics/car_selected.svg</file>
     </qresource>
 </RCC>

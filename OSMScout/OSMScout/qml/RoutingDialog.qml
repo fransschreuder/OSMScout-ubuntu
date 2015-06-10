@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.1
 
 import net.sf.libosmscout.map 1.0
 import Ubuntu.Components 1.1
-
+import Qt.labs.settings 1.0
 import "custom"
 
 MapDialog {
@@ -12,8 +12,16 @@ MapDialog {
     fullscreen: true
     label: "Route..."
 
+
+
     content : ColumnLayout {
         id: mainFrame
+
+        Settings{
+            id: routeSettings
+            category: "routing"
+            property int vehicle: 3 //Car, Bicycle=2
+        }
 
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -81,6 +89,7 @@ MapDialog {
                                                        targetInput.location)
                     }
                     mainWindow.routeTo = targetInput.text;
+                    mainWindow.routeToLoc = targetInput.location;
                     mainWindow.routeFrom = startInput.text;
                     if(routingModel.count === 0)
                     {
@@ -106,6 +115,52 @@ MapDialog {
                     mainWindow.routeTo = targetInput.text;
                     mainWindow.routeFrom = startInput.text;
                     dialog.close()
+                }
+            }
+
+            Image {
+                id: carButton
+
+                width: close.height
+                height: close.height
+
+                source: routeSettings.vehicle===3?"qrc:///pics/car_selected.svg":"qrc:///pics/car.svg"
+                fillMode: Image.PreserveAspectFit
+                horizontalAlignment: Image.AlignHCenter
+                verticalAlignment: Image.AlignVCenter
+                sourceSize.width: close.height
+                sourceSize.height: close.height
+                //color: routeSettings.vehicle===3?"blue":"white"
+                MouseArea {
+                    anchors.fill: carButton
+
+                    onClicked: {
+                        routeSettings.vehicle = 3;
+                    }
+                }
+            }
+
+
+            Image {
+                id: bikeButton
+
+                width: close.height
+                height: close.height
+
+                source: routeSettings.vehicle===2?"qrc:///pics/bicycle_selected.svg":"qrc:///pics/bicycle.svg"
+                fillMode: Image.PreserveAspectFit
+                horizontalAlignment: Image.AlignHCenter
+                verticalAlignment: Image.AlignVCenter
+                sourceSize.width: close.height
+                sourceSize.height: close.height
+
+
+                MouseArea {
+                    anchors.fill: bikeButton
+
+                    onClicked: {
+                        routeSettings.vehicle = 2;
+                    }
                 }
             }
         }

@@ -23,6 +23,7 @@
 #include <iostream>
 #include <iomanip>
 #include <osmscout/util/Geometry.h>
+#include <Settings.h>
 
 static QString DistanceToString(double distance)
 {
@@ -409,7 +410,9 @@ void RoutingListModel::setStartAndTarget(Location* start,
   osmscout::TypeConfigRef             typeConfig=DBThread::GetInstance()->GetTypeConfig();
   osmscout::FastestPathRoutingProfile routingProfile(typeConfig);
   osmscout::Way                       routeWay;
-  osmscout::Vehicle                   vehicle=osmscout::vehicleCar;//settings->GetRoutingVehicle();
+  QSettings settings;
+  osmscout::Vehicle vehicle=(osmscout::Vehicle)settings.value("routing/vehicle",osmscout::vehicleCar).toUInt();;
+
   if (vehicle==osmscout::vehicleFoot) {
     routingProfile.ParametrizeForFoot(*typeConfig,
                                       5.0);
@@ -770,12 +773,12 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
     DBThread* dbThread = DBThread::GetInstance();
     std::list<osmscout::Point> points;
     std::list<osmscout::Point>::iterator lastPoint=points.begin();
-    osmscout::Vehicle                   vehicle=osmscout::vehicleCar;//settings->GetRoutingVehicle();
+    QSettings settings;
+    osmscout::Vehicle vehicle=(osmscout::Vehicle)settings.value("routing/vehicle",osmscout::vehicleCar).toUInt();;
     dbThread->TransformRouteDataToPoints(vehicle, route.routeData, points);
     double closestDistToSegment=7000;
     for(std::list<osmscout::Point>::iterator point = points.begin(); point!=points.end(); ++point)
     {
-        std::cout<<"lastPoint: "<<lastPoint->GetLat()<<", "<<lastPoint->GetLon()<< " point:  "<<point->GetLat()<<", "<<point->GetLon()<<std::endl;
         if(lastPoint->GetLat()==point->GetLat()&&lastPoint->GetLon()==point->GetLon())
             continue; //for the first step, coordinates are equal.
         double r, qx, qy;

@@ -14,6 +14,9 @@ import "custom"
 Window{
     //Avoid screen from going blank after some time...
     ScreenSaver { screenSaverEnabled: false }
+    LocationListModel {
+        id: suggestionModel
+    }
     width: units.gu(100)
     height: units.gu(160)
 
@@ -26,8 +29,10 @@ Window{
     property double previousX: 0;
     property double previousY: 0;
     property bool followMe: true;
-    property string routeFrom: "Amsterdam";// <current position>";
-    property string routeTo: "Almere";
+    property string routeFrom: "<current position>";
+    property string routeTo: "";
+    property Location routeFromLoc;
+    property Location routeToLoc;
 
     function openRoutingDialog() {
         var component = Qt.createComponent("RoutingDialog.qml")
@@ -108,7 +113,20 @@ Window{
                 var awayFromRoute = routingModel.getAwayFromRoute();
                 if(awayFromRoute===true)
                 {
+                    positionSource.stop;
                     console.log("Recalculating route");
+                    var lat = positionSource.position.coordinate.latitude;
+                    var lon = positionSource.position.coordinate.longitude;
+                    var locString = (lat>0?"N":"S")+Math.abs(lat)+" "+(lon>0?"E":"W")+Math.abs(lon);
+                    suggestionModel.setPattern(locString);
+                    if (suggestionModel.count>=1) {
+                        routeFromLoc=suggestionModel.get(0);
+                    }
+                    if(routeToLoc && routeFromLoc){
+                        routingModel.setStartAndTarget(routeFromLoc,
+                                                       routeToLoc)
+                    }
+                    positionSource.start;
                 }
 
                 routeInstructionText.text = "<b>"+ routeStep.description + "</b><br/>"+routeStep.distance;
@@ -388,7 +406,6 @@ Window{
                 Row{
                     anchors.fill: parent
                     Label{
-                        wrapMode: Label.WordWrap
                         id: routeInstructionText
                         anchors.left: parent.left
                         anchors.top: parent.top
