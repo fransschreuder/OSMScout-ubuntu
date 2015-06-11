@@ -36,10 +36,14 @@ class RouteStep : public QObject
     Q_OBJECT
     Q_PROPERTY(QString distance READ getDistance)
     Q_PROPERTY(QString distanceDelta READ getDistanceDelta)
+    Q_PROPERTY(QString currentDistance READ getCurrentDistance)
     Q_PROPERTY(QString time READ getTime)
     Q_PROPERTY(QString timeDelta READ getTimeDelta)
     Q_PROPERTY(QString description READ getDescription)
     Q_PROPERTY(QString icon READ getIcon)
+    Q_PROPERTY(QString targetTime READ getTargetTime)
+    Q_PROPERTY(QString targetDistance READ getTargetDistance)
+
 
 public:
   QString distance;
@@ -49,6 +53,11 @@ public:
   QString description;
   QString icon;
   osmscout::GeoCoord coord;
+  QString currentDistance;
+  QString targetTime;
+  QString targetDistance;
+  double dTimeDelta;
+  double dDistanceDelta;
 
 public:
   RouteStep();
@@ -66,6 +75,16 @@ public:
       return distanceDelta;
   }
 
+  QString getTargetDistance() const
+  {
+      return targetDistance;
+  }
+
+  QString getCurrentDistance() const
+  {
+      return currentDistance;
+  }
+
   QString getTime() const
   {
       return time;
@@ -74,6 +93,11 @@ public:
   QString getTimeDelta() const
   {
       return timeDelta;
+  }
+
+  QString getTargetTime() const
+  {
+      return targetTime;
   }
 
   QString getDescription() const

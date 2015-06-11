@@ -81,7 +81,6 @@ PICFILES += \
     pics/routeRoundabout3.svg \
     pics/routeRoundabout4.svg \
     pics/routeRoundabout5.svg \
-    pics/routeRoundabout4.svg \
     pics/routeMotorwayEnter.svg \
     pics/routeMotorwayLeave.svg
 

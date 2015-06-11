@@ -48,13 +48,12 @@ static QString TimeToString(double time)
 {
   std::ostringstream stream;
 
-  stream << std::setfill(' ') << std::setw(2) << (int)std::floor(time) << ":";
+  stream << (int)std::floor(time) << ":";
 
   time-=std::floor(time);
 
   stream << std::setfill('0') << std::setw(2) << (int)floor(60*time+0.5);
 
-  stream << "h";
 
   return QString::fromStdString(stream.str());
 }
@@ -164,6 +163,8 @@ static std::string CrossingWaysDescriptionToString(const osmscout::RouteDescript
 RouteStep::RouteStep()
 {
     icon="route.svg";
+    targetDistance=" ";
+    targetTime=" ";
 }
 
 RouteStep::RouteStep(const RouteStep& other)
@@ -174,7 +175,11 @@ RouteStep::RouteStep(const RouteStep& other)
       timeDelta(other.timeDelta),
       description(other.description),
       coord(other.coord),
-      icon(other.icon)
+      icon(other.icon),
+      targetDistance(other.targetDistance),
+      targetTime(other.targetTime),
+      dTimeDelta(other.dTimeDelta),
+      dDistanceDelta(other.dDistanceDelta)
 {
 
 }
@@ -197,6 +202,10 @@ RouteStep& RouteStep::operator=(const RouteStep& other)
       description=other.description;
       coord=other.coord;
       icon=other.icon;
+      targetTime=other.targetTime;
+      targetDistance=other.targetDistance;
+      dTimeDelta=other.dTimeDelta;
+      dDistanceDelta=other.dDistanceDelta;
     }
     return *this;
 }
@@ -711,17 +720,28 @@ void RoutingListModel::setStartAndTarget(Location* start,
       if (prevNode!=route.routeDescription.Nodes().end() &&
           node->GetDistance()-prevNode->GetDistance()!=0.0) {
         route.routeSteps[currentStepIndex].distanceDelta=DistanceToString(node->GetDistance()-prevNode->GetDistance());
+        route.routeSteps[currentStepIndex].dDistanceDelta=node->GetDistance()-prevNode->GetDistance();
       }
 
       if (prevNode!=route.routeDescription.Nodes().end() &&
           node->GetTime()-prevNode->GetTime()!=0.0) {
         route.routeSteps[currentStepIndex].timeDelta=TimeToString(node->GetTime()-prevNode->GetTime());
+        route.routeSteps[currentStepIndex].dTimeDelta=node->GetTime()-prevNode->GetTime();
       }
     }
 
     lastStepIndex=route.routeSteps.size()-1;
 
     prevNode=node;
+  }
+  double totalTime=0;
+  double totalDistance=0;
+  for(int i=route.routeSteps.size()-1; i>=0; i--)
+  {
+      totalTime += route.routeSteps[i].dTimeDelta;
+      totalDistance += route.routeSteps[i].dDistanceDelta;
+      route.routeSteps[i].targetTime = TimeToString(totalTime);
+      route.routeSteps[i].targetDistance = DistanceToString(totalDistance);
   }
 
   if (DBThread::GetInstance()->TransformRouteDataToWay(vehicle,
@@ -798,6 +818,7 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
     {
         RouteStep* step = new RouteStep();
         step->description = "No Route data available";
+        step->currentDistance="";
         return step;
     }
 
@@ -819,7 +840,7 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
             }
         }
     }
-    while(route.routeSteps[nextStepIndex].icon=="") //routeSteps without icon are not necessary to display, let's take the next one
+    while(route.routeSteps[nextStepIndex].icon=="route.svg") //routeSteps without icon are not necessary to display, let's take the next one
     {
         if((nextStepIndex+1)<route.routeSteps.size())
         {
@@ -858,9 +879,10 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
         awayCounter++;
         if(awayCounter>10)
         {
+            awayCounter = 0;
             RouteStep* step = new RouteStep();
             step->description = "Recalulating route...";
-
+            step->currentDistance="";
             awayFromRoute = true;
             return step;
         }
@@ -871,7 +893,7 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
     }
 
     RouteStep* step = new RouteStep(route.routeSteps[nextStepIndex]);
-    step->distance=DistanceToString(osmscout::GetSphericalDistance(lon, lat, step->coord.GetLon(), step->coord.GetLat()));
+    step->currentDistance=DistanceToString(osmscout::GetSphericalDistance(lon, lat, step->coord.GetLon(), step->coord.GetLat()));
     return step;
 
 

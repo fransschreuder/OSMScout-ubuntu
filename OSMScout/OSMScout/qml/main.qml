@@ -78,18 +78,16 @@ Window{
         map.focus = true;
         positionSource.processUpdateEvents=true;
     }
-    /*Timer{
-        id: timer
-        repeat: true
-        interval: 1000
+    Timer{
+        id: followMeTimer
+        repeat: false
+        interval: 30000
         running: false
         onTriggered: {
-            console.log("Timer...");
-
-            routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
-
+            console.log("Timer expired");
+            followMe = true;
         }
-    }*/
+    }
 
     PositionSource {
         id: positionSource
@@ -130,9 +128,12 @@ Window{
                                                        routeToLoc)
                     }
                     positionSource.start;
+                    return;
                 }
                 routeIcon.source = "qrc:///pics/"+routeStep.icon;
-                routeDistance.text = routeStep.distance;
+                routeDistance.text = routeStep.currentDistance;
+                routeDist.text = routeStep.targetDistance;
+                routeTime.text = routeStep.targetTime;
                 //routeInstructionText.text = "<b>"+ routeStep.description + "</b><br/>"+routeStep.distance;
                 positionCursor.x = map.geoToPixelX(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.width/2;
                 positionCursor.y = map.geoToPixelY(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.height;
@@ -264,6 +265,7 @@ Window{
                 //pinch.dragAxis: Pinch.XAndYAxis
                 onPinchStarted: {
                     console.log("Pinch started" );
+                    positionSource.processUpdateEvents = false;
                 }
                 onPinchUpdated: {
                     map.zoomQuick(pinch.scale);
@@ -281,9 +283,13 @@ Window{
                 onPinchFinished: {
                     //console.log(pinch.center.x + " " + pinch.center.y);
                     //console.log(pinch.scale);
-                    followMe = false;
+                    if(followMe)
+                    {
+                        followMe = false;
+                        followMeTimer.start(); //re-enable after 30 seconds
+                    }
                     map.zoom(pinch.scale);//, pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
-
+                    positionSource.processUpdateEvents = true;
                 }
                 MouseArea{
 
@@ -295,6 +301,7 @@ Window{
                         oldY = mouse.y;
                         previousX = mouse.x;
                         previousY = mouse.y;
+                        positionSource.processUpdateEvents = false;
 
                     }
 
@@ -311,9 +318,16 @@ Window{
 
                     onReleased:
                     {
+                        positionSource.processUpdateEvents = true;
                         map.move(oldX - mouse.x, oldY - mouse.y);
                         if(Math.abs(oldX - mouse.x)>20||Math.abs(oldY - mouse.y)>20)
-                            followMe = false;
+                        {
+                            if(followMe)
+                            {
+                                followMe = false;
+                                followMeTimer.start(); //re-enable after 30 seconds
+                            }
+                        }
                         oldX = mouse.x;
                         oldY = mouse.y;
                     }
@@ -399,7 +413,7 @@ Window{
                     bottom: parent.bottom
                 }
                 width: parent.width
-                height: units.gu(6)
+                height: statsCol.height
 
                 id: routingInstructions
                 Rectangle {
@@ -409,6 +423,7 @@ Window{
                     opacity: 0.5
                 }
                 Row{
+                    id: routingRow
                     width: parent.width
                     height: parent.height
                     Image{
@@ -419,9 +434,14 @@ Window{
                     }
                     Label{
                         id: routeDistance
-                        height: parent.height
-                        fontSizeMode: Text.VerticalFit
+                        anchors.verticalCenter: parent.verticalCenter
+                        fontSize: "x-large"
                         color: "white"
+                    }
+                    Item{
+                        id: spacer
+                        height: parent.height
+                        width: parent.width-(routeIcon.width + routeDistance.width + statsCol.width)
                     }
 
                     /*Label{
@@ -431,11 +451,23 @@ Window{
                         text: "<b>No route</b>"
                         color: "white"
                     }*/
-                    Label{
-                        //anchors.right: parent.right
-                        //anchors.top: parent.top
-                        text: positionSource.position.speedValid?(positionSource.position.speed*3.6).toFixed(2)+" km/h":""
-                        color: "white"
+                    Column{
+                        id: statsCol
+                        Label{
+                            id: routeSpeed
+                            text: positionSource.position.speedValid?(positionSource.position.speed*3.6).toFixed(2)+" km/h":" "
+                            color: "white"
+                        }
+                        Label{
+                            id: routeDist
+                            text: " "
+                            color: "white"
+                        }
+                        Label{
+                            id: routeTime
+                            text: " "
+                            color: "white"
+                        }
                     }
 
                 }
