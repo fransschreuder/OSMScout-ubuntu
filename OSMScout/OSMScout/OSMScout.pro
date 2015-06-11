@@ -68,8 +68,22 @@ PICFILES += \
     pics/route.svg \
     pics/bicycle.svg \
     pics/car.svg \
-    pics/bicycle_selected.svg \
-    pics/car_selected.svg
+    pics/routeSharpLeft.svg \
+    pics/routeLeft.svg \
+    pics/routeSlightlyLeft.svg \
+    pics/routeStraight.svg \
+    pics/routeSlightlyRight.svg \
+    pics/routeRight.svg \
+    pics/routeSharpRight.svg \
+    pics/routeFinish.svg \
+    pics/routeRoundabout1.svg \
+    pics/routeRoundabout2.svg \
+    pics/routeRoundabout3.svg \
+    pics/routeRoundabout4.svg \
+    pics/routeRoundabout5.svg \
+    pics/routeRoundabout4.svg \
+    pics/routeMotorwayEnter.svg \
+    pics/routeMotorwayLeave.svg
 
 DEFINES += "__UBUNTU__"
 

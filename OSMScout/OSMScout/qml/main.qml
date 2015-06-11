@@ -37,7 +37,7 @@ Window{
     function openRoutingDialog() {
         var component = Qt.createComponent("RoutingDialog.qml")
         var dialog = component.createObject(mainWindow, {})
-        positionSource.stop();
+        positionSource.processUpdateEvents=false;
         dialog.opened.connect(onDialogOpened)
         dialog.closed.connect(onDialogClosed)
         dialog.open()
@@ -68,7 +68,7 @@ Window{
     function onDialogOpened() {
         menu.visible = false;
         //navigation.visible = false;
-        positionSource.stop();
+        positionSource.processUpdateEvents=false;
     }
 
     function onDialogClosed() {
@@ -76,7 +76,7 @@ Window{
         //navigation.visible = true;
         //timer.running = true;
         map.focus = true;
-        positionSource.start();
+        positionSource.processUpdateEvents=true;
     }
     /*Timer{
         id: timer
@@ -93,6 +93,8 @@ Window{
 
     PositionSource {
         id: positionSource
+        property bool processUpdateEvents: true
+
 
         active: true
 
@@ -107,6 +109,7 @@ Window{
 
         onPositionChanged: {
             //console.log("Position changed:")
+            if(!processUpdateEvents) return;
 
             if (position.latitudeValid) {
                 var routeStep = routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
@@ -128,8 +131,9 @@ Window{
                     }
                     positionSource.start;
                 }
-
-                routeInstructionText.text = "<b>"+ routeStep.description + "</b><br/>"+routeStep.distance;
+                routeIcon.source = "qrc:///pics/"+routeStep.icon;
+                routeDistance.text = routeStep.distance;
+                //routeInstructionText.text = "<b>"+ routeStep.description + "</b><br/>"+routeStep.distance;
                 positionCursor.x = map.geoToPixelX(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.width/2;
                 positionCursor.y = map.geoToPixelY(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.height;
 
@@ -399,22 +403,37 @@ Window{
 
                 id: routingInstructions
                 Rectangle {
-                    anchors.fill: parent
+                    width: parent.width
+                    height: parent.height
                     color: "black"
                     opacity: 0.5
                 }
                 Row{
-                    anchors.fill: parent
+                    width: parent.width
+                    height: parent.height
+                    Image{
+                        id: routeIcon
+                        width: parent.height
+                        height: parent.height
+                        source: "qrc:///pics/route.svg"
+                    }
                     Label{
+                        id: routeDistance
+                        height: parent.height
+                        fontSizeMode: Text.VerticalFit
+                        color: "white"
+                    }
+
+                    /*Label{
                         id: routeInstructionText
                         anchors.left: parent.left
                         anchors.top: parent.top
                         text: "<b>No route</b>"
                         color: "white"
-                    }
+                    }*/
                     Label{
-                        anchors.right: parent.right
-                        anchors.top: parent.top
+                        //anchors.right: parent.right
+                        //anchors.top: parent.top
                         text: positionSource.position.speedValid?(positionSource.position.speed*3.6).toFixed(2)+" km/h":""
                         color: "white"
                     }

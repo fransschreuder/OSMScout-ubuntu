@@ -16,7 +16,21 @@
         <file>pics/route.svg</file>
         <file>pics/bicycle.svg</file>
         <file>pics/car.svg</file>
-        <file>pics/bicycle_selected.svg</file>
-        <file>pics/car_selected.svg</file>
+        <file>pics/routeSharpLeft.svg</file>
+        <file>pics/routeLeft.svg</file>
+        <file>pics/routeSlightlyLeft.svg</file>
+        <file>pics/routeStraight.svg</file>
+        <file>pics/routeSlightlyRight.svg</file>
+        <file>pics/routeRight.svg</file>
+        <file>pics/routeSharpRight.svg</file>
+        <file>pics/routeFinish.svg</file>
+        <file>pics/routeRoundabout1.svg</file>
+        <file>pics/routeRoundabout2.svg</file>
+        <file>pics/routeRoundabout3.svg</file>
+        <file>pics/routeRoundabout4.svg</file>
+        <file>pics/routeRoundabout5.svg</file>
+        <file>pics/routeRoundabout4.svg</file>
+        <file>pics/routeMotorwayEnter.svg</file>
+        <file>pics/routeMotorwayLeave.svg</file>
     </qresource>
 </RCC>

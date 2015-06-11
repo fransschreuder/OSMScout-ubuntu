@@ -40,6 +40,7 @@ MapDialog {
 
             LocationEdit {
                 text: mainWindow.routeFrom
+                location: mainWindow.routeFromLoc
                 width: targetInput.width
                 height: units.gu(4)
                 id: startInput
@@ -57,6 +58,7 @@ MapDialog {
 
             LocationEdit {
                 text: mainWindow.routeTo
+                location: mainWindow.routeToLoc
                 width: units.gu(32)//parent.width-targetText.width - Theme.horizSpace
                 height: units.gu(4)
                 id: targetInput
@@ -117,49 +119,59 @@ MapDialog {
                     dialog.close()
                 }
             }
-
-            Image {
-                id: carButton
-
+            Rectangle
+            {
+                color: routeSettings.vehicle===3?UbuntuColors.orange:UbuntuColors.lightGrey
                 width: close.height
                 height: close.height
+                radius: units.gu(1)
+                Image {
+                    id: carButton
 
-                source: routeSettings.vehicle===3?"qrc:///pics/car_selected.svg":"qrc:///pics/car.svg"
-                fillMode: Image.PreserveAspectFit
-                horizontalAlignment: Image.AlignHCenter
-                verticalAlignment: Image.AlignVCenter
-                sourceSize.width: close.height
-                sourceSize.height: close.height
-                //color: routeSettings.vehicle===3?"blue":"white"
-                MouseArea {
-                    anchors.fill: carButton
+                    width: close.height
+                    height: close.height
 
-                    onClicked: {
-                        routeSettings.vehicle = 3;
+                    source: "qrc:///pics/car.svg"
+                    fillMode: Image.PreserveAspectFit
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    sourceSize.width: close.height
+                    sourceSize.height: close.height
+                    MouseArea {
+                        anchors.fill: carButton
+
+                        onClicked: {
+                            routeSettings.vehicle = 3;
+                        }
                     }
                 }
             }
 
-
-            Image {
-                id: bikeButton
-
+            Rectangle{
+                color: routeSettings.vehicle===2?UbuntuColors.orange:UbuntuColors.lightGrey
                 width: close.height
                 height: close.height
+                radius: units.gu(1)
+                Image {
+                    id: bikeButton
 
-                source: routeSettings.vehicle===2?"qrc:///pics/bicycle_selected.svg":"qrc:///pics/bicycle.svg"
-                fillMode: Image.PreserveAspectFit
-                horizontalAlignment: Image.AlignHCenter
-                verticalAlignment: Image.AlignVCenter
-                sourceSize.width: close.height
-                sourceSize.height: close.height
+                    width: close.height
+                    height: close.height
+
+                    source: "qrc:///pics/bicycle.svg"
+                    fillMode: Image.PreserveAspectFit
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    sourceSize.width: close.height
+                    sourceSize.height: close.height
 
 
-                MouseArea {
-                    anchors.fill: bikeButton
+                    MouseArea {
+                        anchors.fill: bikeButton
 
-                    onClicked: {
-                        routeSettings.vehicle = 2;
+                        onClicked: {
+                            routeSettings.vehicle = 2;
+                        }
                     }
                 }
             }

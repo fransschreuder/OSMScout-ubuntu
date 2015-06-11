@@ -30,8 +30,16 @@ static QString DistanceToString(double distance)
   std::ostringstream stream;
 
   stream.setf(std::ios::fixed);
-  stream.precision(3);
-  stream << distance << "km";
+  if(distance>=1)
+  {
+      stream.precision(1);
+      stream << distance << "km";
+  }
+  else
+  {
+      stream.precision(0);
+      stream << distance*1000 << "m";
+  }
 
   return QString::fromStdString(stream.str());
 }
@@ -68,6 +76,30 @@ static QString MoveToTurnCommand(osmscout::RouteDescription::DirectionDescriptio
     return "Turn right";
   case osmscout::RouteDescription::DirectionDescription::sharpRight:
     return "Turn sharp right";
+  }
+
+  assert(false);
+
+  return "???";
+}
+
+static QString MoveToTurnIcon(osmscout::RouteDescription::DirectionDescription::Move move)
+{
+  switch (move) {
+  case osmscout::RouteDescription::DirectionDescription::sharpLeft:
+    return "routeSharpLeft.svg";
+  case osmscout::RouteDescription::DirectionDescription::left:
+    return "routeLeft.svg";
+  case osmscout::RouteDescription::DirectionDescription::slightlyLeft:
+    return "routeSlightlyLeft.svg";
+  case osmscout::RouteDescription::DirectionDescription::straightOn:
+    return "routeStraight.svg";
+  case osmscout::RouteDescription::DirectionDescription::slightlyRight:
+    return "routeSlightlyRight.svg";
+  case osmscout::RouteDescription::DirectionDescription::right:
+    return "routeRight.svg";
+  case osmscout::RouteDescription::DirectionDescription::sharpRight:
+    return "routeSharpRight.svg";
   }
 
   assert(false);
@@ -131,7 +163,7 @@ static std::string CrossingWaysDescriptionToString(const osmscout::RouteDescript
 
 RouteStep::RouteStep()
 {
-
+    icon="route.svg";
 }
 
 RouteStep::RouteStep(const RouteStep& other)
@@ -141,9 +173,10 @@ RouteStep::RouteStep(const RouteStep& other)
       time(other.time),
       timeDelta(other.timeDelta),
       description(other.description),
-      coord(other.coord)
+      coord(other.coord),
+      icon(other.icon)
 {
-    // no code
+
 }
 
 RoutingListModel::RoutingListModel(QObject* parent)
@@ -163,8 +196,8 @@ RouteStep& RouteStep::operator=(const RouteStep& other)
       timeDelta=other.timeDelta;
       description=other.description;
       coord=other.coord;
+      icon=other.icon;
     }
-
     return *this;
 }
 
@@ -216,7 +249,7 @@ void RoutingListModel::DumpStartDescription(const osmscout::RouteDescription::St
 void RoutingListModel::DumpTargetDescription(const osmscout::RouteDescription::TargetDescriptionRef& targetDescription)
 {
   RouteStep targetReached;
-
+  targetReached.icon = "routeFinish.svg";
   targetReached.description="Target reached '"+QString::fromUtf8(targetDescription->GetDescription().c_str())+"'";
   route.routeSteps.push_back(targetReached);
 }
@@ -232,11 +265,12 @@ void RoutingListModel::DumpTurnDescription(const osmscout::RouteDescription::Tur
   if (crossingWaysDescription.Valid()) {
     crossingWaysString=CrossingWaysDescriptionToString(crossingWaysDescription);
   }
-
+  if(directionDescription.Valid()) {
+      turn.icon=MoveToTurnIcon(directionDescription->GetCurve());
+  }
   if (!crossingWaysString.empty()) {
     turn.description="At crossing "+QString::fromUtf8(crossingWaysString.c_str())+"";
   }
-
   if (directionDescription.Valid()) {
     turn.description+=MoveToTurnCommand(directionDescription->GetCurve());
   }
@@ -280,6 +314,27 @@ void RoutingListModel::DumpRoundaboutLeaveDescription(const osmscout::RouteDescr
   leave.description="Leave roundabout (";
   leave.description+=QString::number(roundaboutLeaveDescription->GetExitCount());
   leave.description+=". exit)";
+  switch(roundaboutLeaveDescription->GetExitCount())
+  {
+    case 1:
+      leave.icon = "routeRoundabout1.svg";
+      break;
+    case 2:
+      leave.icon = "routeRoundabout2.svg";
+      break;
+    case 3:
+      leave.icon = "routeRoundabout3.svg";
+      break;
+    case 4:
+      leave.icon = "routeRoundabout4.svg";
+      break;
+    case 5:
+      leave.icon = "routeRoundabout5.svg";
+      break;
+    default:
+      leave.icon = "routeRoundabout4.svg";
+
+  }
 
   if (nameDescription.Valid() &&
       nameDescription->HasName()) {
@@ -304,7 +359,7 @@ void RoutingListModel::DumpMotorwayEnterDescription(const osmscout::RouteDescrip
   if (!crossingWaysString.empty()) {
     enter.description="At crossing "+QString::fromUtf8(crossingWaysString.c_str());
   }
-
+  enter.icon = "routeMotorwayEnter.svg";
   enter.description+="Enter motorway";
 
   if (motorwayEnterDescription->GetToDescription().Valid() &&
@@ -320,7 +375,6 @@ void RoutingListModel::DumpMotorwayEnterDescription(const osmscout::RouteDescrip
 void RoutingListModel::DumpMotorwayChangeDescription(const osmscout::RouteDescription::MotorwayChangeDescriptionRef& motorwayChangeDescription)
 {
   RouteStep change;
-
   change.description="Change motorway";
 
   if (motorwayChangeDescription->GetFromDescription().Valid() &&
@@ -347,6 +401,7 @@ void RoutingListModel::DumpMotorwayLeaveDescription(const osmscout::RouteDescrip
   RouteStep leave;
 
   leave.description="Leave motorway";
+  leave.icon="routeMotorwayLeave.svg";
 
   if (motorwayLeaveDescription->GetFromDescription().Valid() &&
       motorwayLeaveDescription->GetFromDescription()->HasName()) {
@@ -440,7 +495,7 @@ void RoutingListModel::setStartAndTarget(Location* start,
   {
       if (!DBThread::GetInstance()->GetClosestRoutableNode(start->getReferences().front(),
                                                            vehicle,
-                                                           1000,
+                                                           500,
                                                            startObject,
                                                            startNodeIndex)) {
         std::cerr << "There was an error while routing!" << std::endl;
@@ -451,7 +506,7 @@ void RoutingListModel::setStartAndTarget(Location* start,
        if (!DBThread::GetInstance()->GetClosestRoutableNode(start->getCoord().GetLat(),
                                                             start->getCoord().GetLon(),
                                                             vehicle,
-                                                            10000,
+                                                            500,
                                                             startObject,
                                                             startNodeIndex)) {
          std::cerr << "There was an error while routing!" << std::endl;
@@ -465,7 +520,7 @@ void RoutingListModel::setStartAndTarget(Location* start,
   {
       if (!DBThread::GetInstance()->GetClosestRoutableNode(target->getReferences().front(),
                                                            vehicle,
-                                                           1000,
+                                                           500,
                                                            targetObject,
                                                            targetNodeIndex)) {
         std::cerr << "There was an error while routing!" << std::endl;
@@ -476,7 +531,7 @@ void RoutingListModel::setStartAndTarget(Location* start,
       if (!DBThread::GetInstance()->GetClosestRoutableNode(target->getCoord().GetLat(),
                                                            target->getCoord().GetLon(),
                                                            vehicle,
-                                                           10000,
+                                                           500,
                                                            targetObject,
                                                            targetNodeIndex)) {
         std::cerr << "There was an error while routing!" << std::endl;
@@ -750,21 +805,29 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
     int closestIndex = 0; //start position.
     for(int i=0; i<route.routeSteps.size(); i++)
     {
-        if(!route.routeSteps[i].description.startsWith("Drive along '"))
+        double d = osmscout::GetSphericalDistance(lon, lat, route.routeSteps[i].coord.GetLon(), route.routeSteps[i].coord.GetLat());
+        if(d<closestPoint)
         {
-            double d = osmscout::GetSphericalDistance(lon, lat, route.routeSteps[i].coord.GetLon(), route.routeSteps[i].coord.GetLat());
-            if(d<closestPoint)
+            closestIndex=i;
+            closestPoint=d;
+            if(d<0.05) //within 50M?
             {
-                closestIndex=i;
-                closestPoint=d;
-                if(d<0.05) //within 50M?
-                {
-                    if(i+1>=route.routeSteps.size())
-                        nextStepIndex = route.routeSteps.size()-1;
-                    else
-                        nextStepIndex= i+1;
-                }
+                if(i+1>=route.routeSteps.size())
+                    nextStepIndex = route.routeSteps.size()-1;
+                else
+                    nextStepIndex= i+1;
             }
+        }
+    }
+    while(route.routeSteps[nextStepIndex].icon=="") //routeSteps without icon are not necessary to display, let's take the next one
+    {
+        if((nextStepIndex+1)<route.routeSteps.size())
+        {
+            nextStepIndex++;
+        }
+        else
+        {
+            break;
         }
     }
     /**
@@ -792,10 +855,19 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
 
     if(closestDistToSegment > 0.05)
     {
-        RouteStep* step = new RouteStep();
-        step->description = "Recalulating route...";
-        awayFromRoute = true;
-        return step;
+        awayCounter++;
+        if(awayCounter>10)
+        {
+            RouteStep* step = new RouteStep();
+            step->description = "Recalulating route...";
+
+            awayFromRoute = true;
+            return step;
+        }
+    }
+    else
+    {
+        awayCounter = 0;
     }
 
     RouteStep* step = new RouteStep(route.routeSteps[nextStepIndex]);

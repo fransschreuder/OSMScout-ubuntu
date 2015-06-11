@@ -39,6 +39,7 @@ class RouteStep : public QObject
     Q_PROPERTY(QString time READ getTime)
     Q_PROPERTY(QString timeDelta READ getTimeDelta)
     Q_PROPERTY(QString description READ getDescription)
+    Q_PROPERTY(QString icon READ getIcon)
 
 public:
   QString distance;
@@ -46,6 +47,7 @@ public:
   QString time;
   QString timeDelta;
   QString description;
+  QString icon;
   osmscout::GeoCoord coord;
 
 public:
@@ -78,6 +80,11 @@ public:
   {
       return description;
   }
+
+  QString getIcon() const
+  {
+      return icon;
+  }
 };
 
 class RoutingListModel : public QAbstractListModel
@@ -100,6 +107,7 @@ private:
     RouteSelection route;
     int nextStepIndex;
     bool awayFromRoute;
+    int awayCounter;
 
 public:
     enum Roles {
