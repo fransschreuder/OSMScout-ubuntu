@@ -41,6 +41,7 @@ LineEdit {
     // Private
 
     function updateSuggestions() {
+        if(location!==null)return;
         suggestionModel.setPattern(searchEdit.text)
 
         if (suggestionModel.count>=1 &&
@@ -215,7 +216,7 @@ LineEdit {
 
     Timer {
         id: suggestionTimer
-        interval: 1000
+        interval: 100
         repeat: false
 
         onTriggered: {
