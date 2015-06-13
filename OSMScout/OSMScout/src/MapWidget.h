@@ -85,6 +85,11 @@ public:
   virtual ~MapWidget();
 
   Q_INVOKABLE void reopenMap(void);
+  Q_INVOKABLE bool isRendering(void)
+  {
+      DBThread* dbThread = DBThread::GetInstance();
+      return (dbThread->IsRendering());
+  }
 
   inline double GetLat() const
   {

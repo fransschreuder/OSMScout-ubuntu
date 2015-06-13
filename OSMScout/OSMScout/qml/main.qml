@@ -114,7 +114,8 @@ Window{
                 var awayFromRoute = routingModel.getAwayFromRoute();
                 if(awayFromRoute===true)
                 {
-                    positionSource.stop;
+                    if(map.isRendering())return;
+                    positionSource.stop();
                     console.log("Recalculating route");
                     var lat = positionSource.position.coordinate.latitude;
                     var lon = positionSource.position.coordinate.longitude;
@@ -127,7 +128,7 @@ Window{
                         routingModel.setStartAndTarget(routeFromLoc,
                                                        routeToLoc)
                     }
-                    positionSource.start;
+                    positionSource.start();
                     return;
                 }
                 routeIcon.source = "qrc:///pics/"+routeStep.icon;
