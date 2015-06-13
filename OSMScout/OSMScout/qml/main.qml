@@ -7,7 +7,7 @@ import QtQuick.Window 2.0
 
 import QtPositioning 5.3
 import QtSystemInfo 5.0
-
+import QtMultimedia 5.0
 import net.sf.libosmscout.map 1.0
 
 import "custom"
@@ -88,6 +88,128 @@ Window{
             followMe = true;
         }
     }
+    property int lastPlayedIndex1: -1;
+    property int lastPlayedIndex2: -1;
+    property var nextAudio;
+    property var distAudio;
+    function playRouteInstruction(distance, icon, index)
+    {
+        var firstDistance;
+        var secondDistance;
+        if(index!==lastPlayedIndex1 || index!==lastPlayedIndex2)
+        {
+            if(positionSource.position.speed*3.6 > 80)
+            {
+                distAudio = sound800m;
+                firstDistance = 0.800;
+                secondDistance = 0.200;
+            }
+            else if(positionSource.position.speed*3.6 > 50)
+            {
+                distAudio = sound200m;
+                firstDistance = 0.200;
+                secondDistance = 0.050;
+            }
+            else
+            {
+                distAudio = sound50m;
+                firstDistance = 0.050;
+                secondDistance = 0.015;
+            }
+
+
+            switch(icon)
+            {
+                case "routeLeft.svg":
+                    nextAudio = soundgoleft;break;
+                case "routeRight.svg":
+                    nextAudio = soundgoright;break;
+                case "routeFinish.svg":
+                    nextAudio = soundfinish;break;
+                case "routeMotorwayEnter.svg":
+                    nextAudio = soundmwenter;break;
+                case "routeMotorwayLeave.svg":
+                    nextAudio = soundmwleave; break;
+                case "routeRoundabout1.svg":
+                    nextAudio = soundround1; break;
+                case "routeRoundabout2.svg":
+                    nextAudio = soundround2; break;
+                case "routeRoundabout3.svg":
+                    nextAudio = soundround3; break;
+                case "routeRoundabout4.svg":
+                    nextAudio = soundround4; break;
+                case "routeRoundabout5.svg":
+                    nextAudio = soundround5; break;
+                case "routeSharpLeft.svg":
+                    nextAudio = soundsharpleft; break;
+                case "routeSharpRight.svg":
+                    nextAudio = soundsharpright; break;
+                case "routeSlightlyLeft.svg":
+                    nextAudio = soundslightlyleft; break;
+                case "routeSlightlyRight.svg":
+                    nextAudio = soundslightlyright; break;
+                case "routeStraight.svg":
+                    nextAudio = soundstraight; break;
+            }
+            if(distance <= firstDistance && distance> secondDistance
+                    && index!==lastPlayedIndex1 &&index!==lastPlayedIndex2)
+            {
+                if(distAudio.hasAudio && nextAudio.hasAudio)
+                {
+                    lastPlayedIndex1=index;
+                    distAudio.play();
+                }
+            }
+
+            if(distance <= secondDistance
+                    && index!==lastPlayedIndex2)
+            {
+                if(nextAudio.hasAudio)
+                {
+                    lastPlayedIndex2=index;
+                    nextAudio.play();
+                }
+            }
+        }
+    }
+
+
+    Audio {
+        id: sound200m;
+        source: "../sounds/200m.mp3"
+        onStopped: {
+            nextAudio.play();
+        }
+    }
+    Audio {
+        id: sound50m;
+        source: "../sounds/50m.mp3"
+        onStopped: {
+            nextAudio.play();
+        }
+    }
+    Audio {
+        id: sound800m;
+        source: "../sounds/800m.mp3"
+        onStopped: {
+            nextAudio.play();
+        }
+    }
+    Audio { id: soundfinish;        source: "../sounds/finish.mp3" }
+    Audio { id: soundgoleft;        source: "../sounds/goleft.mp3" }
+    Audio { id: soundgoright;       source: "../sounds/goright.mp3" }
+    Audio { id: soundmwenter;       source: "../sounds/motorwayenter.mp3" }
+    Audio { id: soundmwleave;       source: "../sounds/motorwayleave.mp3" }
+    Audio { id: soundround1;        source: "../sounds/roundabout1.mp3" }
+    Audio { id: soundround2;        source: "../sounds/roundabout2.mp3" }
+    Audio { id: soundround3;        source: "../sounds/roundabout3.mp3" }
+    Audio { id: soundround4;        source: "../sounds/roundabout4.mp3" }
+    Audio { id: soundround5;        source: "../sounds/roundabout5.mp3" }
+    Audio { id: soundsharpleft;     source: "../sounds/sharpleft.mp3" }
+    Audio { id: soundsharpright;    source: "../sounds/sharpright.mp3" }
+    Audio { id: soundslightlyleft;  source: "../sounds/slightlyleft.mp3" }
+    Audio { id: soundslightlyright; source: "../sounds/slightlyright.mp3" }
+    Audio { id: soundstraight;      source: "../sounds/straight.mp3" }
 
     PositionSource {
         id: positionSource
@@ -108,29 +230,40 @@ Window{
         onPositionChanged: {
             //console.log("Position changed:")
             if(!processUpdateEvents) return;
-
             if (position.latitudeValid) {
                 var routeStep = routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
                 var awayFromRoute = routingModel.getAwayFromRoute();
                 if(awayFromRoute===true)
                 {
                     if(map.isRendering())return;
-                    positionSource.stop();
+                    processUpdateEvents = false;
                     console.log("Recalculating route");
                     var lat = positionSource.position.coordinate.latitude;
                     var lon = positionSource.position.coordinate.longitude;
                     var locString = (lat>0?"N":"S")+Math.abs(lat)+" "+(lon>0?"E":"W")+Math.abs(lon);
+                    var tempLoc = routeFromLoc; // temporarily store current start location in case recalculation fails.
                     suggestionModel.setPattern(locString);
                     if (suggestionModel.count>=1) {
                         routeFromLoc=suggestionModel.get(0);
                     }
                     if(routeToLoc && routeFromLoc){
+                        console.log("Old route had "+routingModel.count+" points");
                         routingModel.setStartAndTarget(routeFromLoc,
-                                                       routeToLoc)
+                                                       routeToLoc);
+                        console.log("New route has "+routingModel.count+" points");
+                        if(routingModel.count === 0)
+                        {
+                            console.log("Recalculation failed, restore old route...");
+                            routeFromLoc = tempLoc;
+                            routingModel.setStartAndTarget(routeFromLoc,
+                                                           routeToLoc);
+
+                        }
                     }
-                    positionSource.start();
+                    processUpdateEvents = true;
                     return;
                 }
+                playRouteInstruction(routeStep.dCurrentDistance, routeStep.icon, routeStep.index);
                 routeIcon.source = "qrc:///pics/"+routeStep.icon;
                 routeDistance.text = routeStep.currentDistance;
                 routeDist.text = routeStep.targetDistance;

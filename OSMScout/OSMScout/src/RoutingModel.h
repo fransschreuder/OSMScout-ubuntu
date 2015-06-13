@@ -43,6 +43,8 @@ class RouteStep : public QObject
     Q_PROPERTY(QString icon READ getIcon)
     Q_PROPERTY(QString targetTime READ getTargetTime)
     Q_PROPERTY(QString targetDistance READ getTargetDistance)
+    Q_PROPERTY(int     index READ getIndex)
+    Q_PROPERTY(double  dCurrentDistance READ getDCurrentDistance)
 
 
 public:
@@ -58,6 +60,9 @@ public:
   QString targetDistance;
   double dTimeDelta;
   double dDistanceDelta;
+  double dCurrentDistance;
+  int index;
+
 
 public:
   RouteStep();
@@ -108,6 +113,16 @@ public:
   QString getIcon() const
   {
       return icon;
+  }
+
+  int getIndex() const
+  {
+      return index;
+  }
+
+  double getDCurrentDistance() const
+  {
+      return dCurrentDistance;
   }
 };
 

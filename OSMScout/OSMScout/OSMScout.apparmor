@@ -1,7 +1,8 @@
 {
     "policy_groups": [
         "location",
-        "networking"
+        "networking",
+        "audio"
     ],
     "policy_version": 1.2,
     "read_path": [

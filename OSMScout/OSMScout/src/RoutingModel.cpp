@@ -819,25 +819,27 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
         RouteStep* step = new RouteStep();
         step->description = "No Route data available";
         step->currentDistance="";
+        step->dCurrentDistance=0;
+        step->index = 0;
         return step;
     }
 
     double closestPoint = 7000; //more than largest possible distance
     int closestIndex = 0; //start position.
-    for(int i=0; i<route.routeSteps.size(); i++)
+    nextStepIndex = 0;
+    for(int i=0; i<(route.routeSteps.size()-1); i++)
     {
-        double d = osmscout::GetSphericalDistance(lon, lat, route.routeSteps[i].coord.GetLon(), route.routeSteps[i].coord.GetLat());
+        //double d = osmscout::GetSphericalDistance(lon, lat, route.routeSteps[i].coord.GetLon(), route.routeSteps[i].coord.GetLat());
+        //calculate distance between two instruction points of the rout, to determine where we are (which instruction to show)
+        double r, qx, qy;
+        double d = osmscout::distanceToSegment(lon, lat,route.routeSteps[i].coord.GetLon(), route.routeSteps[i].coord.GetLat(),route.routeSteps[i+1].coord.GetLon(), route.routeSteps[i+1].coord.GetLat(), r, qx, qy)*(6371.01/360)*2*M_PI;
+
         if(d<closestPoint)
         {
             closestIndex=i;
             closestPoint=d;
-            if(d<0.05) //within 50M?
-            {
-                if(i+1>=route.routeSteps.size())
-                    nextStepIndex = route.routeSteps.size()-1;
-                else
-                    nextStepIndex= i+1;
-            }
+            nextStepIndex = i+1;
+
         }
     }
     while(route.routeSteps[nextStepIndex].icon=="route.svg") //routeSteps without icon are not necessary to display, let's take the next one
@@ -883,7 +885,9 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
             RouteStep* step = new RouteStep();
             step->description = "Recalulating route...";
             step->currentDistance="";
+            step->dCurrentDistance=0;
             awayFromRoute = true;
+            step->index = 0;
             return step;
         }
     }
@@ -893,7 +897,10 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
     }
 
     RouteStep* step = new RouteStep(route.routeSteps[nextStepIndex]);
-    step->currentDistance=DistanceToString(osmscout::GetSphericalDistance(lon, lat, step->coord.GetLon(), step->coord.GetLat()));
+    step->index = nextStepIndex;
+    step->dCurrentDistance=osmscout::GetSphericalDistance(lon, lat, step->coord.GetLon(), step->coord.GetLat());
+    step->currentDistance=DistanceToString(step->dCurrentDistance);
+
     return step;
 
 

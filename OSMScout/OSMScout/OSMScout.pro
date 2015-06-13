@@ -84,6 +84,26 @@ PICFILES += \
     pics/routeMotorwayEnter.svg \
     pics/routeMotorwayLeave.svg
 
+AUDIOFILES += sounds/200m.mp3 \
+    sounds/50m.mp3 \
+    sounds/800m.mp3 \
+    sounds/finish.mp3 \
+    sounds/goleft.mp3 \
+    sounds/goright.mp3 \
+    sounds/motorwayenter.mp3 \
+    sounds/motorwayleave.mp3 \
+    sounds/roundabout1.mp3 \
+    sounds/roundabout2.mp3 \
+    sounds/roundabout3.mp3 \
+    sounds/roundabout4.mp3 \
+    sounds/roundabout5.mp3 \
+    sounds/sharpleft.mp3 \
+    sounds/sharpright.mp3 \
+    sounds/slightlyleft.mp3 \
+    sounds/slightlyright.mp3 \
+    sounds/straight.mp3
+
+
 DEFINES += "__UBUNTU__"
 
 qml_files.path = /qml
@@ -97,6 +117,10 @@ INSTALLS+=custom_qml_files
 pic_files.path = /pics
 pic_files.files = $${PICFILES}
 INSTALLS+=pic_files
+
+audio_files.path = /sounds
+audio_files.files = $${AUDIOFILES}
+INSTALLS+=audio_files
 
 
 #map_files.path = /
@@ -138,3 +162,4 @@ INSTALLS+=target
 #libfiles.path = $${UBUNTU_CLICK_BINARY_PATH}/..
 
 #xINSTALLS+=libfiles
+
