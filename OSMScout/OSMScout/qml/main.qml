@@ -90,8 +90,8 @@ Window{
     }
     property int lastPlayedIndex1: -1;
     property int lastPlayedIndex2: -1;
-    property var nextAudio;
-    property var distAudio;
+    property var nextAudio: soundstraight;
+    property var distAudio: sound50m;
     function playRouteInstruction(distance, icon, index)
     {
         var firstDistance;
@@ -150,6 +150,7 @@ Window{
                     nextAudio = soundslightlyright; break;
                 case "routeStraight.svg":
                     nextAudio = soundstraight; break;
+                default: return;
             }
             if(distance <= firstDistance && distance> secondDistance
                     && index!==lastPlayedIndex1 &&index!==lastPlayedIndex2)
