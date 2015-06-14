@@ -126,6 +126,7 @@ private:
   void FreeMaps();
   bool AssureRouter(osmscout::Vehicle vehicle);
 public:
+  QString getPreferredDownloadDir() const;
   QStringList findValidMapDirs() const;
   bool IsOpened();
   bool IsRendering(){
@@ -243,7 +244,9 @@ public:
 public:
     MapListModel(QObject* parent = 0);
     ~MapListModel();
-
+    Q_INVOKABLE QString getPreferredDownloadDir() const{
+        return DBThread::GetInstance()->getPreferredDownloadDir();
+    }
     QVariant data(const QModelIndex &index, int role) const;
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;

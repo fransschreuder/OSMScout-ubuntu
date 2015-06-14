@@ -1,9 +1,10 @@
 #include "downloadmanager.h"
-#include "downloadwidget.h"
+//#include "downloadwidget.h"
 
 #include <QFileInfo>
 #include <QDateTime>
 #include <QDebug>
+#include <QDir>
 
 
 DownloadManager::DownloadManager(QObject *parent) :
@@ -15,6 +16,8 @@ DownloadManager::DownloadManager(QObject *parent) :
 
 void DownloadManager::download(QUrl url, QString downloadPath)
 {
+    QDir dir(downloadPath);
+    dir.mkpath(downloadPath);
     _URL = url;
 
     _pHTTP = new DownloadManagerHTTP(this);

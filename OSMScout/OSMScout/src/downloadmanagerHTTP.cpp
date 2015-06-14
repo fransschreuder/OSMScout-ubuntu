@@ -1,5 +1,5 @@
 #include "downloadmanagerHTTP.h"
-#include "downloadwidget.h"
+//#include "downloadwidget.h"
 
 #include <QFileInfo>
 #include <QDateTime>

@@ -117,6 +117,35 @@ bool DBThread::AssureRouter(osmscout::Vehicle vehicle)
   return true;
 }
 
+QString DBThread::getPreferredDownloadDir() const
+{
+    ///TODO: search removable drives using QStorageInfo, will be available in Vivid
+    //QList<QStorageInfo> volumes = QStorageInfo::mountedVolumes();
+    QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+
+#ifdef __UBUNTU__
+    QDir mediaPath("/media");
+    QStringList removableUserList = mediaPath.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
+    for(int i=0; i<removableUserList.size(); i++) //find <user directories in media
+    {
+        std::cout<<"Found user: "<<removableUserList[i].toLocal8Bit().data()<<std::endl;
+        QDir removablePath("/media/"+removableUserList[i]);
+        QStringList removablePaths = removablePath.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
+        for(int j=0; j<removablePaths.size(); j++)
+        {
+            std::cout<<"Found removable path: "<<("/media/"+removableUserList[i]+"/"+removablePaths[j]).toLocal8Bit().data()<<std::endl;
+            docPaths.append("/media/"+removableUserList[i]+"/"+removablePaths[j]);
+        }
+    }
+#endif
+    QDir rootDir(docPaths.back()+"/Maps");
+    if(!rootDir.exists())
+    {
+        rootDir.mkdir(docPaths.back()+"/Maps");
+    }
+    return docPaths.back()+"/Maps";
+}
+
 QStringList DBThread::findValidMapDirs() const
 {
     ///TODO: search removable drives using QStorageInfo, will be available in Vivid

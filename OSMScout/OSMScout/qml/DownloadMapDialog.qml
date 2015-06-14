@@ -59,7 +59,7 @@ MapDialog {
             model: mapsModel
             width: parent.width
             //anchors.fill: parent
-            height: units.gu(30) //parent.height-tAvMaps.height-ok.height-text1.height-text2.height
+            height: units.gu(15) //parent.height-tAvMaps.height-ok.height-text1.height-text2.height
             //clip: true
             delegate:ListItemWithActions
             {
@@ -101,6 +101,116 @@ MapDialog {
                 map.reopenMap();
                 close();
             }
+        }
+        DownloadManager{
+            property string downloadUrl: "http://schreuderelectronics.com/osm/benelux/";
+            property string downloadFolder: "/media/phablet/AFE0-2E94/Maps/benelux";
+            id: downloadmanager
+            onProgress: {
+                progressbar.value = nPercentage;
+
+            }
+            onDownloadComplete:
+            {
+                if(mainFrame.currentFileIndex < 20)
+                {
+                    downloadmanager.download(downloadUrl+mainFrame.getNextFilename(), downloadFolder);
+                }
+                else
+                {
+                    download.enabled = true;
+                }
+            }
+        }
+        property int currentFileIndex: -1;
+        function getNextFilename(){
+            var filenames = [
+                "areaarea.idx",
+                "bounding.dat",
+                "routebicycle.dat",
+                "routefoot.idx",
+                "waysopt.dat",
+                "areanode.idx",
+                "intersections.dat",
+                "routebicycle.idx",
+                "standard.oss",
+                "areas.dat",
+                "intersections.idx",
+                "routecar.dat",
+                "types.dat",
+                "areasopt.dat",
+                "location.idx",
+                "routecar.idx",
+                "water.idx",
+                "areaway.idx",
+                "nodes.dat",
+                "routefoot.dat",
+                "ways.dat"];
+            if(mainFrame.currentFileIndex<20&&mainFrame.currentFileIndex>=-1)
+            {
+                mainFrame.currentFileIndex++;
+                return filenames[mainFrame.currentFileIndex];
+            }
+            else
+            {
+                mainFrame.currentFileIndex = -1;
+                return "";
+            }
+
+        }
+
+        Button {
+            id: download
+            text: "Download Benelux"
+            width: parent.width
+            onClicked:
+            {
+                downloadmanager.downloadFolder = mapsModel.getPreferredDownloadDir()+"/benelux";
+                console.log("Download location: "+mapsModel.getPreferredDownloadDir()+"/benelux");
+                download.enabled = false;
+                mainFrame.currentFileIndex = -1;
+                downloadmanager.download(downloadmanager.downloadUrl+mainFrame.getNextFilename(), downloadmanager.downloadFolder);
+            }
+        }
+        Button {
+            id: pause
+            text: "Pause Download"
+            width: parent.width
+            onClicked:{
+                if(text==="Pause Download")
+                {
+                    downloadmanager.pause();
+                    text = "Resume Download";
+                }
+                else
+                {
+                    downloadmanager.resume();
+                    text = "Pause Download";
+                }
+            }
+        }
+        Label{
+            width: parent.width
+            text: "Current file:"
+        }
+
+        ProgressBar{
+            id: progressbar
+            width: parent.width
+            minimumValue: 0
+            maximumValue: 100
+            value: 0
+        }
+        Label{
+            width: parent.width
+            text: "Overall progress:"
+        }
+        ProgressBar{
+            id: progressbarFiles
+            width: parent.width
+            minimumValue: 0
+            maximumValue: 20
+            value: mainFrame.currentFileIndex>=0?mainFrame.currentFileIndex:0
         }
     }
 }

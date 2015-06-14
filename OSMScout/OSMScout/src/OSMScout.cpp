@@ -36,6 +36,7 @@
 #include "MainWindow.h"
 
 #include <osmscout/util/Logger.h>
+#include "downloadmanager.h"
 
 static QObject *ThemeProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
@@ -74,6 +75,7 @@ int main(int argc, char* argv[])
   qmlRegisterType<MapListModel>("net.sf.libosmscout.map", 1, 0, "MapListModel");
 
   qmlRegisterSingletonType<Theme>("net.sf.libosmscout.map", 1, 0, "Theme", ThemeProvider);
+  qmlRegisterType<DownloadManager>("net.sf.libosmscout.map", 1, 0, "DownloadManager");
 
   osmscout::log.Debug(true);
 

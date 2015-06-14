@@ -36,7 +36,9 @@ SOURCES = src/OSMScout.cpp \
           src/MapWidget.cpp \
           src/MainWindow.cpp \
           src/SearchLocationModel.cpp \
-          src/RoutingModel.cpp
+          src/RoutingModel.cpp \
+          src/downloadmanager.cpp \
+          src/downloadmanagerHTTP.cpp
           
 HEADERS = src/Settings.h \
           src/Theme.h \
@@ -44,7 +46,9 @@ HEADERS = src/Settings.h \
           src/MapWidget.h \
           src/MainWindow.h \
           src/SearchLocationModel.h \
-          src/RoutingModel.h
+          src/RoutingModel.h \
+          src/downloadmanager.h \
+          src/downloadmanagerHTTP.h
 
 QMLFILES += \
     qml/custom/MapButton.qml \
@@ -162,4 +166,5 @@ INSTALLS+=target
 #libfiles.path = $${UBUNTU_CLICK_BINARY_PATH}/..
 
 #xINSTALLS+=libfiles
+
 
