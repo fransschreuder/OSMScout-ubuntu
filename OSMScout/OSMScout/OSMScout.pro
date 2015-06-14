@@ -36,7 +36,7 @@ SOURCES = src/OSMScout.cpp \
           src/MapWidget.cpp \
           src/MainWindow.cpp \
           src/SearchLocationModel.cpp \
-          src/RoutingModel.cpp \
+          src/RoutingModel.cpp
           
 HEADERS = src/Settings.h \
           src/Theme.h \
@@ -44,7 +44,7 @@ HEADERS = src/Settings.h \
           src/MapWidget.h \
           src/MainWindow.h \
           src/SearchLocationModel.h \
-          src/RoutingModel.h \
+          src/RoutingModel.h
 
 QMLFILES += \
     qml/custom/MapButton.qml \
