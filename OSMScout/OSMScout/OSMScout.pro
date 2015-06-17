@@ -65,7 +65,8 @@ CUSTOMQMLFILES += \
     qml/custom/LocationSearch.qml \
     qml/custom/ScrollIndicator.qml \
     qml/custom/MapDialog.qml \
-    qml/custom/ListItemWithActions.qml
+    qml/custom/ListItemWithActions.qml \
+    qml/custom/ConfirmationDialog.qml
 
 PICFILES += \
     pics/DeleteText.svg \

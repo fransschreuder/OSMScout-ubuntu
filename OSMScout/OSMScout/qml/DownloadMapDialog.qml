@@ -1,6 +1,7 @@
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0 as Popups
 import Qt.labs.settings 1.0
 
 import net.sf.libosmscout.map 1.0
@@ -9,6 +10,7 @@ import "custom"
 
 MapDialog {
     id: dialog
+    fullscreen: true
 
     label: "Download Maps..."
     Settings{
@@ -18,24 +20,101 @@ MapDialog {
 
     MapListModel{
         id: mapsModel
+        property int deleteIndex: 0;
     }
 
     DownloadListModel{
         id: downloadsListModel
     }
 
-    content : Flickable
+    Component{
+        id: confirmComponent
+        Popups.Dialog {
+
+
+            id: confirmDialog
+            title: i18n.tr("Are you sure?")
+            text: title
+            Button {
+                text: i18n.tr("OK")
+                onClicked: {
+
+                    dialog.visible = true;
+                    console.log("Delete" + mapsModel.deleteIndex);
+                    mapsModel.deleteItem(mapsModel.deleteIndex);
+
+                    PopupUtils.close(confirmDialog);
+                }
+
+            }
+
+            Button {
+                text: i18n.tr("Cancel")
+                onClicked: {
+                    dialog.visible = true;
+                    PopupUtils.close(confirmDialog);
+                }
+            }
+        }
+    }
+
+    function openConfirmDialog(index){
+        mapsModel.deleteIndex = index;
+        dialog.visible = false;
+        PopupUtils.open(confirmComponent);
+    }
+
+    property int currentFileIndex: -1;
+    function getNextFilename(){
+        var filenames = [
+            "areaarea.idx",
+            "bounding.dat",
+            "routebicycle.dat",
+            "routefoot.idx",
+            "waysopt.dat",
+            "areanode.idx",
+            "intersections.dat",
+            "routebicycle.idx",
+            "standard.oss",
+            "areas.dat",
+            "intersections.idx",
+            "routecar.dat",
+            "types.dat",
+            "areasopt.dat",
+            "location.idx",
+            "routecar.idx",
+            "water.idx",
+            "areaway.idx",
+            "nodes.dat",
+            "routefoot.dat",
+            "ways.dat"];
+        if(dialog.currentFileIndex<20&&dialog.currentFileIndex>=-1)
+        {
+            dialog.currentFileIndex++;
+            return filenames[dialog.currentFileIndex];
+        }
+        else
+        {
+            dialog.currentFileIndex = -1;
+            return "";
+        }
+
+    }
+
+    content: Flickable
     {
-        width: map.width - 2* Theme.vertSpace
-        height: map.height - 2* Theme.horizSpace
+        width: map.width - 2*  Theme.horizSpace
+        height: map.height - 2*Theme.vertSpace
         contentHeight: mainFrame.height
         contentWidth: parent.width - 2* Theme.horizSpace
+        flickableDirection: Flickable.VerticalFlick
         Column
         {
+
             spacing: Theme.vertSpace
             id: mainFrame
-
             width: parent.width
+            //width: parent.contentWidth
             //height: tavMaps.height + mapsView.height +
 
             Label{
@@ -52,7 +131,7 @@ MapDialog {
                 model: mapsModel
                 width: parent.width
                 //anchors.fill: parent
-                height: contentHeight//delegate.height*3//units.gu(30)
+                height: contentHeight<units.gu(25)?contentHeight:units.gu(25)//delegate.height*3//units.gu(30)
                 //clip: true
                 delegate:ListItemWithActions
                 {
@@ -61,7 +140,7 @@ MapDialog {
                         iconName: "delete"
                         text: i18n.tr("Delete")
                         onTriggered: {
-                            console.log("Delete" + index);
+                            dialog.openConfirmDialog(index);
                         }
                     }
                     onItemClicked: {
@@ -98,7 +177,7 @@ MapDialog {
                         Icon{
                             id: checkIcon
                             name: settings.selectedmap==index?"select":""
-                            width: units.gu(5)
+                            width: units.gu(4.5)
                             height: width
                         }
                     }
@@ -119,7 +198,7 @@ MapDialog {
                 model: downloadsListModel
                 width: parent.width
                 //anchors.fill: parent
-                height: contentHeight
+                height: contentHeight<units.gu(25)?contentHeight:units.gu(25)
                 //clip: true
                 delegate:ListItemWithActions
                 {
@@ -161,7 +240,7 @@ MapDialog {
                         Icon{
                             //id: checkIcon
                             name: downloadsView.downloadMapIndex==index?"select":""
-                            width: units.gu(5)
+                            width: units.gu(4.5)
                             height: width
                         }
                     }
@@ -182,10 +261,10 @@ MapDialog {
                 }
                 onDownloadComplete:
                 {
-                    if(mainFrame.currentFileIndex < 20)
+                    if(dialog.currentFileIndex < 20)
                     {
                         var name = downloadsListModel.get(downloadsView.downloadMapIndex);
-                        downloadmanager.download(downloadUrl+name+"/"+mainFrame.getNextFilename(), downloadFolder);
+                        downloadmanager.download(downloadUrl+name+"/"+dialog.getNextFilename(), downloadFolder);
                     }
                     else
                     {
@@ -195,42 +274,7 @@ MapDialog {
                     }
                 }
             }
-            property int currentFileIndex: -1;
-            function getNextFilename(){
-                var filenames = [
-                    "areaarea.idx",
-                    "bounding.dat",
-                    "routebicycle.dat",
-                    "routefoot.idx",
-                    "waysopt.dat",
-                    "areanode.idx",
-                    "intersections.dat",
-                    "routebicycle.idx",
-                    "standard.oss",
-                    "areas.dat",
-                    "intersections.idx",
-                    "routecar.dat",
-                    "types.dat",
-                    "areasopt.dat",
-                    "location.idx",
-                    "routecar.idx",
-                    "water.idx",
-                    "areaway.idx",
-                    "nodes.dat",
-                    "routefoot.dat",
-                    "ways.dat"];
-                if(mainFrame.currentFileIndex<20&&mainFrame.currentFileIndex>=-1)
-                {
-                    mainFrame.currentFileIndex++;
-                    return filenames[mainFrame.currentFileIndex];
-                }
-                else
-                {
-                    mainFrame.currentFileIndex = -1;
-                    return "";
-                }
 
-            }
 
             Button {
                 id: download
@@ -244,9 +288,9 @@ MapDialog {
                     downloadmanager.downloadFolder = mapsModel.getPreferredDownloadDir()+"/"+name;
                     console.log("Download location: "+mapsModel.getPreferredDownloadDir()+"/"+name);
                     download.enabled = false;
-                    mainFrame.currentFileIndex = -1;
+                    dialog.currentFileIndex = -1;
                     pause.visible = true;
-                    downloadmanager.download(downloadmanager.downloadUrl+name+"/"+mainFrame.getNextFilename(), downloadmanager.downloadFolder);
+                    downloadmanager.download(downloadmanager.downloadUrl+name+"/"+dialog.getNextFilename(), downloadmanager.downloadFolder);
                 }
             }
             Button {
@@ -272,9 +316,9 @@ MapDialog {
                 id: progressItem
                 visible: false;
                 width: parent.width;
-                height: progressbar.height+l1.height+l2.height+progressbarFiles.height
+                //height: progressbar.height+l1.height+l2.height+progressbarFiles.height
                 Column{
-                    height: parent.height
+                    //height: parent.height
                     width: parent.width
                     Label{
                         id: l1
@@ -298,7 +342,7 @@ MapDialog {
                         width: parent.width
                         minimumValue: 0
                         maximumValue: 20
-                        value: mainFrame.currentFileIndex>=0?mainFrame.currentFileIndex:0
+                        value: dialog.currentFileIndex>=0?dialog.currentFileIndex:0
                     }
                 }
 
@@ -315,6 +359,7 @@ MapDialog {
                     close();
                 }
             }
+
         }
     }
 }

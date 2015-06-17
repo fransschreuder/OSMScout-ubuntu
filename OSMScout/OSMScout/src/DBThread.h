@@ -256,6 +256,7 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
     Q_INVOKABLE MapListItem* get(int row) const;
+    Q_INVOKABLE bool deleteItem(int row);
 };
 
 

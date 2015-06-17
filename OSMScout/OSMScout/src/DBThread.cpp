@@ -120,7 +120,7 @@ bool DBThread::AssureRouter(osmscout::Vehicle vehicle)
 QString DBThread::getPreferredDownloadDir() const
 {
     ///TODO: search removable drives using QStorageInfo, will be available in Vivid
-    //QList<QStorageInfo> volumes = QStorageInfo::mountedVolumes();
+    QList<QStorageInfo> volumes = QStorageInfo::mountedVolumes();
     QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
 
 #ifdef __UBUNTU__
@@ -971,4 +971,19 @@ QHash<int, QByteArray> MapListModel::roleNames() const
 MapListItem* MapListModel::get(int row) const
 {
     return mapListItems.at(row);
+}
+
+bool MapListModel::deleteItem(int row)
+{
+    if(mapListItems.size()>row)
+    {
+        qDebug()<<"Removing dir"<<mapListItems[row]->getPath();
+
+        beginRemoveRows(QModelIndex(), row, row);
+        mapListItems.removeAt(row);
+        endRemoveRows();
+        return true;
+    }
+    else
+        return false;
 }
