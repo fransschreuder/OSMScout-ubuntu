@@ -4,13 +4,5 @@
         "networking",
         "audio"
     ],
-    "policy_version": 1.3,
-    "read_path": [
-        "/media/",
-        "@{HOME}/Documents/[Mm][Aa][Pp][Ss]/"
-    ],
-    "write_path": [
-        "/media/*/*/[Mm][Aa][Pp][Ss]/",
-        "@{HOME}/Documents/[Mm][Aa][Pp][Ss]/"
-    ]
+    "policy_version": 1.3
 }

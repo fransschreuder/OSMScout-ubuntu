@@ -120,7 +120,8 @@ bool DBThread::AssureRouter(osmscout::Vehicle vehicle)
 QStringList DBThread::getValidDownloadDirs() const
 {
     QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
-    docPaths.prepend(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    QString s = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    docPaths.prepend(s.left(s.lastIndexOf("/osmscout")));
 
 #ifdef __UBUNTU__
     ///TODO: search removable drives using QStorageInfo, will be available in Vivid
@@ -145,19 +146,32 @@ QStringList DBThread::getValidDownloadDirs() const
 QString DBThread::getPreferredDownloadDir() const
 {
     QStringList docPaths = getValidDownloadDirs();
-    for(int i=docPaths.size()-1; i>0; i--)
+    for(int i=docPaths.size()-1; i>=0; i--)
     {
+        QDir _rootDir(docPaths[i]);
+        _rootDir.mkdir(docPaths[i]);
         QDir rootDir(docPaths[i]+"/Maps"); //last one is preferred first
         QFileInfo fi(docPaths[i]);
         if(!rootDir.exists()||!fi.isDir())
         {
-            if(!fi.isWritable())continue;
-            if(!rootDir.mkdir(docPaths.back()+"/Maps")){
-                qDebug()<<"Could not create "<<docPaths.back()<<"/Maps";
+
+            if(!rootDir.mkdir(docPaths[i]+"/Maps")){
+                qDebug()<<"Could not create "<<docPaths[i]<<"/Maps";
                 continue;
             }
 
         }
+        QFile tempFile(docPaths[i]+"/Maps/tempfile"); //test if we can write here...
+        if(!tempFile.open(QFile::ReadWrite))
+        {
+            qDebug()<<"Could not write: "<<docPaths[i]+"/Maps/tempfile";
+            continue;
+        }
+        else
+        {
+            tempFile.remove();
+        }
+        qDebug()<<"Preferred Download dir: "<< docPaths[i]<<"/Maps";
         return docPaths[i]+"/Maps";
     }
     qDebug()<<"Could not find directory to write to";
