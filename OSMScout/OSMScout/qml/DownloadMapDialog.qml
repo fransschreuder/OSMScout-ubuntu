@@ -34,14 +34,20 @@ MapDialog {
 
             id: confirmDialog
             title: i18n.tr("Are you sure?")
-            text: title
+            text: i18n.tr("Delete "+mapsModel.get(mapsModel.deleteIndex))+"?"
             Button {
                 text: i18n.tr("OK")
                 onClicked: {
 
                     dialog.visible = true;
                     console.log("Delete" + mapsModel.deleteIndex);
-                    mapsModel.deleteItem(mapsModel.deleteIndex);
+                    if(mapsModel.deleteItem(mapsModel.deleteIndex))
+                    {
+                        if(settings.selectedmap > mapsModel.deleteIndex)
+                        {
+                            settings.selectedmap--;
+                        }
+                    }
 
                     PopupUtils.close(confirmDialog);
                 }
@@ -365,6 +371,7 @@ MapDialog {
                         download2.enabled = true;
                         progressItem2.visible = false;
                         pause2.visible = false;
+                        mapsModel.refreshItems();
                     }
                 }
             }

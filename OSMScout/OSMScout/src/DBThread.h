@@ -126,6 +126,7 @@ private:
   void FreeMaps();
   bool AssureRouter(osmscout::Vehicle vehicle);
 public:
+  QStringList getValidDownloadDirs() const;
   QString getPreferredDownloadDir() const;
   QStringList findValidMapDirs() const;
   bool IsOpened();
@@ -255,8 +256,9 @@ public:
 
     QHash<int, QByteArray> roleNames() const;
 
-    Q_INVOKABLE MapListItem* get(int row) const;
+    Q_INVOKABLE QString get(int row) const;
     Q_INVOKABLE bool deleteItem(int row);
+    Q_INVOKABLE bool refreshItems();
 };
 
 

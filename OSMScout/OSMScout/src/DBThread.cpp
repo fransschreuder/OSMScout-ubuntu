@@ -117,13 +117,14 @@ bool DBThread::AssureRouter(osmscout::Vehicle vehicle)
   return true;
 }
 
-QString DBThread::getPreferredDownloadDir() const
+QStringList DBThread::getValidDownloadDirs() const
 {
-    ///TODO: search removable drives using QStorageInfo, will be available in Vivid
-    QList<QStorageInfo> volumes = QStorageInfo::mountedVolumes();
     QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+    docPaths.prepend(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
 
 #ifdef __UBUNTU__
+    ///TODO: search removable drives using QStorageInfo, will be available in Vivid
+    //QList<QStorageInfo> volumes = QStorageInfo::mountedVolumes();
     QDir mediaPath("/media");
     QStringList removableUserList = mediaPath.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
     for(int i=0; i<removableUserList.size(); i++) //find <user directories in media
@@ -138,35 +139,34 @@ QString DBThread::getPreferredDownloadDir() const
         }
     }
 #endif
-    QDir rootDir(docPaths.back()+"/Maps");
-    if(!rootDir.exists())
+    return docPaths;
+}
+
+QString DBThread::getPreferredDownloadDir() const
+{
+    QStringList docPaths = getValidDownloadDirs();
+    for(int i=docPaths.size()-1; i>0; i--)
     {
-        rootDir.mkdir(docPaths.back()+"/Maps");
+        QDir rootDir(docPaths[i]+"/Maps"); //last one is preferred first
+        QFileInfo fi(docPaths[i]);
+        if(!rootDir.exists()||!fi.isDir())
+        {
+            if(!fi.isWritable())continue;
+            if(!rootDir.mkdir(docPaths.back()+"/Maps")){
+                qDebug()<<"Could not create "<<docPaths.back()<<"/Maps";
+                continue;
+            }
+
+        }
+        return docPaths[i]+"/Maps";
     }
-    return docPaths.back()+"/Maps";
+    qDebug()<<"Could not find directory to write to";
+    return "";
 }
 
 QStringList DBThread::findValidMapDirs() const
 {
-    ///TODO: search removable drives using QStorageInfo, will be available in Vivid
-    //QList<QStorageInfo> volumes = QStorageInfo::mountedVolumes();
-    QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
-
-#ifdef __UBUNTU__
-    QDir mediaPath("/media");
-    QStringList removableUserList = mediaPath.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
-    for(int i=0; i<removableUserList.size(); i++) //find <user directories in media
-    {
-        std::cout<<"Found user: "<<removableUserList[i].toLocal8Bit().data()<<std::endl;
-        QDir removablePath("/media/"+removableUserList[i]);
-        QStringList removablePaths = removablePath.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
-        for(int j=0; j<removablePaths.size(); j++)
-        {
-            std::cout<<"Found removable path: "<<("/media/"+removableUserList[i]+"/"+removablePaths[j]).toLocal8Bit().data()<<std::endl;
-            docPaths.append("/media/"+removableUserList[i]+"/"+removablePaths[j]);
-        }
-    }
-#endif
+    QStringList docPaths = getValidDownloadDirs();
 
     QStringList validMapDirs;
     for(int i=0; i<docPaths.size(); i++)
@@ -904,13 +904,25 @@ QString MapListItem::getPath() const
 ////////////////////////
 MapListModel::MapListModel(QObject* parent): QAbstractListModel(parent)
 {
+    refreshItems();
+}
+
+bool MapListModel::refreshItems()
+{
+    beginResetModel();
+    mapListItems.clear();
+    endResetModel();
     QStringList list_files = DBThread::GetInstance()->findValidMapDirs();
+
     for(int j=0; j<list_files.size(); j++)
     {
         QString name = list_files[j].split("/").back();
         MapListItem* item = new MapListItem(name, list_files[j]);
+        beginInsertRows(QModelIndex(), j, j);
         mapListItems.append(item);
+        endInsertRows();
     }
+    return true;
 }
 
 MapListModel::~MapListModel()
@@ -968,9 +980,32 @@ QHash<int, QByteArray> MapListModel::roleNames() const
     return roles;
 }
 
-MapListItem* MapListModel::get(int row) const
+QString MapListModel::get(int row) const
 {
-    return mapListItems.at(row);
+    return mapListItems.at(row)->getName();
+}
+
+bool removeDir(const QString & dirName)
+{
+    bool result = true;
+    QDir dir(dirName);
+
+    if (dir.exists(dirName)) {
+        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+            if (info.isDir()) {
+                result = removeDir(info.absoluteFilePath());
+            }
+            else {
+                result = QFile::remove(info.absoluteFilePath());
+            }
+
+            if (!result) {
+                return result;
+            }
+        }
+        result = dir.rmdir(dirName);
+    }
+    return result;
 }
 
 bool MapListModel::deleteItem(int row)
@@ -978,11 +1013,15 @@ bool MapListModel::deleteItem(int row)
     if(mapListItems.size()>row)
     {
         qDebug()<<"Removing dir"<<mapListItems[row]->getPath();
-
-        beginRemoveRows(QModelIndex(), row, row);
-        mapListItems.removeAt(row);
-        endRemoveRows();
-        return true;
+        if(removeDir(mapListItems[row]->getPath()))
+        {
+            beginRemoveRows(QModelIndex(), row, row);
+            mapListItems.removeAt(row);
+            endRemoveRows();
+            return true;
+        }
+        else
+            return false;
     }
     else
         return false;
