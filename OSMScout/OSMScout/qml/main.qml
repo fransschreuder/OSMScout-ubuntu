@@ -29,7 +29,7 @@ Window{
     property double previousX: 0;
     property double previousY: 0;
     property bool followMe: true;
-    property string routeFrom: "<current position>";
+    property string routeFrom: qsTr("<current position>");
     property string routeTo: "";
     property Location routeFromLoc;
     property Location routeToLoc;
@@ -622,7 +622,7 @@ Window{
                     anchors.centerIn: parent
                     id: copyLabel
                     rotation: 270
-                    text: " © OpenStreetMap contributors"
+                    text: qsTr(" © OpenStreetMap contributors")
                     fontSize: "small"
                 }
             }

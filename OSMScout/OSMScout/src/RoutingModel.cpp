@@ -58,23 +58,23 @@ static QString TimeToString(double time)
   return QString::fromStdString(stream.str());
 }
 
-static QString MoveToTurnCommand(osmscout::RouteDescription::DirectionDescription::Move move)
+QString RoutingListModel::MoveToTurnCommand(osmscout::RouteDescription::DirectionDescription::Move move)
 {
   switch (move) {
   case osmscout::RouteDescription::DirectionDescription::sharpLeft:
-    return "Turn sharp left";
+    return tr("Turn sharp left");
   case osmscout::RouteDescription::DirectionDescription::left:
-    return "Turn left";
+    return tr("Turn left");
   case osmscout::RouteDescription::DirectionDescription::slightlyLeft:
-    return "Turn slightly left";
+    return tr("Turn slightly left");
   case osmscout::RouteDescription::DirectionDescription::straightOn:
-    return "Straight on";
+    return tr("Straight on");
   case osmscout::RouteDescription::DirectionDescription::slightlyRight:
-    return "Turn slightly right";
+    return tr("Turn slightly right");
   case osmscout::RouteDescription::DirectionDescription::right:
-    return "Turn right";
+    return tr("Turn right");
   case osmscout::RouteDescription::DirectionDescription::sharpRight:
-    return "Turn sharp right";
+    return tr("Turn sharp right");
   }
 
   assert(false);
@@ -243,14 +243,14 @@ void RoutingListModel::DumpStartDescription(const osmscout::RouteDescription::St
 {
   RouteStep startAt;
 
-  startAt.description="Start at '"+QString::fromUtf8(startDescription->GetDescription().c_str())+"'";
+  startAt.description=tr("Start at")+" '"+QString::fromUtf8(startDescription->GetDescription().c_str())+"'";
   route.routeSteps.push_back(startAt);
 
   if (nameDescription.Valid() &&
       nameDescription->HasName()) {
     RouteStep driveAlong;
 
-    driveAlong.description="Drive along '"+QString::fromUtf8(nameDescription->GetDescription().c_str())+"'";
+    driveAlong.description=tr("Drive along")+" '"+QString::fromUtf8(nameDescription->GetDescription().c_str())+"'";
     route.routeSteps.push_back(driveAlong);
   }
 }
@@ -259,7 +259,7 @@ void RoutingListModel::DumpTargetDescription(const osmscout::RouteDescription::T
 {
   RouteStep targetReached;
   targetReached.icon = "routeFinish.svg";
-  targetReached.description="Target reached '"+QString::fromUtf8(targetDescription->GetDescription().c_str())+"'";
+  targetReached.description=tr("Target reached")+" '"+QString::fromUtf8(targetDescription->GetDescription().c_str())+"'";
   route.routeSteps.push_back(targetReached);
 }
 
@@ -278,18 +278,18 @@ void RoutingListModel::DumpTurnDescription(const osmscout::RouteDescription::Tur
       turn.icon=MoveToTurnIcon(directionDescription->GetCurve());
   }
   if (!crossingWaysString.empty()) {
-    turn.description="At crossing "+QString::fromUtf8(crossingWaysString.c_str())+"";
+    turn.description=tr("At crossing")+" "+QString::fromUtf8(crossingWaysString.c_str())+"";
   }
   if (directionDescription.Valid()) {
     turn.description+=MoveToTurnCommand(directionDescription->GetCurve());
   }
   else {
-    turn.description=+"Turn";
+    turn.description+=tr("Turn");
   }
 
   if (nameDescription.Valid() &&
       nameDescription->HasName()) {
-    turn.description+=" into '"+QString::fromUtf8(nameDescription->GetDescription().c_str())+"'";
+    turn.description+=" "+tr("into")+" '"+QString::fromUtf8(nameDescription->GetDescription().c_str())+"'";
   }
 
   route.routeSteps.push_back(turn);
@@ -306,11 +306,11 @@ void RoutingListModel::DumpRoundaboutEnterDescription(const osmscout::RouteDescr
   }
 
   if (!crossingWaysString.empty()) {
-    enter.description="At crossing "+QString::fromUtf8(crossingWaysString.c_str())+"";
+    enter.description=tr("At crossing")+" "+QString::fromUtf8(crossingWaysString.c_str())+"";
   }
 
 
-  enter.description+="Enter roundabout";
+  enter.description+=tr("Enter roundabout");
 
   route.routeSteps.push_back(enter);
 }
@@ -320,9 +320,9 @@ void RoutingListModel::DumpRoundaboutLeaveDescription(const osmscout::RouteDescr
 {
   RouteStep leave;
 
-  leave.description="Leave roundabout (";
+  leave.description=tr("Leave roundabout")+" (";
   leave.description+=QString::number(roundaboutLeaveDescription->GetExitCount());
-  leave.description+=". exit)";
+  leave.description+=". "+tr("exit")+")";
   switch(roundaboutLeaveDescription->GetExitCount())
   {
     case 1:
@@ -347,7 +347,7 @@ void RoutingListModel::DumpRoundaboutLeaveDescription(const osmscout::RouteDescr
 
   if (nameDescription.Valid() &&
       nameDescription->HasName()) {
-    leave.description+=" into street '";
+    leave.description+=" "+tr("into street")+" '";
     leave.description+=QString::fromUtf8(nameDescription->GetDescription().c_str());
     leave.description+="'";
   }
@@ -366,10 +366,10 @@ void RoutingListModel::DumpMotorwayEnterDescription(const osmscout::RouteDescrip
   }
 
   if (!crossingWaysString.empty()) {
-    enter.description="At crossing "+QString::fromUtf8(crossingWaysString.c_str());
+    enter.description=tr("At crossing")+" "+QString::fromUtf8(crossingWaysString.c_str());
   }
   enter.icon = "routeMotorwayEnter.svg";
-  enter.description+="Enter motorway";
+  enter.description+=tr("Enter motorway");
 
   if (motorwayEnterDescription->GetToDescription().Valid() &&
       motorwayEnterDescription->GetToDescription()->HasName()) {
@@ -384,18 +384,18 @@ void RoutingListModel::DumpMotorwayEnterDescription(const osmscout::RouteDescrip
 void RoutingListModel::DumpMotorwayChangeDescription(const osmscout::RouteDescription::MotorwayChangeDescriptionRef& motorwayChangeDescription)
 {
   RouteStep change;
-  change.description="Change motorway";
+  change.description=tr("Change motorway");
 
   if (motorwayChangeDescription->GetFromDescription().Valid() &&
       motorwayChangeDescription->GetFromDescription()->HasName()) {
-    change.description+=" from '";
+    change.description+=" "+tr("from")+" '";
     change.description+=QString::fromUtf8(motorwayChangeDescription->GetFromDescription()->GetDescription().c_str());
     change.description+="'";
   }
 
   if (motorwayChangeDescription->GetToDescription().Valid() &&
       motorwayChangeDescription->GetToDescription()->HasName()) {
-    change.description+=" to '";
+    change.description+=" "+tr("to")+" '";
     change.description+=QString::fromUtf8(motorwayChangeDescription->GetToDescription()->GetDescription().c_str());
     change.description+="'";
   }
@@ -409,7 +409,7 @@ void RoutingListModel::DumpMotorwayLeaveDescription(const osmscout::RouteDescrip
 {
   RouteStep leave;
 
-  leave.description="Leave motorway";
+  leave.description=tr("Leave motorway");
   leave.icon="routeMotorwayLeave.svg";
 
   if (motorwayLeaveDescription->GetFromDescription().Valid() &&
@@ -428,7 +428,7 @@ void RoutingListModel::DumpMotorwayLeaveDescription(const osmscout::RouteDescrip
 
   if (nameDescription.Valid() &&
       nameDescription->HasName()) {
-    leave.description+=" into '";
+    leave.description+=" "+tr("into")+" '";
     leave.description+=QString::fromUtf8(nameDescription->GetDescription().c_str());
     leave.description+="'";
   }
@@ -443,17 +443,17 @@ void RoutingListModel::DumpNameChangedDescription(const osmscout::RouteDescripti
   changed.description="";
 
   if (nameChangedDescription->GetOriginDesccription().Valid()) {
-    changed.description+="Way changes name<br/>";
-    changed.description+="from '";
+    changed.description+=tr("Way changes name")+"<br/>";
+    changed.description+=tr("from")+" '";
     changed.description+=QString::fromUtf8(nameChangedDescription->GetOriginDesccription()->GetDescription().c_str());
     changed.description+="'<br/>";
-    changed.description+=" to '";
+    changed.description+=" "+tr("to")+" '";
     changed.description+=QString::fromUtf8(nameChangedDescription->GetTargetDesccription()->GetDescription().c_str());
     changed.description+="'";
   }
   else {
-    changed.description+="Way changes name<br/>";
-    changed.description+="to '";
+    changed.description+=tr("Way changes name")+"<br/>";
+    changed.description+=tr("to")+" '";
     changed.description+=QString::fromUtf8(nameChangedDescription->GetTargetDesccription()->GetDescription().c_str());
     changed.description+="'";
   }
@@ -817,7 +817,7 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
     if(route.routeSteps.size()<=0)
     {
         RouteStep* step = new RouteStep();
-        step->description = "No Route data available";
+        step->description = tr("No Route data available");
         step->currentDistance="";
         step->dCurrentDistance=0;
         step->index = 0;
@@ -883,7 +883,7 @@ RouteStep* RoutingListModel::getNext(double lat, double lon)
         {
             awayCounter = 0;
             RouteStep* step = new RouteStep();
-            step->description = "Recalulating route...";
+            step->description = tr("Recalulating route...");
             step->currentDistance="";
             step->dCurrentDistance=0;
             awayFromRoute = true;

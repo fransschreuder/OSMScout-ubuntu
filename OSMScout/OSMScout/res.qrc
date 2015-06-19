@@ -31,5 +31,6 @@
         <file>pics/routeRoundabout5.svg</file>
         <file>pics/routeMotorwayEnter.svg</file>
         <file>pics/routeMotorwayLeave.svg</file>
+        <file>po/osmscout_nl.qm</file>
     </qresource>
 </RCC>

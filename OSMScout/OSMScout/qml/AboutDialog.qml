@@ -9,7 +9,7 @@ import "custom"
 MapDialog {
     id: dialog
 
-    label: "About..."
+    label: qsTr("About...")
 
     content : ColumnLayout {
         id: mainFrame
@@ -18,7 +18,7 @@ MapDialog {
         Text {
             Layout.fillWidth: true
 
-            text: "<b>OSMScout</b>"
+            text: "<b>"+qsTr("OSMScout")+"</b>"
             font.pixelSize: Theme.textFontSize*1.2
             horizontalAlignment: Text.AlignHCenter
         }
@@ -26,7 +26,7 @@ MapDialog {
         Text {
             Layout.fillWidth: true
 
-            text: "Ubuntu Touch version of OSMScout<br/>See <br/><a href=https://github.com/fransschreuder/libosmscout>https://github.com/fransschreuder/libosmscout</a><br/>Ubuntu modifications by Schreuder Electronics"
+            text: qsTr("Ubuntu Touch version of OSMScout")+"<br/>"+qsTr("See")+" <br/><a href=https://github.com/fransschreuder/libosmscout>https://github.com/fransschreuder/libosmscout</a><br/>"+qsTr("Ubuntu modifications by")+" Schreuder Electronics"
             font.pixelSize: Theme.textFontSize
             horizontalAlignment: Text.AlignHCenter
         }
@@ -34,7 +34,7 @@ MapDialog {
         Text {
             Layout.fillWidth: true
 
-            text: "All geographic data:<br/>© OpenStreetMap contributors<br/>See www.openstreetmap.org/copyright"
+            text: qsTr("All geographic data:")+"<br/>© "+qsTr("OpenStreetMap contributors<br/>See www.openstreetmap.org/copyright")
             font.pixelSize: Theme.textFontSize
             horizontalAlignment: Text.AlignHCenter
         }
@@ -52,7 +52,7 @@ MapDialog {
 
             Button {
                 id: ok
-                text: "OK"
+                text: qsTr("OK")
 
                 onClicked: {
                     close()

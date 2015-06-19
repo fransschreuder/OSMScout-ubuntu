@@ -10,7 +10,7 @@ MapDialog {
     id: dialog
 
     fullscreen: true
-    label: "Route..."
+    label: qsTr("Route...")
 
 
 
@@ -34,7 +34,7 @@ MapDialog {
                 id: startText
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBaseline
 
-                text: "Start:"
+                text: qsTr("Start:")
                 font.pixelSize: Theme.textFontSize
             }
 
@@ -52,7 +52,7 @@ MapDialog {
                 id: targetText
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBaseline
 
-                text: "Target:"
+                text: qsTr("Target:")
                 font.pixelSize: Theme.textFontSize
             }
 
@@ -80,7 +80,7 @@ MapDialog {
 
             Button {
                 id: route
-                text: "Route"
+                text: qsTr("Route")
 
                 onClicked: {
                     startInput.enforceLocationValue()
@@ -111,7 +111,7 @@ MapDialog {
 
             Button {
                 id: close
-                text: "Close"
+                text: qsTr("Close")
 
                 onClicked: {
                     mainWindow.routeTo = targetInput.text;
@@ -186,7 +186,7 @@ MapDialog {
 
             Label{
                 id: noRouteText
-                text: "No route found"
+                text: qsTr("No route found")
                 visible: false
             }
 

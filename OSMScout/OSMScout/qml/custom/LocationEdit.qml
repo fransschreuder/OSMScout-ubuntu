@@ -40,7 +40,7 @@ LineEdit {
         if (location != null) {
             return;
         }
-        if(text==="<current position>")
+        if(text===qsTr("<current position>"))
         {
             var lat = positionSource.position.coordinate.latitude;
             var lon = positionSource.position.coordinate.longitude;
@@ -63,7 +63,7 @@ LineEdit {
     }
 
     onTextChanged: {
-        if(text==="<current position>")
+        if(text===qsTr("<current position>"))
         {
             var lat = positionSource.position.coordinate.latitude;
             var lon = positionSource.position.coordinate.longitude;

@@ -175,6 +175,8 @@ private:
                                       const osmscout::RouteDescription::NameDescriptionRef& nameDescription);
     void DumpNameChangedDescription(const osmscout::RouteDescription::NameChangedDescriptionRef& nameChangedDescription);
 
+    QString MoveToTurnCommand(osmscout::RouteDescription::DirectionDescription::Move move);
+
 public:
     RoutingListModel(QObject* parent = 0);
     ~RoutingListModel();

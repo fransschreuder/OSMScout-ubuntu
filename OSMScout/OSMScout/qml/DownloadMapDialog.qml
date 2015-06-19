@@ -12,7 +12,7 @@ MapDialog {
     id: dialog
     fullscreen: true
 
-    label: "Download Maps..."
+    label: qsTr("Download Maps...")
     Settings{
         id: settings
         property int selectedmap: 0
@@ -33,14 +33,14 @@ MapDialog {
 
 
             id: confirmDialog
-            title: i18n.tr("Are you sure?")
-            text: i18n.tr("Delete "+mapsModel.get(mapsModel.deleteIndex))+"?"
+            title: qsTr("Are you sure?")
+            text: qsTr("Delete")+" "+mapsModel.get(mapsModel.deleteIndex)+"?"
             Button {
-                text: i18n.tr("OK")
+                text: qsTr("OK")
                 onClicked: {
 
                     dialog.visible = true;
-                    console.log("Delete" + mapsModel.deleteIndex);
+                    console.log("Delete " + mapsModel.deleteIndex);
                     if(mapsModel.deleteItem(mapsModel.deleteIndex))
                     {
                         if(settings.selectedmap > mapsModel.deleteIndex)
@@ -55,7 +55,7 @@ MapDialog {
             }
 
             Button {
-                text: i18n.tr("Cancel")
+                text: qsTr("Cancel")
                 onClicked: {
                     dialog.visible = true;
                     PopupUtils.close(confirmDialog);
@@ -126,7 +126,7 @@ MapDialog {
             Label{
                 width: parent.width
                 id: tAvMaps
-                text: "<b>Installed maps:</b>"
+                text: "<b>"+qsTr("Installed maps:")+"</b>"
             }
 
 
@@ -145,7 +145,7 @@ MapDialog {
                     id: mapsItem
                     leftSideAction: Action {
                         iconName: "delete"
-                        text: i18n.tr("Delete")
+                        text: qsTr("Delete")
                         onTriggered: {
                             dialog.openConfirmDialog(index);
                         }
@@ -195,7 +195,7 @@ MapDialog {
             }
             Button {
                 id: download1
-                text: "Download"
+                text: qsTr("Download")
                 visible: false
                 width: parent.width
                 onClicked:
@@ -215,20 +215,20 @@ MapDialog {
             }
             Button {
                 id: pause1
-                text: "Pause Download"
+                text: qsTr("Pause Download")
                 width: parent.width
                 visible: false
                 onClicked:{
-                    if(text==="Pause Download")
+                    if(text===qsTr("Pause Download"))
                     {
                         downloadmanager.pause();
-                        text = "Resume Download";
+                        text = qsTr("Resume Download");
                         pause2.text = text;
                     }
                     else
                     {
                         downloadmanager.resume();
-                        text = "Pause Download";
+                        text = qsTr("Pause Download");
                         pause2.text = text;
                     }
                 }
@@ -245,7 +245,7 @@ MapDialog {
                     Label{
                         id: l1_1
                         width: parent.width
-                        text: "Current file:"
+                        text: qsTr("Current file:")
                     }
                     ProgressBar{
                         id: progressbar1
@@ -257,7 +257,7 @@ MapDialog {
                     Label{
                         id: l2_1
                         width: parent.width
-                        text: "Overall progress:"
+                        text: qsTr("Overall progress:")
                     }
                     ProgressBar{
                         id: progressbarFiles1
@@ -272,7 +272,7 @@ MapDialog {
             }
             Button {
                 id: ok1
-                text: "Close"
+                text: qsTr("Close")
                 width: parent.width
                 onClicked: {
                     map.reopenMap();
@@ -280,7 +280,7 @@ MapDialog {
                 }
             }
             Label{
-                text: "<b>Select map to download:</b>"
+                text: "<b>"+qsTr("Select map to download:")+"</b>"
                 width: parent.width
             }
 
@@ -379,7 +379,7 @@ MapDialog {
 
             Button {
                 id: download2
-                text: "Download"
+                text: qsTr("Download")
                 visible: false
                 width: parent.width
                 onClicked:
@@ -399,20 +399,20 @@ MapDialog {
             }
             Button {
                 id: pause2
-                text: "Pause Download"
+                text: qsTr("Pause Download")
                 width: parent.width
                 visible: false
                 onClicked:{
-                    if(text==="Pause Download")
+                    if(text===qsTr("Pause Download"))
                     {
                         downloadmanager.pause();
-                        text = "Resume Download";
+                        text = qsTr("Resume Download");
                         pause1.text = text;
                     }
                     else
                     {
                         downloadmanager.resume();
-                        text = "Pause Download";
+                        text = qsTr("Pause Download");
                         pause1.text = text;
                     }
                 }
@@ -429,7 +429,7 @@ MapDialog {
                     Label{
                         id: l1_2
                         width: parent.width
-                        text: "Current file:"
+                        text: qsTr("Current file:")
                     }
                     ProgressBar{
                         id: progressbar2
@@ -441,7 +441,7 @@ MapDialog {
                     Label{
                         id: l2_2
                         width: parent.width
-                        text: "Overall progress:"
+                        text: qsTr("Overall progress:")
                     }
                     ProgressBar{
                         id: progressbarFiles2
@@ -458,7 +458,7 @@ MapDialog {
 
             Button {
                 id: ok2
-                text: "Close"
+                text: qsTr("Close")
                 width: parent.width
                 onClicked: {
                     map.reopenMap();

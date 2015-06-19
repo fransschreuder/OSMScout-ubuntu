@@ -50,8 +50,10 @@ HEADERS = src/Settings.h \
           src/downloadmanager.h \
           src/downloadmanagerHTTP.h
 
+TRANSLATIONS += po/osmscout_nl.po
+
+
 QMLFILES += \
-    qml/custom/MapButton.qml \
     qml/main.qml \
     qml/RoutingDialog.qml \
     qml/AboutDialog.qml \
@@ -59,6 +61,7 @@ QMLFILES += \
     qml/SearchDialog.qml
 
 CUSTOMQMLFILES += \
+    qml/custom/MapButton.qml \
     qml/custom/LineEdit.qml \
     qml/custom/DialogActionButton.qml \
     qml/custom/LocationEdit.qml \
@@ -67,6 +70,12 @@ CUSTOMQMLFILES += \
     qml/custom/MapDialog.qml \
     qml/custom/ListItemWithActions.qml \
     qml/custom/ConfirmationDialog.qml
+    
+    
+lupdate_only{
+SOURCES += $${QMLFILES} \
+           $${CUSTOMQMLFILES}
+}
 
 PICFILES += \
     pics/DeleteText.svg \

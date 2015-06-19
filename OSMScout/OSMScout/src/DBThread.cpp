@@ -481,7 +481,7 @@ bool DBThread::RenderMap(QPainter& painter,
 
     painter.setPen(QColor::fromRgbF(1.0,1.0,1.0,1.0));
 
-    QString text("no map available");
+    QString text(tr("no map available"));
 
     painter.drawText(QRectF(0,0,request.width,request.height),
                      text,

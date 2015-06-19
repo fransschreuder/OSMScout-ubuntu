@@ -21,15 +21,15 @@ import Ubuntu.Components 1.1
 import Ubuntu.Components.Popups 1.0 as Popups
 
 Popups.Dialog {
-    title: i18n.tr("JavaScript Confirmation")
+    title: qsTr("JavaScript Confirmation")
 
     Button {
-        text: i18n.tr("OK")
+        text: qsTr("OK")
         onClicked: model.accept()
     }
 
     Button {
-        text: i18n.tr("Cancel")
+        text: qsTr("Cancel")
         onClicked: model.reject()
     }
     text: title
