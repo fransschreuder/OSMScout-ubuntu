@@ -132,12 +132,12 @@ msgctxt "RoutingListModel|"
 msgid "Way changes name"
 msgstr "Droga zmiena nazwę"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:820
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:817
 msgctxt "RoutingListModel|"
 msgid "No Route data available"
 msgstr "Dane dotyczące trasy niedostępne"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:886
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:883
 msgctxt "RoutingListModel|"
 msgid "Recalulating route..."
 msgstr "Przeliczanie trasy..."
@@ -147,7 +147,12 @@ msgctxt "main|"
 msgid "<current position>"
 msgstr "<aktualna pozycja>"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:625
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:674
+msgctxt "main|"
+msgid "Recalculating route"
+msgstr "Przeliczanie trasy"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:693
 msgctxt "main|"
 msgid " © OpenStreetMap contributors"
 msgstr " © Twórcy OpenStreetMap"
@@ -288,12 +293,12 @@ msgctxt "RoutingDialog|"
 msgid "Route"
 msgstr "Trasa"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:114
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:115
 msgctxt "RoutingDialog|"
 msgid "Close"
 msgstr "Zamknij"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:189
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:190
 msgctxt "RoutingDialog|"
 msgid "No route found"
 msgstr "Nie znaleziono trasy"
