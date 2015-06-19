@@ -466,11 +466,8 @@ void RoutingListModel::setStartAndTarget(Location* start,
 {
   nextStepIndex = 0; //Start routing at begin of route
   beginResetModel();
-
   route.routeSteps.clear();
-
-  std::cout << "Routing from '" << start->getName().toLocal8Bit().data() << "' to '" << target->getName().toLocal8Bit().data() << "'" << std::endl;
-
+  qDebug() << "Routing from '" << start->getName().toLocal8Bit().data() << "' to '" << target->getName().toLocal8Bit().data() << "'";
   osmscout::TypeConfigRef             typeConfig=DBThread::GetInstance()->GetTypeConfig();
   osmscout::FastestPathRoutingProfile routingProfile(typeConfig);
   osmscout::Way                       routeWay;

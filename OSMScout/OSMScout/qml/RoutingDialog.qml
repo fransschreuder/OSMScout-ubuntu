@@ -93,6 +93,7 @@ MapDialog {
                     mainWindow.routeTo = targetInput.text;
                     mainWindow.routeToLoc = targetInput.location;
                     mainWindow.routeFrom = startInput.text;
+                    mainWindow.routeFromLoc = startInput.location;
                     if(routingModel.count === 0)
                     {
                         noRouteText.visible = true;

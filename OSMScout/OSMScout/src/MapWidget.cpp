@@ -412,6 +412,19 @@ double MapWidget::geoToPixelY(double lon, double lat)
     return Y;
 }
 
+double MapWidget::distanceToPixels(double distance)
+{
+    DBThread * dbThread=DBThread::GetInstance();
+    osmscout::MercatorProjection projection;
+    dbThread->GetProjection(projection);
+    if(!dbThread->IsOpened()) return 0;
+    qDebug()<<"Distance: "<<distance;
+    qDebug()<<"pixelSize: "<<projection.GetPixelSize();
+    qDebug()<<"toPixel: "<<projection.ConvertWidthToPixel(distance)/projection.GetPixelSize();
+    return projection.ConvertWidthToPixel(distance)/projection.GetPixelSize();
+
+}
+
 bool MapWidget::isValid()
 {
     DBThread                     *dbThread=DBThread::GetInstance();

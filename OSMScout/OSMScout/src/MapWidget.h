@@ -73,6 +73,7 @@ public slots:
   void showLocation(Location* location);
   double geoToPixelX(double lon, double lat);
   double geoToPixelY(double lon, double lat);
+  double distanceToPixels(double distance);
   bool isValid();
 
 private:

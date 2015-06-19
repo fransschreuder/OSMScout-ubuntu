@@ -33,6 +33,7 @@ Window{
     property string routeTo: "";
     property Location routeFromLoc;
     property Location routeToLoc;
+    property bool allowRecalculation: true;
 
     function openRoutingDialog() {
         var component = Qt.createComponent("RoutingDialog.qml")
@@ -86,6 +87,16 @@ Window{
         onTriggered: {
             console.log("Timer expired");
             followMe = true;
+        }
+    }
+    Timer{
+        id: stopRecalucationTimer
+        repeat: false
+        interval: 10000
+        running: false
+        onTriggered: {
+            console.log("Timer expired");
+            allowRecalculation = true;
         }
     }
     property int lastPlayedIndex1: -1;
@@ -215,7 +226,7 @@ Window{
     PositionSource {
         id: positionSource
         property bool processUpdateEvents: true
-
+        property bool awayFromRoute: false
 
         active: true
 
@@ -229,13 +240,25 @@ Window{
         }
 
         onPositionChanged: {
-            //console.log("Position changed:")
+            console.log("Position changed:")
             if(!processUpdateEvents) return;
             if (position.latitudeValid) {
                 var routeStep = routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
-                var awayFromRoute = routingModel.getAwayFromRoute();
+                awayFromRoute = routingModel.getAwayFromRoute();
+                if(reCalculatingMessage.visible === true) awayFromRoute=true;
                 if(awayFromRoute===true)
                 {
+                    if(allowRecalculation===false)
+                    {
+                        awayFromRoute = false;
+                        return;
+                    }
+                    if(reCalculatingMessage.visible === false)
+                    {
+                        reCalculatingMessage.visible = true;
+                        reCalculatingMessage.update();
+                        return; ///will continue on next gps update
+                    }
                     if(map.isRendering())return;
                     processUpdateEvents = false;
                     console.log("Recalculating route");
@@ -261,9 +284,14 @@ Window{
 
                         }
                     }
+                    reCalculatingMessage.visible = false;
+                    reCalculatingMessage.update();
+                    allowRecalculation = false;
+                    stopRecalucationTimer.start();
                     processUpdateEvents = true;
                     return;
                 }
+                awayFromRoute = false;
                 playRouteInstruction(routeStep.dCurrentDistance, routeStep.icon, routeStep.index);
                 routeIcon.source = "qrc:///pics/"+routeStep.icon;
                 routeDistance.text = routeStep.currentDistance;
@@ -271,7 +299,7 @@ Window{
                 routeTime.text = routeStep.targetTime;
                 //routeInstructionText.text = "<b>"+ routeStep.description + "</b><br/>"+routeStep.distance;
                 positionCursor.x = map.geoToPixelX(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.width/2;
-                positionCursor.y = map.geoToPixelY(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.height;
+                positionCursor.y = map.geoToPixelY(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.height/2;
 
                 //console.log("  latitude: " + position.coordinate.latitude)
                 if(followMe==true)
@@ -301,6 +329,8 @@ Window{
             }
         }
     }
+
+
 
     GridLayout {
         id: content
@@ -377,21 +407,41 @@ Window{
             RoutingListModel {
                 id: routingModel
             }
+            Rectangle{
+                id: precisionCircle
+                x: positionCursor.x+positionCursor.width/2-width/2
+                y: positionCursor.y+positionCursor.height/2-height/2
+                height: map.distanceToPixels(positionSource.position.horizontalAccuracy)/2
+                width: height
+                color: UbuntuColors.blue
+                opacity: 0.2
+                radius: width/2
+
+            }
 
             Item{
                 id: positionCursor
                 x: positionSource.position.latitudeValid?map.geoToPixelX(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-width/2:0
-                y: positionSource.position.latitudeValid?map.geoToPixelY(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-height:0
+                y: positionSource.position.latitudeValid?map.geoToPixelY(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-height/2:0
 
-                width: units.gu(3)
-                height: units.gu(3)
-                Icon{
+                width: units.gu(4)
+                height: units.gu(4)
+                Image {
+                    width: units.gu(4)
+                    height: units.gu(4)
+                    anchors.centerIn: parent
+                    source: "qrc:///pics/route.svg"
+                    rotation: positionSource.position.directionValid?positionSource.position.direction:0
+                }
+                /*Icon{
                     visible: positionSource.position.latitudeValid
                     anchors.fill: parent
                     name: "location"
 
-                }
+                }*/
             }
+
+
 
 
             PinchArea{
@@ -403,7 +453,8 @@ Window{
                     positionSource.processUpdateEvents = false;
                 }
                 onPinchUpdated: {
-                    map.zoomQuick(pinch.scale);
+                    if(!positionSource.awayFromRoute)
+                        map.zoomQuick(pinch.scale);
                     //map.moveQuick(pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
                     var hw = map.width/2;
                     var hh = map.height/2;
@@ -442,7 +493,8 @@ Window{
 
                     onPositionChanged:
                     {
-                        map.moveQuick(oldX - mouse.x, oldY - mouse.y);
+                        if(!positionSource.awayFromRoute)
+                            map.moveQuick(oldX - mouse.x, oldY - mouse.y);
 
                         positionCursor.x += (mouse.x - previousX);
                         positionCursor.y += (mouse.y - previousY);
@@ -605,6 +657,22 @@ Window{
                         }
                     }
 
+                }
+            }
+            Rectangle {
+                id: reCalculatingMessage
+                anchors {
+                    horizontalCenter: map.horizontalCenter
+                    verticalCenter: map.verticalCenter
+                }
+                width: map.width*0.66
+                height: recalcMsg.height*5
+                color: UbuntuColors.orange
+                visible: false
+                Label {
+                    id: recalcMsg
+                    text: qsTr("Recalculating route")
+                    anchors.centerIn: parent
                 }
             }
 
