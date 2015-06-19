@@ -50,7 +50,8 @@ HEADERS = src/Settings.h \
           src/downloadmanager.h \
           src/downloadmanagerHTTP.h
 
-TRANSLATIONS += po/osmscout_nl.po
+TRANSLATIONS += po/osmscout_nl.po \
+                po/osmscout_pl.po
 
 
 QMLFILES += \
