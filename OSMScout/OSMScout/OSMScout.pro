@@ -7,7 +7,7 @@ UBUNTU_MANIFEST_FILE=manifest.json.in
 #QT_CONFIG -= no-pkg-config
 CONFIG += qt thread c++11
 
-QT += core gui widgets qml quick svg positioning
+QT += core gui widgets qml quick svg positioning dbus
 
 #PKGCONFIG += libosmscout-map-qt
 
@@ -38,7 +38,8 @@ SOURCES = src/OSMScout.cpp \
           src/SearchLocationModel.cpp \
           src/RoutingModel.cpp \
           src/downloadmanager.cpp \
-          src/downloadmanagerHTTP.cpp
+          src/downloadmanagerHTTP.cpp \
+          src/UnityScreen.cpp
           
 HEADERS = src/Settings.h \
           src/Theme.h \
@@ -48,7 +49,8 @@ HEADERS = src/Settings.h \
           src/SearchLocationModel.h \
           src/RoutingModel.h \
           src/downloadmanager.h \
-          src/downloadmanagerHTTP.h
+          src/downloadmanagerHTTP.h \
+          src/UnityScreen.h
 
 TRANSLATIONS += po/osmscout_nl.po \
                 po/osmscout_pl.po

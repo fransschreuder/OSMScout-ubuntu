@@ -10,7 +10,7 @@ import QtSystemInfo 5.0
 import QtMultimedia 5.0
 import net.sf.libosmscout.map 1.0
 import Qt.labs.settings 1.0
-import UnityScreen 1.0
+
 
 import "custom"
 Window{

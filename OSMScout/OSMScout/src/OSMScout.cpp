@@ -37,6 +37,7 @@
 
 #include <osmscout/util/Logger.h>
 #include "downloadmanager.h"
+#include "UnityScreen.h"
 
 static QObject *ThemeProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
@@ -88,6 +89,7 @@ int main(int argc, char* argv[])
 
   qmlRegisterSingletonType<Theme>("net.sf.libosmscout.map", 1, 0, "Theme", ThemeProvider);
   qmlRegisterType<DownloadManager>("net.sf.libosmscout.map", 1, 0, "DownloadManager");
+  qmlRegisterType<UnityScreen>("net.sf.libosmscout.map", 1, 0, "UnityScreen");
 
   osmscout::log.Debug(true);
 
