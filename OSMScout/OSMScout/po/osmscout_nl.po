@@ -208,12 +208,13 @@ msgid "Are you sure?"
 msgstr "Weet u het zeker?"
 
 #: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:37
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:148
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:190
 msgctxt "DownloadMapDialog|"
 msgid "Delete"
 msgstr "Verwijder"
 
 #: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:39
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:93
 msgctxt "DownloadMapDialog|"
 msgid "OK"
 msgstr "OK"
@@ -223,55 +224,70 @@ msgctxt "DownloadMapDialog|"
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:129
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:78
+msgctxt "DownloadMapDialog|"
+msgid "Error"
+msgstr "Fout"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:171
 msgctxt "DownloadMapDialog|"
 msgid "Installed maps:"
 msgstr "Geinstalleerde kaarten:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:198
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:382
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:240
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:439
 msgctxt "DownloadMapDialog|"
 msgid "Download"
 msgstr "Download"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:218
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:222
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:231
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:402
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:406
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:415
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:260
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:264
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:273
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:459
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:463
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:472
 msgctxt "DownloadMapDialog|"
 msgid "Pause Download"
 msgstr "Download Pauzeren"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:225
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:409
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:267
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:466
 msgctxt "DownloadMapDialog|"
 msgid "Resume Download"
 msgstr "Download Hervatten"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:248
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:432
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:290
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:489
 msgctxt "DownloadMapDialog|"
 msgid "Current file:"
 msgstr "Huidig bestand:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:260
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:444
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:302
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:501
 msgctxt "DownloadMapDialog|"
 msgid "Overall progress:"
 msgstr "Totale voortgang:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:275
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:461
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:317
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:518
 msgctxt "DownloadMapDialog|"
 msgid "Close"
 msgstr "Sluiten"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:283
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:325
 msgctxt "DownloadMapDialog|"
 msgid "Select map to download:"
 msgstr "Selecteer kaart voor download:"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:408
+msgctxt "DownloadMapDialog|"
+msgid "md5sum of"
+msgstr "md5sum over"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:408
+msgctxt "DownloadMapDialog|"
+msgid "failed"
+msgstr "mislukt"
 
 #: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:13
 msgctxt "RoutingDialog|"

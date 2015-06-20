@@ -31,6 +31,8 @@ public slots:
     void download(QUrl url, QString downloadPath);
     void pause();
     void resume();
+    QString md5sum(const QString &fileName);
+    bool checkmd5sum(const QString path, const QString & fileName);
 
 private slots:
     void localAddLine(QString qsLine);

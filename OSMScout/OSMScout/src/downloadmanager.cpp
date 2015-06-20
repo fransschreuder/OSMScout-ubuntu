@@ -58,6 +58,48 @@ void DownloadManager::localDownloadComplete()
 {
     emit downloadComplete();
 }
+#include <QCryptographicHash>
+// Returns empty QString() on failure.
+QString DownloadManager::md5sum(const QString &fileName)
+{
+    QFile f(fileName);
+    if (f.open(QFile::ReadOnly)) {
+        QCryptographicHash hash(QCryptographicHash::Md5);
+        if (hash.addData(&f)) {
+            QByteArray arr = hash.result();
+            QString res;
+            for(int i=0; i<arr.length(); i++)
+            {
+                res.append(QString("%1").arg((int)arr[i], 2, 16, QChar('0')));
+            }
+            return res;
+        }
+    }
+    return QString();
+}
+
+bool DownloadManager::checkmd5sum(const QString path, const QString & fileName)
+{
+    if(fileName=="md5sums")return true;
+    QString calcsum = md5sum(path+"/"+fileName);
+    qDebug()<<"Calculated md5sum "<<calcsum<<" "<<fileName;
+    QFile f(path+"/md5sums");
+    if (f.open(QFile::ReadOnly)) {
+        while (!f.atEnd()) {
+            QString line = QString(f.readLine());
+            if(line.contains(calcsum)&&line.contains(fileName))
+            {
+                qDebug()<<"checksum correct: "<<line;
+                return true;
+            }
+        }
+        return false;
+    }
+    else
+    {
+        return false;
+    }
+}
 
 /////////////////////////////////
 
@@ -84,6 +126,7 @@ QString DownloadListItem::getSize() const
 {
     return m_size;
 }
+
 
 ////////////////////////
 DownloadListModel::DownloadListModel(QObject* parent): QAbstractListModel(parent)

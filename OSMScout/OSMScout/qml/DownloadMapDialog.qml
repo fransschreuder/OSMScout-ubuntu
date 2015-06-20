@@ -69,10 +69,51 @@ MapDialog {
         dialog.visible = false;
         PopupUtils.open(confirmComponent);
     }
+    property string errorMessage: ""
+    Component{
+        id: errorComponent
+
+        Popups.Dialog {
+            id: errorDialog
+            title: qsTr("Error")
+            text: dialog.errorMessage;
+            Item{
+                id: iconContainer
+                height: icon.height
+                Icon{
+                    id: icon
+                    anchors.centerIn: parent
+                    name: "error"
+                    width: units.gu(6);
+                    height: width
+                }
+            }
+
+            Button {
+                text: qsTr("OK")
+                onClicked: {
+
+                    dialog.visible = true;
+                    PopupUtils.close(errorDialog);
+                }
+
+            }
+
+
+        }
+    }
+
+    function showError(message){
+        dialog.errorMessage = message;
+        dialog.visible = false;
+        PopupUtils.open(errorComponent);
+    }
 
     property int currentFileIndex: -1;
+    property string currentFile: "";
     function getNextFilename(){
         var filenames = [
+            "md5sums",
             "areaarea.idx",
             "bounding.dat",
             "routebicycle.dat",
@@ -94,9 +135,10 @@ MapDialog {
             "nodes.dat",
             "routefoot.dat",
             "ways.dat"];
-        if(dialog.currentFileIndex<20&&dialog.currentFileIndex>=-1)
+        if(dialog.currentFileIndex<21&&dialog.currentFileIndex>=-1)
         {
             dialog.currentFileIndex++;
+            dialog.currentFile = filenames[dialog.currentFileIndex];
             return filenames[dialog.currentFileIndex];
         }
         else
@@ -263,7 +305,7 @@ MapDialog {
                         id: progressbarFiles1
                         width: parent.width
                         minimumValue: 0
-                        maximumValue: 20
+                        maximumValue: 22
                         value: dialog.currentFileIndex>=0?dialog.currentFileIndex:0
                     }
                 }
@@ -358,7 +400,22 @@ MapDialog {
                 }
                 onDownloadComplete:
                 {
-                    if(dialog.currentFileIndex < 20)
+                    if(downloadmanager.checkmd5sum(downloadFolder,dialog.currentFile))
+                        console.log("md5sum correct");
+                    else
+                    {
+                        console.log("md5sum failed");
+                        dialog.showError(qsTr("md5sum of")+" "+dialog.currentFile+" "+qsTr("failed"));
+                        download1.enabled = true;
+                        progressItem1.visible = false;
+                        pause1.visible = false;
+                        download2.enabled = true;
+                        progressItem2.visible = false;
+                        pause2.visible = false;
+                        mapsModel.refreshItems();
+                        return;
+                    }
+                    if(dialog.currentFileIndex < 21)
                     {
                         var name = downloadsListModel.get(downloadsView.downloadMapIndex);
                         downloadmanager.download(downloadUrl+name+"/"+dialog.getNextFilename(), downloadFolder);
@@ -447,7 +504,7 @@ MapDialog {
                         id: progressbarFiles2
                         width: parent.width
                         minimumValue: 0
-                        maximumValue: 20
+                        maximumValue: 22
                         value: dialog.currentFileIndex>=0?dialog.currentFileIndex:0
                     }
                 }
