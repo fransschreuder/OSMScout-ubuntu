@@ -59,9 +59,9 @@ int main(int argc, char* argv[])
   MainWindow      *window;
   int             result;
 
-  app.setOrganizationName("osmscout-support.fransschreuder");
-  app.setOrganizationDomain("osmscout-support.fransschreuder");
-  app.setApplicationName("osmscout-support");
+  app.setOrganizationName("osmscout.fransschreuder");
+  app.setOrganizationDomain("osmscout.fransschreuder");
+  app.setApplicationName("osmscout");
 
 
   QTranslator qtTranslator;
