@@ -305,7 +305,7 @@ MapDialog {
                         id: progressbarFiles1
                         width: parent.width
                         minimumValue: 0
-                        maximumValue: 22
+                        maximumValue: 21
                         value: dialog.currentFileIndex>=0?dialog.currentFileIndex:0
                     }
                 }
@@ -504,7 +504,7 @@ MapDialog {
                         id: progressbarFiles2
                         width: parent.width
                         minimumValue: 0
-                        maximumValue: 22
+                        maximumValue: 21
                         value: dialog.currentFileIndex>=0?dialog.currentFileIndex:0
                     }
                 }
