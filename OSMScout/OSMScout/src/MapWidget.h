@@ -69,6 +69,7 @@ public slots:
   void down();
   void rotateLeft();
   void rotateRight();
+  void setRotation(double degrees);
   void showCoordinates(double lat, double lon);
   void showLocation(Location* location);
   double geoToPixelX(double lon, double lat);

@@ -9,11 +9,17 @@ import QtPositioning 5.3
 import QtSystemInfo 5.0
 import QtMultimedia 5.0
 import net.sf.libosmscout.map 1.0
+import Qt.labs.settings 1.0
 
 import "custom"
 Window{
     //Avoid screen from going blank after some time...
     ScreenSaver { screenSaverEnabled: false }
+    Settings {
+        id: settings
+        property bool metricSystem: (Qt.locale().measurementSystem===Locale.MetricSystem)
+    }
+
     LocationListModel {
         id: suggestionModel
     }
@@ -29,6 +35,7 @@ Window{
     property double previousX: 0;
     property double previousY: 0;
     property bool followMe: true;
+    property bool drivingDirUp: false;
     property string routeFrom: qsTr("<current position>");
     property string routeTo: "";
     property Location routeFromLoc;
@@ -243,6 +250,9 @@ Window{
             console.log("Position changed:")
             if(!processUpdateEvents) return;
             if (position.latitudeValid) {
+                if(positionSource.position.directionValid && drivingDirUp===true){
+                    map.setRotation(-1*positionSource.position.direction);
+                }
                 var routeStep = routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
                 awayFromRoute = routingModel.getAwayFromRoute();
                 if(reCalculatingMessage.visible === true) awayFromRoute=true;
@@ -431,7 +441,7 @@ Window{
                     height: units.gu(4)
                     anchors.centerIn: parent
                     source: "qrc:///pics/route.svg"
-                    rotation: positionSource.position.directionValid?positionSource.position.direction:0
+                    rotation: drivingDirUp?0:(positionSource.position.directionValid?positionSource.position.direction:0)
                 }
                 /*Icon{
                     visible: positionSource.position.latitudeValid
@@ -469,6 +479,8 @@ Window{
                 onPinchFinished: {
                     //console.log(pinch.center.x + " " + pinch.center.y);
                     //console.log(pinch.scale);
+                    if(followMeTimer.running)
+                        followMeTimer.restart();
                     if(followMe)
                     {
                         followMe = false;
@@ -509,11 +521,14 @@ Window{
                         map.move(oldX - mouse.x, oldY - mouse.y);
                         if(Math.abs(oldX - mouse.x)>20||Math.abs(oldY - mouse.y)>20)
                         {
+                            if(followMeTimer.running)
+                                followMeTimer.restart();
                             if(followMe)
                             {
                                 followMe = false;
                                 followMeTimer.start(); //re-enable after 30 seconds
                             }
+
                         }
                         oldX = mouse.x;
                         oldY = mouse.y;
@@ -563,9 +578,30 @@ Window{
 
                     onClicked: {
                         followMe = !followMe;
+                        followMeTimer.stop();
                     }
                     iconName: followMe ? "stock_website" : "location"
                 }
+                MapButton {
+                    id: drivingDirUpButton
+                    onClicked: {
+                        drivingDirUp = ! drivingDirUp;
+                        if(drivingDirUp === false)
+                        {
+                            map.setRotation(0);
+                        }
+
+                    }
+                    Image {
+                        width: parent.width
+                        height: parent.height
+                        anchors.centerIn: parent
+                        source: drivingDirUp?"qrc:///pics/northUp.svg":"qrc:///pics/directionUp.svg"
+                    }
+
+
+                }
+
                 MapButton {
                     id: downloadButton
                     iconName: "save"
@@ -642,7 +678,7 @@ Window{
                         id: statsCol
                         Label{
                             id: routeSpeed
-                            text: positionSource.position.speedValid?(positionSource.position.speed*3.6).toFixed(2)+" km/h":" "
+                            text: positionSource.position.speedValid?(positionSource.position.speed*(settings.metricSystem?3.6:2.23694)).toFixed(2)+(settings.metricSystem?" km/h":" mi/h"):" "
                             color: "white"
                         }
                         Label{

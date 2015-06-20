@@ -135,6 +135,9 @@ public slots:
     void setStartAndTarget(Location* start,
                            Location* target);
 
+    QString DistanceToString(double distance) const;
+
+
 private:
     struct RouteSelection
     {
@@ -142,6 +145,8 @@ private:
       osmscout::RouteDescription routeDescription;
       QList<RouteStep>           routeSteps;
     };
+
+    QLocale locale;
 
     RouteSelection route;
     int nextStepIndex;

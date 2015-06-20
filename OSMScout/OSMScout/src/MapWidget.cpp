@@ -292,6 +292,15 @@ void MapWidget::down()
     TriggerMapRendering();
 }
 
+void MapWidget::setRotation(double degrees)
+{
+    angle = (degrees/180)*M_PI;
+    while(angle<0) {
+        angle += 2*M_PI;
+    }
+    //do not trigger map rendering, as setting rotation always comes with a position update, which will do the trigger.
+}
+
 void MapWidget::rotateLeft()
 {
     angle=round(angle/DELTA_ANGLE)*DELTA_ANGLE-DELTA_ANGLE;

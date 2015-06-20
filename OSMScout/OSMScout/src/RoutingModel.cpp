@@ -25,20 +25,33 @@
 #include <osmscout/util/Geometry.h>
 #include <Settings.h>
 
-static QString DistanceToString(double distance)
+QString RoutingListModel::DistanceToString(double distance) const
 {
+  QSettings settings;
+  bool metric = settings.value("metricSystem",(locale.measurementSystem()==QLocale::MetricSystem)).toBool();
+  settings.setValue("metricSystem", metric);
+
   std::ostringstream stream;
 
   stream.setf(std::ios::fixed);
-  if(distance>=1)
+
+  if(metric)
   {
-      stream.precision(1);
-      stream << distance << "km";
+      if(distance>=1)
+      {
+          stream.precision(1);
+          stream << distance << "km";
+      }
+      else
+      {
+          stream.precision(0);
+          stream << distance*1000 << "m";
+      }
   }
   else
   {
-      stream.precision(0);
-      stream << distance*1000 << "m";
+      stream.precision(1);
+      stream << distance*0.621371 << "mi";
   }
 
   return QString::fromStdString(stream.str());
