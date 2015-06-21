@@ -16,9 +16,9 @@ Rectangle {
 
   signal clicked
   radius: units.gu(1)
-  width: units.gu(4)
-  height: units.gu(4)
-  color: defaultColor
+  width: units.gu(6)
+  height: units.gu(6)
+  color: hoverColor //defaultColor
   opacity: 0.8
 
   MouseArea {
@@ -26,13 +26,13 @@ Rectangle {
     anchors.fill: parent
     
     hoverEnabled: true
-    onEntered: {
+    /*onEntered: {
       parent.color = hoverColor
     }
     
     onExited:  {
       parent.color = defaultColor
-    }
+    }*/
     
     onClicked: {
       parent.clicked()

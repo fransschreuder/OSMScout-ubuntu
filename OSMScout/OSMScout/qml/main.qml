@@ -26,6 +26,7 @@ Window{
     Settings {
         id: settings
         property bool metricSystem: (Qt.locale().measurementSystem===Locale.MetricSystem)
+        property bool drivingDirUp: false
     }
 
     LocationListModel {
@@ -43,7 +44,7 @@ Window{
     property double previousX: 0;
     property double previousY: 0;
     property bool followMe: true;
-    property bool drivingDirUp: false;
+    //property bool drivingDirUp: false;
     property string routeFrom: qsTr("<current position>");
     property string routeTo: "";
     property Location routeFromLoc;
@@ -260,7 +261,7 @@ Window{
             console.log("Position changed:")
             if(!processUpdateEvents) return;
             if (position.latitudeValid) {
-                if(positionSource.position.directionValid && drivingDirUp===true){
+                if(positionSource.position.directionValid && settings.drivingDirUp===true){
                     map.setRotation(-1*positionSource.position.direction);
                 }
                 var routeStep = routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
@@ -458,7 +459,7 @@ Window{
                     height: units.gu(4)
                     anchors.centerIn: parent
                     source: "qrc:///pics/route.svg"
-                    rotation: drivingDirUp?0:(positionSource.position.directionValid?positionSource.position.direction:0)
+                    rotation: settings.drivingDirUp?0:(positionSource.position.directionValid?positionSource.position.direction:0)
                 }
                 /*Icon{
                     visible: positionSource.position.latitudeValid
@@ -584,7 +585,7 @@ Window{
             }
 
             // Top left column
-            ColumnLayout {
+            /*ColumnLayout {
                 id: menu
 
                 x: Theme.horizSpace
@@ -651,7 +652,7 @@ Window{
                         openAboutDialog()
                     }
                 }
-            }
+            }*/
 
             /*// Bottom left column
             ColumnLayout {
@@ -835,6 +836,115 @@ Window{
                     }
                 }
             }
+            Icon{
+                name: "up"
+                anchors.horizontalCenter: map.horizontalCenter
+                anchors.bottom: map.bottom
+                visible: !panel.opened&&!panel.animating
+
+
+                width: units.gu(8);
+                height: units.gu(4);
+                color: "white"
+            }
+
+            Panel {
+               id: panel
+               hideTimeout: 10000
+               anchors {
+                   left: parent.left
+                   right: parent.right
+                   bottom: parent.bottom
+               }
+               height: map.height/2
+               Item {
+                   anchors.fill: parent
+                   // two properties used by the toolbar delegate:
+                   property bool opened: panel.opened
+                   property bool animating: panel.animating
+                   Column{
+                       width: parent.width
+                       anchors.horizontalCenter: parent.horizontalCenter
+                       Icon{
+                           name: "up"
+                           anchors.horizontalCenter: parent.horizontalCenter
+                           //anchors.bottom: panel.opened?panel.top:map.bottom
+
+
+                           width: units.gu(8);
+                           height: units.gu(4);
+                           color: "white"
+                       }
+
+                       Row{
+                           anchors.horizontalCenter: parent.horizontalCenter
+                           spacing: units.gu(1);
+                           MapButton {
+                               id: routeButton
+                               //label: "#"
+
+                               onClicked: {
+                                   panel.close();
+                                   openRoutingDialog()
+                               }
+                               Image {
+                                   width: parent.width*0.66
+                                   height: parent.height*0.66
+                                   anchors.centerIn: parent
+                                   source: "qrc:///pics/route.svg"
+                               }
+                           }
+                           MapButton {
+                               id: followButton
+
+                               onClicked: {
+                                   followMe = !followMe;
+                                   followMeTimer.stop();
+                               }
+                               iconName: followMe ? "location" : "stock_website"
+                           }
+                           MapButton {
+                               id: drivingDirUpButton
+                               onClicked: {
+                                   settings.drivingDirUp = ! settings.drivingDirUp;
+                                   if(settings.drivingDirUp === false)
+                                   {
+                                       map.setRotation(0);
+                                   }
+
+                               }
+                               Image {
+                                   width: parent.width
+                                   height: parent.height
+                                   anchors.centerIn: parent
+                                   source: settings.drivingDirUp?"qrc:///pics/directionUp.svg":"qrc:///pics/northUp.svg"
+                               }
+
+
+                           }
+
+                           MapButton {
+                               id: downloadButton
+                               iconName: "save"
+                               onClicked: {
+                                   panel.close();
+                                   openDownloadMapDialog();
+                               }
+                           }
+
+                           MapButton {
+                               id: about
+                               label: "?"
+
+                               onClicked: {
+                                   panel.close();
+                                   openAboutDialog()
+                               }
+                           }
+                       }
+                   }
+               }
+           }
 
 
 
