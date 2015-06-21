@@ -74,6 +74,9 @@ public slots:
   void showLocation(Location* location);
   double geoToPixelX(double lon, double lat);
   double geoToPixelY(double lon, double lat);
+  void pixelToGeo(double x, double y, double& lon, double& lat);
+  double pixelToGeoLon(double x, double y);
+  double pixelToGeoLat(double x, double y);
   double distanceToPixels(double distance);
   bool isValid();
 

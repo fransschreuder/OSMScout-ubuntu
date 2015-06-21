@@ -421,6 +421,48 @@ double MapWidget::geoToPixelY(double lon, double lat)
     return Y;
 }
 
+void MapWidget::pixelToGeo(double x, double y, double& lon, double& lat)
+{
+    DBThread                     *dbThread=DBThread::GetInstance();
+    if(!dbThread->IsOpened()){
+        lat=0;lon=0;
+        return;
+    }
+    osmscout::MercatorProjection projection;
+    dbThread->GetProjection(projection);
+    projection.PixelToGeo(x,y,lon,lat);
+}
+
+double MapWidget::pixelToGeoLon(double x, double y)
+{
+    double lon,lat;
+    DBThread                     *dbThread=DBThread::GetInstance();
+    if(!dbThread->IsOpened()){
+        lat=0;lon=0;
+        return lon;
+    }
+
+    osmscout::MercatorProjection projection;
+    dbThread->GetProjection(projection);
+    projection.PixelToGeo(x,y,lon,lat);
+    return lon;
+}
+
+double MapWidget::pixelToGeoLat(double x, double y)
+{
+    double lon,lat;
+    DBThread                     *dbThread=DBThread::GetInstance();
+    if(!dbThread->IsOpened()){
+        lat=0;lon=0;
+        return lat;
+    }
+
+    osmscout::MercatorProjection projection;
+    dbThread->GetProjection(projection);
+    projection.PixelToGeo(x,y,lon,lat);
+    return lat;
+}
+
 double MapWidget::distanceToPixels(double distance)
 {
     DBThread * dbThread=DBThread::GetInstance();

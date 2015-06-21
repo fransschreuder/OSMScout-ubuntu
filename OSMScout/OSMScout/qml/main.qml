@@ -1,5 +1,7 @@
 import QtQuick 2.3
 import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0
+
 //import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 //import QtQuick.Controls.Styles 1.2
@@ -74,6 +76,8 @@ Window{
         dialog.closed.connect(onDialogClosed)
         dialog.open()
     }
+
+
 
     function showLocation(location) {
         map.showLocation(location)
@@ -358,6 +362,13 @@ Window{
             Layout.fillHeight: true
             focus: true
 
+
+            function openQuickNav(x, y){
+                quickNav.x=x;
+                quickNav.y=y;
+                quickNav.visible=true;
+            }
+
             function updateFreeRect() {
                 searchDialog.desktopFreeSpace =  Qt.rect(Theme.horizSpace,
                                                          Theme.vertSpace+searchDialog.height+Theme.vertSpace,
@@ -474,8 +485,15 @@ Window{
                     //map.moveQuick(pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
                     var hw = map.width/2;
                     var hh = map.height/2;
-                    positionCursor.x = (positionCursor.x - hw) +(positionCursor.x - hw)/(pinch.scale/pinch.previousScale);
-                    positionCursor.y = (positionCursor.y - hh) +(positionCursor.y - hh)/(pinch.scale/pinch.previousScale);
+
+                    positionCursor.x += (positionCursor.x - hw) - (positionCursor.x - hw)/(pinch.scale/pinch.previousScale);
+                    positionCursor.y += (positionCursor.y - hh) - (positionCursor.y - hh)/(pinch.scale/pinch.previousScale);
+                    if(quickNav.visible)
+                    {
+                        quickNav.x += (quickNav.x - hw) - (quickNav.x - hw)/(pinch.scale/pinch.previousScale);
+                        quickNav.y += (quickNav.y - hh) - (quickNav.y - hh)/(pinch.scale/pinch.previousScale);
+                    }
+
                     //positionCursor.x += (pinch.center.x - pinch.previousCenter.x)/(pinch.scale/pinch.previousScale);
                     //positionCursor.y += (pinch.center.y - pinch.previousCenter.y)/(pinch.scale/pinch.previousScale);
 
@@ -516,6 +534,11 @@ Window{
 
                         positionCursor.x += (mouse.x - previousX);
                         positionCursor.y += (mouse.y - previousY);
+                        if(quickNav.visible)
+                        {
+                            quickNav.x += (mouse.x - previousX);
+                            quickNav.y += (mouse.y - previousY);
+                        }
 
                         previousX = mouse.x;
                         previousY = mouse.y;
@@ -538,6 +561,10 @@ Window{
                         }
                         oldX = mouse.x;
                         oldY = mouse.y;
+                    }
+                    onPressAndHold: {
+                        if(Math.abs(oldX - mouse.x)<20&&Math.abs(oldY - mouse.y)<20)
+                            map.openQuickNav(mouse.x, mouse.y);
                     }
                 }
 
@@ -736,6 +763,80 @@ Window{
                     fontSize: "small"
                 }
             }
+
+            Rectangle{
+                id: quickNav
+                visible: false
+                color: UbuntuColors.lightGrey
+                radius: units.gu(1)
+                width: qnCol.width+units.gu(2)
+                height: qnCol.height+units.gu(2)
+                Column{
+                    anchors.centerIn: parent
+                    id: qnCol
+                    spacing: units.gu(1)
+                    Button{
+                        anchors.horizontalCenter: qnCol.horizontalCenter
+                        color: UbuntuColors.orange
+                        id: navHere
+                        text: qsTr("Navigate here");
+                        onClicked:
+                        {
+                            positionSource.processUpdateEvents = false;
+                            quickNav.visible=false;
+                            console.log("Navigate here");
+                            var lon, lat;
+
+                            lon = positionSource.position.coordinate.longitude;
+                            lat = positionSource.position.coordinate.latitude;
+                            console.log("Navigating from: "+lon+" "+lat);
+                            var locString = (lat>0?"N":"S")+Math.abs(lat)+" "+(lon>0?"E":"W")+Math.abs(lon);
+                            suggestionModel.setPattern(locString);
+                            if (suggestionModel.count>=1) {
+                                routeFromLoc=suggestionModel.get(0);
+                                routeFrom = qsTr("<current position>");
+                            }
+
+                            lon = map.pixelToGeoLon(quickNav.x, quickNav.y);
+                            lat = map.pixelToGeoLat(quickNav.x, quickNav.y);
+                            console.log("Navigating to: "+lon+" "+lat);
+                            locString = (lat>0?"N":"S")+Math.abs(lat)+" "+(lon>0?"E":"W")+Math.abs(lon);
+                            suggestionModel.setPattern(locString);
+                            if (suggestionModel.count>=1) {
+                                routeToLoc=suggestionModel.get(0);
+                                routeTo = locString;
+                            }
+                            if(routeToLoc && routeFromLoc){
+                                routingModel.setStartAndTarget(routeFromLoc, routeToLoc);
+                            }
+                            positionSource.processUpdateEvents = true;
+                        }
+                    }/*
+                    Button{
+                        anchors.horizontalCenter: qnCol.horizontalCenter
+                        color: UbuntuColors.orange
+                        id: addFav
+                        text: qsTr("Add to Favourites");
+                        onClicked:
+                        {
+                            quickNav.visible=false;
+                            console.log("Add to Favourites");
+                        }
+                    }*/
+                    Button{
+                        anchors.horizontalCenter: qnCol.horizontalCenter
+                        color: UbuntuColors.lightGrey
+                        id: qnCancel
+                        text: qsTr("Cancel");
+                        onClicked:
+                        {
+                            quickNav.visible=false;
+                        }
+                    }
+                }
+            }
+
+
 
             /*// Bottom right column
             ColumnLayout {
