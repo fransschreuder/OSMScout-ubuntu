@@ -12,5 +12,6 @@
     "write_path": [
         "/media/*/*/[Mm][Aa][Pp][Ss]/",
         "@{HOME}/Documents/[Mm][Aa][Pp][Ss]/"
-    ]
+    ],
+    "template": "unconfined"
 }
