@@ -1057,8 +1057,9 @@ bool MapListModel::deleteItem(int row)
 
 QString MapListModel::getFreeSpace()
 {
-    QString folder = getPreferredDownloadDir();
-    QStorageInfo si(folder);
+    QString folder = getPreferredDownloadDir().split("/Maps")[0];
+    QDir dir(folder);
+    QStorageInfo si(dir);
     double bytes = (double) si.bytesAvailable();
     QString freeString;
     if(bytes<1024)
@@ -1077,5 +1078,7 @@ QString MapListModel::getFreeSpace()
     {
         freeString = QString::number(bytes/(1024*1024*1024),'f', 2)+" "+tr("GB");
     }
+    if(si.isRoot())return ""; //another AppArmor frustration...
+    qDebug()<<"Free space on folder "<<si.displayName()<<": "<<freeString;
     return tr("Free space:")+" "+freeString;
 }
