@@ -115,25 +115,23 @@ void MapWidget::TriggerMapRendering()
 
 void MapWidget::paint(QPainter *painter)
 {
+    RenderMapRequest request;
+    QRectF           boundingBox=contentsBoundingRect();
+    request.lat=center.GetLat();
+    request.lon=center.GetLon();
+    request.angle=angle;
+    request.magnification=magnification;
+    request.width=boundingBox.width();
+    request.height=boundingBox.height();
     if(quickZooming) //just zoom the already rendered Qimage and repaint
     {
-        std::cout<<"Quick zooming"<<std::endl;
         DBThread         *dbThread=DBThread::GetInstance();
-        dbThread->RenderMapQuick(*painter, quickMoveX, quickMoveY, quickZoomFactor);
+        dbThread->RenderMapQuick(*painter, quickMoveX, quickMoveY, quickZoomFactor, request);
     }
     else
     {
-        RenderMapRequest request;
+
         DBThread         *dbThread=DBThread::GetInstance();
-        QRectF           boundingBox=contentsBoundingRect();
-
-        request.lat=center.GetLat();
-        request.lon=center.GetLon();
-        request.angle=angle;
-        request.magnification=magnification;
-        request.width=boundingBox.width();
-        request.height=boundingBox.height();
-
         if (!dbThread->RenderMap(*painter,request) &&
                 requestNewMap) {
             TriggerMapRendering();

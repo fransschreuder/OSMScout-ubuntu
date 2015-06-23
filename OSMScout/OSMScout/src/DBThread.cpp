@@ -430,8 +430,22 @@ void DBThread::TriggerMapRendering()
 }
 
 bool DBThread::RenderMapQuick(QPainter& painter,
-                              double dx, double dy, double zoomLevel)
+                              double dx, double dy, double zoomLevel, const RenderMapRequest& request)
 {
+    if (finishedImage==NULL || !styleConfig) {
+      painter.fillRect(0,0,request.width, request.height,
+                       QColor::fromRgbF(1.0,0.0,0.0,1.0));
+
+      painter.setPen(QColor::fromRgbF(1.0,1.0,1.0,1.0));
+
+      QString text(tr("no map available"));
+
+      painter.drawText(QRectF(0,0,request.width, request.height),
+                       text,
+                       QTextOption(Qt::AlignCenter));
+
+      return false;
+    }
     QSize sz=finishedImage->size();
 
 
