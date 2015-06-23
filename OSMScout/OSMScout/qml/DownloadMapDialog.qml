@@ -235,6 +235,12 @@ MapDialog {
                 }
 
             }
+
+            Label{
+                id: freeSpace
+                text: mapsModel.getFreeSpace()
+            }
+
             Button {
                 id: download1
                 text: qsTr("Download")

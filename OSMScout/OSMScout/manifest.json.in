@@ -9,7 +9,7 @@
             "desktop": "OSMScout/OSMScout.desktop"
         }
     },
-    "version": "0.4.0",
+    "version": "0.4.1",
     "maintainer": "Frans Schreuder <fransschreuder@gmail.com>",
     "framework": "ubuntu-sdk-15.04"
 }

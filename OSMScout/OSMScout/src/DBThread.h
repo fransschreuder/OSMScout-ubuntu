@@ -248,6 +248,8 @@ public:
     Q_INVOKABLE QString getPreferredDownloadDir() const{
         return DBThread::GetInstance()->getPreferredDownloadDir();
     }
+    Q_INVOKABLE QString getFreeSpace();
+
     QVariant data(const QModelIndex &index, int role) const;
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;

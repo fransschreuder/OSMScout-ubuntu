@@ -1040,3 +1040,28 @@ bool MapListModel::deleteItem(int row)
     else
         return false;
 }
+
+QString MapListModel::getFreeSpace()
+{
+    QString folder = getPreferredDownloadDir();
+    QStorageInfo si(folder);
+    double bytes = (double) si.bytesAvailable();
+    QString freeString;
+    if(bytes<1024)
+    {
+        freeString = QString::number(bytes/(1),'f', 2)+" "+tr("bytes");
+    }
+    else if(bytes>=1024&&bytes<(1024*1024))
+    {
+        freeString = QString::number(bytes/(1024),'f', 2)+" "+tr("kB");
+    }
+    else if(bytes>=(1024*1024)&&bytes<(1024*1024*1024))
+    {
+        freeString = QString::number(bytes/(1024*1024),'f', 2)+" "+tr("MB");
+    }
+    else
+    {
+        freeString = QString::number(bytes/(1024*1024*1024),'f', 2)+" "+tr("GB");
+    }
+    return tr("Free space:")+" "+freeString;
+}
