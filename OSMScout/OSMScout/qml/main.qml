@@ -85,13 +85,13 @@ Window{
     }
 
     function onDialogOpened() {
-        menu.visible = false;
+        //menu.visible = false;
         //navigation.visible = false;
         positionSource.processUpdateEvents=false;
     }
 
     function onDialogClosed() {
-        menu.visible = true;
+        //menu.visible = true;
         //navigation.visible = true;
         //timer.running = true;
         map.focus = true;
