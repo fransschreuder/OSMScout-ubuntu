@@ -48,7 +48,7 @@ MapDialog {
                             settings.selectedmap--;
                         }
                     }
-
+                    freeSpace.text = mapsModel.getFreeSpace();
                     PopupUtils.close(confirmDialog);
                 }
 
@@ -406,6 +406,7 @@ MapDialog {
                 }
                 onDownloadComplete:
                 {
+                    freeSpace.text = mapsModel.getFreeSpace();
                     if(downloadmanager.checkmd5sum(downloadFolder,dialog.currentFile))
                         console.log("md5sum correct");
                     else
