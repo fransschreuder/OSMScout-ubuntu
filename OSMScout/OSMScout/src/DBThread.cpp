@@ -343,6 +343,11 @@ void DBThread::TriggerMapRendering()
     drawParameter.SetOptimizeAreaNodes(osmscout::TransPolygon::quality);
     drawParameter.SetRenderSeaLand(true);
     drawParameter.SetBreaker(renderBreakerRef);
+    double fs = drawParameter.GetFontSize();
+    qDebug()<<"FontSize: "<<fs;
+    qDebug()<<"DPI:" << dpi;
+    fs*=(dpi/50); //for 100DPI, multiply by 1.5
+    drawParameter.SetFontSize(fs);
 
     std::cout << std::endl;
 
