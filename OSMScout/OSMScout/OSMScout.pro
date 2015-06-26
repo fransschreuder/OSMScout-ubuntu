@@ -39,7 +39,11 @@ SOURCES = src/OSMScout.cpp \
           src/RoutingModel.cpp \
           src/downloadmanager.cpp \
           src/downloadmanagerHTTP.cpp \
-          src/UnityScreen.cpp
+          src/UnityScreen.cpp \
+          src/DownloadDirListModel.cpp \
+          src/MapListModel.cpp \
+          src/DownloadListModel.cpp
+
           
 HEADERS = src/Settings.h \
           src/Theme.h \
@@ -50,7 +54,11 @@ HEADERS = src/Settings.h \
           src/RoutingModel.h \
           src/downloadmanager.h \
           src/downloadmanagerHTTP.h \
-          src/UnityScreen.h
+          src/UnityScreen.h \
+          src/DownloadDirListModel.h \
+          src/MapListModel.h \
+          src/DownloadListModel.h
+
 
 TRANSLATIONS += po/osmscout_nl.po \
                 po/osmscout_pl.po

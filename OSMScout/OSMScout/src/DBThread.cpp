@@ -117,6 +117,21 @@ bool DBThread::AssureRouter(osmscout::Vehicle vehicle)
   return true;
 }
 
+bool DBThread::testWritable(QString path)const
+{
+    QFile tempFile(path+"/tempfile"); //test if we can write here...
+    if(!tempFile.open(QFile::WriteOnly))
+    {
+        qDebug()<<"Could not write to: "+path+"/tempfile";
+        return false;
+    }
+    if(!tempFile.remove()){
+        qDebug()<<"Could not remove file: "+path+"/tempfile";;
+        return false;
+    }
+    return true;
+}
+
 QStringList DBThread::getValidDownloadDirs() const
 {
     QStringList docPaths=QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
@@ -140,6 +155,30 @@ QStringList DBThread::getValidDownloadDirs() const
         }
     }
 #endif
+    for(int i=0; i<docPaths.size(); i++)
+    {
+        QDir _rootDir(docPaths[i]);
+        _rootDir.mkdir(docPaths[i]);
+        QDir rootDir(docPaths[i]+"/Maps"); //last one is preferred first
+        QFileInfo fi(docPaths[i]);
+        if(!rootDir.exists()||!fi.isDir())
+        {
+            if(!rootDir.mkdir(docPaths[i]+"/Maps")){
+                docPaths.removeAt(i);
+                i--;
+                qDebug()<<"Could not create "<<docPaths[i]<<"/Maps";
+                continue;
+            }
+
+        }
+        if(!this->testWritable(docPaths[i]+"/Maps"))
+        {
+            docPaths.removeAt(i);
+            i--;
+            qDebug()<<"Path not writable";
+            continue;
+        }
+    }
     return docPaths;
 }
 
@@ -148,48 +187,11 @@ QString DBThread::getPreferredDownloadDir() const
     QStringList docPaths = getValidDownloadDirs();
     QSettings s;
     int defaultDownloadFolder = s.value("defaultDownloadFolder", docPaths.size()-1).toInt();
-    QStringList pathWritable;
-
-    for(int i=0; i<docPaths.size(); i++)
-    {
-        pathWritable.append("true");
-        QDir _rootDir(docPaths[i]);
-        _rootDir.mkdir(docPaths[i]);
-        QDir rootDir(docPaths[i]+"/Maps"); //last one is preferred first
-        QFileInfo fi(docPaths[i]);
-        if(!rootDir.exists()||!fi.isDir())
-        {
-
-            if(!rootDir.mkdir(docPaths[i]+"/Maps")){
-                qDebug()<<"Could not create "<<docPaths[i]<<"/Maps";
-                pathWritable[i]="false";
-                continue;
-            }
-
-        }
-        QFile tempFile(docPaths[i]+"/Maps/tempfile"); //test if we can write here...
-        if(!tempFile.open(QFile::ReadWrite))
-        {
-            qDebug()<<"Could not write: "<<docPaths[i]+"/Maps/tempfile";
-            pathWritable[i]="false";
-            continue;
-        }
-        else
-        {
-            tempFile.remove();
-        }
 
 
-    }
+    if(defaultDownloadFolder>=docPaths.size())defaultDownloadFolder=docPaths.size()-1;
 
-    if(defaultDownloadFolder>=pathWritable.size())defaultDownloadFolder=pathWritable.size()-1;
-    for(int i=pathWritable.size()-1; i>=0; i--)
-    {
-        if(pathWritable[i]=="true"&&(i==defaultDownloadFolder||i==0)){
-            qDebug()<<"Writable Download dir: "<< docPaths[i]<<"/Maps";
-            return docPaths[i]+"/Maps";
-        }
-    }
+    if(docPaths.size()>0)return docPaths[defaultDownloadFolder]+"/Maps";
     qDebug()<<"Could not find directory to write to";
     return "";
 }
@@ -926,267 +928,6 @@ bool DBThread::IsOpened()
 }
 
 
-/////////////////////////////////
 
-MapListItem::MapListItem( const QString& name,
-             const QString& path,
-             QObject* parent): QObject(parent)
-{
-    m_name = name;
-    m_path = path;
-}
-
-MapListItem::~MapListItem()
-{
-
-}
-
-
-QString MapListItem::getName() const
-{
-    return m_name;
-}
-
-QString MapListItem::getPath() const
-{
-    return m_path;
-}
-
-////////////////////////
-MapListModel::MapListModel(QObject* parent): QAbstractListModel(parent)
-{
-    refreshItems();
-}
-
-bool MapListModel::refreshItems()
-{
-    beginResetModel();
-    mapListItems.clear();
-    endResetModel();
-    QStringList list_files = DBThread::GetInstance()->findValidMapDirs();
-
-    for(int j=0; j<list_files.size(); j++)
-    {
-        QString name = list_files[j].split("/").back();
-        MapListItem* item = new MapListItem(name, list_files[j]);
-        beginInsertRows(QModelIndex(), j, j);
-        mapListItems.append(item);
-        endInsertRows();
-    }
-    return true;
-}
-
-MapListModel::~MapListModel()
-{
-    for (QList<MapListItem*>::iterator item=mapListItems.begin();
-         item!=mapListItems.end();
-         ++item) {
-        delete *item;
-    }
-
-    mapListItems.clear();
-}
-
-QVariant MapListModel::data(const QModelIndex &index, int role) const
-{
-    if(index.row() < 0 || index.row() >= mapListItems.size()) {
-        return QVariant();
-    }
-
-    MapListItem* item = mapListItems.at(index.row());
-    switch (role) {
-    case Qt::DisplayRole:
-    case NameRole:
-        return item->getName();
-    case PathRole:
-        return item->getPath();
-    default:
-        break;
-    }
-
-    return QVariant();
-}
-
-int MapListModel::rowCount(const QModelIndex &parent) const
-{
-    return mapListItems.size();
-}
-
-Qt::ItemFlags MapListModel::flags(const QModelIndex &index) const
-{
-    if(!index.isValid()) {
-        return Qt::ItemIsEnabled;
-    }
-
-    return QAbstractListModel::flags(index) | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-}
-
-QHash<int, QByteArray> MapListModel::roleNames() const
-{
-    QHash<int, QByteArray> roles=QAbstractListModel::roleNames();
-
-    roles[PathRole]="path";
-    roles[NameRole]="name";
-
-    return roles;
-}
-
-QString MapListModel::get(int row) const
-{
-    return mapListItems.at(row)->getName();
-}
-
-bool removeDir(const QString & dirName)
-{
-    bool result = true;
-    QDir dir(dirName);
-
-    if (dir.exists(dirName)) {
-        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
-            if (info.isDir()) {
-                result = removeDir(info.absoluteFilePath());
-            }
-            else {
-                result = QFile::remove(info.absoluteFilePath());
-            }
-
-            if (!result) {
-                return result;
-            }
-        }
-        result = dir.rmdir(dirName);
-    }
-    return result;
-}
-
-bool MapListModel::deleteItem(int row)
-{
-    if(mapListItems.size()>row)
-    {
-        qDebug()<<"Removing dir"<<mapListItems[row]->getPath();
-        if(removeDir(mapListItems[row]->getPath()))
-        {
-            beginRemoveRows(QModelIndex(), row, row);
-            mapListItems.removeAt(row);
-            endRemoveRows();
-            return true;
-        }
-        else
-            return false;
-    }
-    else
-        return false;
-}
-
-QString MapListModel::getFreeSpace()
-{
-    QString folder = getPreferredDownloadDir().split("/Maps")[0];
-    QDir dir(folder);
-    QStorageInfo si(dir);
-    double bytes = (double) si.bytesAvailable();
-    QString freeString;
-    if(bytes<1024)
-    {
-        freeString = QString::number(bytes/(1),'f', 2)+" "+tr("bytes");
-    }
-    else if(bytes>=1024&&bytes<(1024*1024))
-    {
-        freeString = QString::number(bytes/(1024),'f', 2)+" "+tr("kB");
-    }
-    else if(bytes>=(1024*1024)&&bytes<(1024*1024*1024))
-    {
-        freeString = QString::number(bytes/(1024*1024),'f', 2)+" "+tr("MB");
-    }
-    else
-    {
-        freeString = QString::number(bytes/(1024*1024*1024),'f', 2)+" "+tr("GB");
-    }
-    if(si.isRoot())return ""; //another AppArmor frustration...
-    qDebug()<<"Free space on folder "<<si.displayName()<<": "<<freeString;
-    return tr("Free space:")+" "+freeString;
-}
-
-/////////////////////////
-/////////////////////////////////
-
-DownloadDirListItem::DownloadDirListItem(  const QString& path,
-             QObject* parent): QObject(parent)
-{
-    m_path = path;
-}
-
-DownloadDirListItem::~DownloadDirListItem()
-{
-
-}
-
-QString DownloadDirListItem::getPath() const
-{
-    return m_path;
-}
-
-////////////////////////
-DownloadDirListModel::DownloadDirListModel(QObject* parent): QAbstractListModel(parent)
-{
-    DBThread* dbThread = DBThread::GetInstance();
-    QStringList dirs = dbThread->getValidDownloadDirs();
-    for(int i=0; i<dirs.size(); i++)
-    {
-        downloadDirListItems.append(new DownloadDirListItem(dirs[i]));
-    }
-
-}
-
-
-
-DownloadDirListModel::~DownloadDirListModel()
-{
-    for (QList<DownloadDirListItem*>::iterator item=downloadDirListItems.begin();
-         item!=downloadDirListItems.end();
-         ++item) {
-        delete *item;
-    }
-
-    downloadDirListItems.clear();
-}
-
-QVariant DownloadDirListModel::data(const QModelIndex &index, int role) const
-{
-    if(index.row() < 0 || index.row() >= downloadDirListItems.size()) {
-        return QVariant();
-    }
-
-    DownloadDirListItem* item = downloadDirListItems.at(index.row());
-    switch (role) {
-    case Qt::DisplayRole:
-    case PathRole:
-        return item->getPath();
-    default:
-        break;
-    }
-
-    return QVariant();
-}
-
-int DownloadDirListModel::rowCount(const QModelIndex &parent) const
-{
-    return downloadDirListItems.size();
-}
-
-Qt::ItemFlags DownloadDirListModel::flags(const QModelIndex &index) const
-{
-    if(!index.isValid()) {
-        return Qt::ItemIsEnabled;
-    }
-
-    return QAbstractListModel::flags(index) | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-}
-
-QHash<int, QByteArray> DownloadDirListModel::roleNames() const
-{
-    QHash<int, QByteArray> roles=QAbstractListModel::roleNames();
-    roles[PathRole]="path";
-    return roles;
-}
 
 

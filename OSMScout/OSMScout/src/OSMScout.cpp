@@ -38,6 +38,9 @@
 #include <osmscout/util/Logger.h>
 #include "downloadmanager.h"
 #include "UnityScreen.h"
+#include "MapListModel.h"
+#include "DownloadDirListModel.h"
+#include "DownloadListModel.h"
 
 static QObject *ThemeProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
