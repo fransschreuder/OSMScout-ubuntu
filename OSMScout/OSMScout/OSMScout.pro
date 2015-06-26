@@ -86,6 +86,7 @@ PICFILES += \
     pics/route.svg \
     pics/bicycle.svg \
     pics/car.svg \
+    pics/foot.svg \
     pics/routeSharpLeft.svg \
     pics/routeLeft.svg \
     pics/routeSlightlyLeft.svg \

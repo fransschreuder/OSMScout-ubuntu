@@ -176,6 +176,34 @@ MapDialog {
                     }
                 }
             }
+            Rectangle{
+                color: routeSettings.vehicle===1?UbuntuColors.orange:UbuntuColors.lightGrey
+                width: close.height
+                height: close.height
+                radius: units.gu(1)
+                Image {
+                    id: footButton
+
+                    width: close.height
+                    height: close.height
+
+                    source: "qrc:///pics/foot.svg"
+                    fillMode: Image.PreserveAspectFit
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    sourceSize.width: close.height
+                    sourceSize.height: close.height
+
+
+                    MouseArea {
+                        anchors.fill: footButton
+
+                        onClicked: {
+                            routeSettings.vehicle = 1;
+                        }
+                    }
+                }
+            }
         }
 
         Rectangle {
