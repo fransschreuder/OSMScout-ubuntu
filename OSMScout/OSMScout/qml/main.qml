@@ -32,6 +32,11 @@ Window{
     LocationListModel {
         id: suggestionModel
     }
+
+    SettingsDialog {
+        id: settingsDialog
+    }
+
     width: units.gu(100)
     height: units.gu(160)
 
@@ -78,6 +83,11 @@ Window{
         dialog.open()
     }
 
+    function openSettingsDialog() {
+        onDialogOpened();
+        var sd = PopupUtils.open(settingsDialog);
+        sd.closed.connect(onDialogClosed);
+    }
 
 
     function showLocation(location) {
@@ -584,86 +594,6 @@ Window{
                 }
             }
 
-            // Top left column
-            /*ColumnLayout {
-                id: menu
-
-                x: Theme.horizSpace
-                y: searchDialog.y+ searchDialog.height+Theme.vertSpace
-
-                spacing: Theme.mapButtonSpace
-
-                MapButton {
-                    id: routeButton
-                    //label: "#"
-
-                    onClicked: {
-                        openRoutingDialog()
-                    }
-                    Image {
-                        width: parent.width*0.66
-                        height: parent.height*0.66
-                        anchors.centerIn: parent
-                        source: "qrc:///pics/route.svg"
-                    }
-                }
-                MapButton {
-                    id: followButton
-
-                    onClicked: {
-                        followMe = !followMe;
-                        followMeTimer.stop();
-                    }
-                    iconName: followMe ? "stock_website" : "location"
-                }
-                MapButton {
-                    id: drivingDirUpButton
-                    onClicked: {
-                        drivingDirUp = ! drivingDirUp;
-                        if(drivingDirUp === false)
-                        {
-                            map.setRotation(0);
-                        }
-
-                    }
-                    Image {
-                        width: parent.width
-                        height: parent.height
-                        anchors.centerIn: parent
-                        source: drivingDirUp?"qrc:///pics/northUp.svg":"qrc:///pics/directionUp.svg"
-                    }
-
-
-                }
-
-                MapButton {
-                    id: downloadButton
-                    iconName: "save"
-                    onClicked: {
-                        openDownloadMapDialog();
-                    }
-                }
-
-                MapButton {
-                    id: about
-                    label: "?"
-
-                    onClicked: {
-                        openAboutDialog()
-                    }
-                }
-            }*/
-
-            /*// Bottom left column
-            ColumnLayout {
-                id: info
-
-                x: Theme.horizSpace
-                y: parent.height-height-Theme.vertSpace
-
-                spacing: Theme.mapButtonSpace
-
-            }*/
             Item{
                 anchors {
                     left: parent.left
@@ -701,13 +631,6 @@ Window{
                         width: parent.width-(routeIcon.width + routeDistance.width + statsCol.width)
                     }
 
-                    /*Label{
-                        id: routeInstructionText
-                        anchors.left: parent.left
-                        anchors.top: parent.top
-                        text: "<b>No route</b>"
-                        color: "white"
-                    }*/
                     Column{
                         id: statsCol
                         Label{
@@ -865,6 +788,7 @@ Window{
                    Column{
                        width: parent.width
                        anchors.horizontalCenter: parent.horizontalCenter
+                       spacing: units.gu(1);
                        Icon{
                            name: "up"
                            anchors.horizontalCenter: parent.horizontalCenter
@@ -922,6 +846,10 @@ Window{
 
 
                            }
+                       }
+                       Row{
+                           anchors.horizontalCenter: parent.horizontalCenter
+                           spacing: units.gu(1);
 
                            MapButton {
                                id: downloadButton
@@ -941,40 +869,22 @@ Window{
                                    openAboutDialog()
                                }
                            }
+
+                           MapButton {
+                               id: settingsButton
+
+                               onClicked: {
+                                   panel.close();
+                                   openSettingsDialog();
+                               }
+                               iconName: "settings"
+                           }
+
                        }
                    }
                }
            }
 
-
-
-            /*// Bottom right column
-            ColumnLayout {
-                id: navigation
-
-                x: parent.width-width-Theme.horizSpace
-                y: parent.height-height-Theme.vertSpace*2 - osmCopyright.height
-
-                spacing: Theme.mapButtonSpace
-
-                MapButton {
-                    id: zoomIn
-                    label: "+"
-
-                    onClicked: {
-                        map.zoom(2.0)
-                    }
-                }
-
-                MapButton {
-                    id: zoomOut
-                    label: "-"
-
-                    onClicked: {
-                        map.zoom(0.5)
-                    }
-                }
-            }*/
         }
     }
 }

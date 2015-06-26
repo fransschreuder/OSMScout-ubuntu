@@ -86,6 +86,7 @@ int main(int argc, char* argv[])
   qmlRegisterType<RoutingListModel>("net.sf.libosmscout.map", 1, 0, "RoutingListModel");
   qmlRegisterType<MapListModel>("net.sf.libosmscout.map", 1, 0, "MapListModel");
   qmlRegisterType<DownloadListModel>("net.sf.libosmscout.map", 1, 0, "DownloadListModel");
+  qmlRegisterType<DownloadDirListModel>("net.sf.libosmscout.map", 1, 0, "DownloadDirListModel");
 
   qmlRegisterSingletonType<Theme>("net.sf.libosmscout.map", 1, 0, "Theme", ThemeProvider);
   qmlRegisterType<DownloadManager>("net.sf.libosmscout.map", 1, 0, "DownloadManager");

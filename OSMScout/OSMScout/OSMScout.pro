@@ -61,7 +61,8 @@ QMLFILES += \
     qml/RoutingDialog.qml \
     qml/AboutDialog.qml \
     qml/DownloadMapDialog.qml \
-    qml/SearchDialog.qml
+    qml/SearchDialog.qml \
+    qml/SettingsDialog.qml
 
 CUSTOMQMLFILES += \
     qml/custom/MapButton.qml \

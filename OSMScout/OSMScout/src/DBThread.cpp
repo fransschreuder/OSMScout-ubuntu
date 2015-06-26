@@ -146,8 +146,13 @@ QStringList DBThread::getValidDownloadDirs() const
 QString DBThread::getPreferredDownloadDir() const
 {
     QStringList docPaths = getValidDownloadDirs();
-    for(int i=docPaths.size()-1; i>=0; i--)
+    QSettings s;
+    int defaultDownloadFolder = s.value("defaultDownloadFolder", docPaths.size()-1).toInt();
+    QStringList pathWritable;
+
+    for(int i=0; i<docPaths.size(); i++)
     {
+        pathWritable.append("true");
         QDir _rootDir(docPaths[i]);
         _rootDir.mkdir(docPaths[i]);
         QDir rootDir(docPaths[i]+"/Maps"); //last one is preferred first
@@ -157,6 +162,7 @@ QString DBThread::getPreferredDownloadDir() const
 
             if(!rootDir.mkdir(docPaths[i]+"/Maps")){
                 qDebug()<<"Could not create "<<docPaths[i]<<"/Maps";
+                pathWritable[i]="false";
                 continue;
             }
 
@@ -165,14 +171,24 @@ QString DBThread::getPreferredDownloadDir() const
         if(!tempFile.open(QFile::ReadWrite))
         {
             qDebug()<<"Could not write: "<<docPaths[i]+"/Maps/tempfile";
+            pathWritable[i]="false";
             continue;
         }
         else
         {
             tempFile.remove();
         }
-        qDebug()<<"Preferred Download dir: "<< docPaths[i]<<"/Maps";
-        return docPaths[i]+"/Maps";
+
+
+    }
+
+    if(defaultDownloadFolder>=pathWritable.size())defaultDownloadFolder=pathWritable.size()-1;
+    for(int i=pathWritable.size()-1; i>=0; i--)
+    {
+        if(pathWritable[i]=="true"&&(i==defaultDownloadFolder||i==0)){
+            qDebug()<<"Writable Download dir: "<< docPaths[i]<<"/Maps";
+            return docPaths[i]+"/Maps";
+        }
     }
     qDebug()<<"Could not find directory to write to";
     return "";
@@ -344,9 +360,11 @@ void DBThread::TriggerMapRendering()
     drawParameter.SetRenderSeaLand(true);
     drawParameter.SetBreaker(renderBreakerRef);
     double fs = drawParameter.GetFontSize();
+    QSettings s;
+    double fsMul = s.value("fontSize", 1).toDouble();
     qDebug()<<"FontSize: "<<fs;
     qDebug()<<"DPI:" << dpi;
-    fs*=(dpi/50); //for 100DPI, multiply by 1.5
+    fs*=(dpi/50)*fsMul; //for 100DPI, multiply by 1.5
     drawParameter.SetFontSize(fs);
 
     std::cout << std::endl;
@@ -1087,3 +1105,88 @@ QString MapListModel::getFreeSpace()
     qDebug()<<"Free space on folder "<<si.displayName()<<": "<<freeString;
     return tr("Free space:")+" "+freeString;
 }
+
+/////////////////////////
+/////////////////////////////////
+
+DownloadDirListItem::DownloadDirListItem(  const QString& path,
+             QObject* parent): QObject(parent)
+{
+    m_path = path;
+}
+
+DownloadDirListItem::~DownloadDirListItem()
+{
+
+}
+
+QString DownloadDirListItem::getPath() const
+{
+    return m_path;
+}
+
+////////////////////////
+DownloadDirListModel::DownloadDirListModel(QObject* parent): QAbstractListModel(parent)
+{
+    DBThread* dbThread = DBThread::GetInstance();
+    QStringList dirs = dbThread->getValidDownloadDirs();
+    for(int i=0; i<dirs.size(); i++)
+    {
+        downloadDirListItems.append(new DownloadDirListItem(dirs[i]));
+    }
+
+}
+
+
+
+DownloadDirListModel::~DownloadDirListModel()
+{
+    for (QList<DownloadDirListItem*>::iterator item=downloadDirListItems.begin();
+         item!=downloadDirListItems.end();
+         ++item) {
+        delete *item;
+    }
+
+    downloadDirListItems.clear();
+}
+
+QVariant DownloadDirListModel::data(const QModelIndex &index, int role) const
+{
+    if(index.row() < 0 || index.row() >= downloadDirListItems.size()) {
+        return QVariant();
+    }
+
+    DownloadDirListItem* item = downloadDirListItems.at(index.row());
+    switch (role) {
+    case Qt::DisplayRole:
+    case PathRole:
+        return item->getPath();
+    default:
+        break;
+    }
+
+    return QVariant();
+}
+
+int DownloadDirListModel::rowCount(const QModelIndex &parent) const
+{
+    return downloadDirListItems.size();
+}
+
+Qt::ItemFlags DownloadDirListModel::flags(const QModelIndex &index) const
+{
+    if(!index.isValid()) {
+        return Qt::ItemIsEnabled;
+    }
+
+    return QAbstractListModel::flags(index) | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
+
+QHash<int, QByteArray> DownloadDirListModel::roleNames() const
+{
+    QHash<int, QByteArray> roles=QAbstractListModel::roleNames();
+    roles[PathRole]="path";
+    return roles;
+}
+
+

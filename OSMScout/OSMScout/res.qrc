@@ -5,6 +5,7 @@
         <file>qml/DownloadMapDialog.qml</file>
         <file>qml/RoutingDialog.qml</file>
         <file>qml/SearchDialog.qml</file>
+        <file>qml/SettingsDialog.qml</file>
         <file>qml/custom/DialogActionButton.qml</file>
         <file>qml/custom/LineEdit.qml</file>
         <file>qml/custom/LocationEdit.qml</file>
