@@ -5,157 +5,170 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Qt-Contexts: true\n"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/DBThread.cpp:484
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/DBThread.cpp:466
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/DBThread.cpp:523
 msgctxt "DBThread|"
 msgid "no map available"
 msgstr "mapa niedostępna"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:65
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:78
 msgctxt "RoutingListModel|"
 msgid "Turn sharp left"
 msgstr "Skręć ostro w lewo"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:67
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:80
 msgctxt "RoutingListModel|"
 msgid "Turn left"
 msgstr "Skręć w lewo"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:69
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:82
 msgctxt "RoutingListModel|"
 msgid "Turn slightly left"
 msgstr "Skręć lekko w lewo"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:71
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:84
 msgctxt "RoutingListModel|"
 msgid "Straight on"
 msgstr "Dalej prosto"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:73
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:86
 msgctxt "RoutingListModel|"
 msgid "Turn slightly right"
 msgstr "Skręć lekko w prawo"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:75
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:88
 msgctxt "RoutingListModel|"
 msgid "Turn right"
 msgstr "Skręć w prawo"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:77
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:90
 msgctxt "RoutingListModel|"
 msgid "Turn sharp right"
 msgstr "Skręć ostro w prawo"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:246
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:259
 msgctxt "RoutingListModel|"
 msgid "Start at"
 msgstr "Zacznij z"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:253
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:266
 msgctxt "RoutingListModel|"
 msgid "Drive along"
 msgstr "Jedź wzdłuż"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:262
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:275
 msgctxt "RoutingListModel|"
 msgid "Target reached"
 msgstr "Dojechałeś na miejsce"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:281
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:309
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:369
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:294
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:322
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:382
 msgctxt "RoutingListModel|"
 msgid "At crossing"
 msgstr "Na skrzyżowaniu"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:287
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:300
 msgctxt "RoutingListModel|"
 msgid "Turn"
 msgstr "Skręć"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:292
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:431
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:305
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:444
 msgctxt "RoutingListModel|"
 msgid "into"
 msgstr "w"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:313
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:326
 msgctxt "RoutingListModel|"
 msgid "Enter roundabout"
 msgstr "Wjedź na rondo"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:323
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:336
 msgctxt "RoutingListModel|"
 msgid "Leave roundabout"
 msgstr "Zjedź z ronda"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:325
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:338
 msgctxt "RoutingListModel|"
 msgid "exit"
 msgstr "zjazd"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:350
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:363
 msgctxt "RoutingListModel|"
 msgid "into street"
 msgstr "w ulicę"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:372
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:385
 msgctxt "RoutingListModel|"
 msgid "Enter motorway"
 msgstr "Wjedź na autostradę"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:387
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:400
 msgctxt "RoutingListModel|"
 msgid "Change motorway"
 msgstr "Zmień autostradę"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:391
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:447
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:404
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:460
 msgctxt "RoutingListModel|"
 msgid "from"
 msgstr "z"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:398
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:450
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:456
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:411
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:463
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:469
 msgctxt "RoutingListModel|"
 msgid "to"
 msgstr "w"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:412
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:425
 msgctxt "RoutingListModel|"
 msgid "Leave motorway"
 msgstr "Zjedź z autostrady"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:446
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:455
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:459
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:468
 msgctxt "RoutingListModel|"
 msgid "Way changes name"
 msgstr "Droga zmiena nazwę"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:817
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:830
 msgctxt "RoutingListModel|"
 msgid "No Route data available"
 msgstr "Dane dotyczące trasy niedostępne"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:883
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/RoutingModel.cpp:896
 msgctxt "RoutingListModel|"
 msgid "Recalulating route..."
 msgstr "Przeliczanie trasy..."
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:32
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:53
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:721
 msgctxt "main|"
 msgid "<current position>"
 msgstr "<aktualna pozycja>"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:674
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:667
 msgctxt "main|"
 msgid "Recalculating route"
 msgstr "Przeliczanie trasy"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:693
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:686
 msgctxt "main|"
 msgid " © OpenStreetMap contributors"
 msgstr " © Twórcy OpenStreetMap"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:706
+msgctxt "main|"
+msgid "Navigate here"
+msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:754
+#, fuzzy
+msgctxt "main|"
+msgid "Cancel"
+msgstr "Anuluj"
 
 #: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:12
 msgctxt "AboutDialog|"
@@ -234,57 +247,57 @@ msgctxt "DownloadMapDialog|"
 msgid "Installed maps:"
 msgstr "Zainstalowane mapy:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:240
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:439
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:246
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:446
 msgctxt "DownloadMapDialog|"
 msgid "Download"
 msgstr "Pobierz"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:260
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:264
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:273
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:459
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:463
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:472
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:266
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:270
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:279
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:466
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:470
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:479
 msgctxt "DownloadMapDialog|"
 msgid "Pause Download"
 msgstr "Wstrzymaj pobieranie"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:267
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:466
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:273
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:473
 msgctxt "DownloadMapDialog|"
 msgid "Resume Download"
 msgstr "Wznów pobieranie"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:290
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:489
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:296
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:496
 msgctxt "DownloadMapDialog|"
 msgid "Current file:"
 msgstr "Aktualny plik:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:302
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:501
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:308
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:508
 msgctxt "DownloadMapDialog|"
 msgid "Overall progress:"
 msgstr "Ogólny postęp:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:317
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:518
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:323
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:525
 msgctxt "DownloadMapDialog|"
 msgid "Close"
 msgstr "Zamknij"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:325
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:331
 msgctxt "DownloadMapDialog|"
 msgid "Select map to download:"
 msgstr "Wybierz mapę do pobrania:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:408
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:415
 msgctxt "DownloadMapDialog|"
 msgid "md5sum of"
 msgstr ""
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:408
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:415
 msgctxt "DownloadMapDialog|"
 msgid "failed"
 msgstr ""
@@ -314,7 +327,7 @@ msgctxt "RoutingDialog|"
 msgid "Close"
 msgstr "Zamknij"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:190
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:218
 msgctxt "RoutingDialog|"
 msgid "No route found"
 msgstr "Nie znaleziono trasy"
@@ -339,3 +352,49 @@ msgstr "Anuluj"
 msgctxt "LocationEdit|"
 msgid "<current position>"
 msgstr "<aktualna pozycja>"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/SettingsDialog.qml:33
+msgctxt "SettingsDialog|"
+msgid "Use metric system"
+msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/SettingsDialog.qml:45
+msgctxt "SettingsDialog|"
+msgid "Font size"
+msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/SettingsDialog.qml:63
+msgctxt "SettingsDialog|"
+msgid "Default download directory"
+msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/SettingsDialog.qml:84
+#, fuzzy
+msgctxt "SettingsDialog|"
+msgid "Close"
+msgstr "Zamknij"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:162
+msgctxt "MapListModel|"
+msgid "bytes"
+msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:166
+msgctxt "MapListModel|"
+msgid "kB"
+msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:170
+msgctxt "MapListModel|"
+msgid "MB"
+msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:174
+msgctxt "MapListModel|"
+msgid "GB"
+msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:178
+msgctxt "MapListModel|"
+msgid "Free space:"
+msgstr ""
