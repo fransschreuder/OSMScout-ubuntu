@@ -69,6 +69,7 @@ namespace osmscout {
     WaterIndex();
 
     bool Load(const std::string& path);
+    bool Close();
 
     bool GetRegions(double minlon,
                     double minlat,

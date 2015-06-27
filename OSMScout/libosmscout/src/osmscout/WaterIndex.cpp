@@ -90,6 +90,11 @@ namespace osmscout {
     return scanner.Close();
   }
 
+  bool WaterIndex::Close()
+  {
+      levels.resize(0);
+  }
+
   bool WaterIndex::GetRegions(double minlon,
                               double minlat,
                               double maxlon,
@@ -229,4 +234,5 @@ namespace osmscout {
     log.Info() << "WaterIndex size " << entries << ", memory " << memeory;
   }
 }
+
 

@@ -194,6 +194,11 @@ namespace osmscout {
       optimizeAreasLowZoom=NULL;
     }
 
+    if (waterIndex) {
+        waterIndex->Close();
+        waterIndex=NULL;
+    }
+
     isOpen=false;
   }
 
