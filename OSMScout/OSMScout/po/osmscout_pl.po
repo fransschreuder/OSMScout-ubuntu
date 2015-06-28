@@ -143,161 +143,144 @@ msgctxt "RoutingListModel|"
 msgid "Recalulating route..."
 msgstr "Przeliczanie trasy..."
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:53
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:721
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:61
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:723
 msgctxt "main|"
 msgid "<current position>"
 msgstr "<aktualna pozycja>"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:667
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:669
 msgctxt "main|"
 msgid "Recalculating route"
 msgstr "Przeliczanie trasy"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:686
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:688
 msgctxt "main|"
 msgid " © OpenStreetMap contributors"
 msgstr " © Twórcy OpenStreetMap"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:706
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:708
 msgctxt "main|"
 msgid "Navigate here"
 msgstr ""
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:754
-#, fuzzy
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:756
 msgctxt "main|"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:12
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:14
 msgctxt "AboutDialog|"
-msgid "About..."
-msgstr "O..."
+msgid "About OSMScout"
+msgstr "O OSMScout"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:21
-msgctxt "AboutDialog|"
-msgid "OSMScout"
-msgstr "OSMScout"
-
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:29
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:19
 msgctxt "AboutDialog|"
 msgid "Ubuntu Touch version of OSMScout"
 msgstr "Wersja OSMScout dla Ubuntu Touch"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:29
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:19
 msgctxt "AboutDialog|"
 msgid "See"
 msgstr "Zobacz"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:29
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:19
 msgctxt "AboutDialog|"
 msgid "Ubuntu modifications by"
 msgstr "Modyfikacje dla Ubuntu wykonane przez"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:37
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:25
 msgctxt "AboutDialog|"
 msgid "All geographic data:"
 msgstr "Wszystkie dane geograficzne:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:37
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:25
 msgctxt "AboutDialog|"
 msgid "OpenStreetMap contributors<br/>See www.openstreetmap.org/copyright"
 msgstr "Twórcy OpenStreetMap<br/>Zobacz www.openstreetmap.org/copyright"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:55
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:32
 msgctxt "AboutDialog|"
 msgid "OK"
 msgstr "OK"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:15
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:22
 msgctxt "DownloadMapDialog|"
 msgid "Download Maps..."
 msgstr "Pobierz mapy..."
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:36
-msgctxt "DownloadMapDialog|"
-msgid "Are you sure?"
-msgstr "Jesteś pewny?"
+#~ msgctxt "DownloadMapDialog|"
+#~ msgid "Are you sure?"
+#~ msgstr "Jesteś pewny?"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:37
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:190
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:129
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:147
 msgctxt "DownloadMapDialog|"
 msgid "Delete"
 msgstr "Usuń"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:39
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:93
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:152
 msgctxt "DownloadMapDialog|"
 msgid "OK"
 msgstr "OK"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:58
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:172
 msgctxt "DownloadMapDialog|"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:78
-msgctxt "DownloadMapDialog|"
-msgid "Error"
-msgstr ""
+#~ msgctxt "DownloadMapDialog|"
+#~ msgid "Error"
+#~ msgstr ""
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:171
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:105
 msgctxt "DownloadMapDialog|"
 msgid "Installed maps:"
 msgstr "Zainstalowane mapy:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:246
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:446
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:187
 msgctxt "DownloadMapDialog|"
 msgid "Download"
 msgstr "Pobierz"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:266
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:270
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:279
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:466
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:470
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:479
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:205
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:209
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:217
 msgctxt "DownloadMapDialog|"
 msgid "Pause Download"
 msgstr "Wstrzymaj pobieranie"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:273
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:473
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:212
 msgctxt "DownloadMapDialog|"
 msgid "Resume Download"
 msgstr "Wznów pobieranie"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:296
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:496
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:233
 msgctxt "DownloadMapDialog|"
 msgid "Current file:"
 msgstr "Aktualny plik:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:308
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:508
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:245
 msgctxt "DownloadMapDialog|"
 msgid "Overall progress:"
 msgstr "Ogólny postęp:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:323
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:525
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:302
 msgctxt "DownloadMapDialog|"
 msgid "Close"
 msgstr "Zamknij"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:331
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:271
 msgctxt "DownloadMapDialog|"
 msgid "Select map to download:"
 msgstr "Wybierz mapę do pobrania:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:415
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:327
 msgctxt "DownloadMapDialog|"
 msgid "md5sum of"
 msgstr ""
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:415
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:327
 msgctxt "DownloadMapDialog|"
 msgid "failed"
 msgstr ""
@@ -369,32 +352,31 @@ msgid "Default download directory"
 msgstr ""
 
 #: /home/frans/libosmscout/OSMScout/OSMScout/qml/SettingsDialog.qml:84
-#, fuzzy
 msgctxt "SettingsDialog|"
 msgid "Close"
 msgstr "Zamknij"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:162
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:165
 msgctxt "MapListModel|"
 msgid "bytes"
 msgstr ""
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:166
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:169
 msgctxt "MapListModel|"
 msgid "kB"
 msgstr ""
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:170
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:173
 msgctxt "MapListModel|"
 msgid "MB"
 msgstr ""
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:174
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:177
 msgctxt "MapListModel|"
 msgid "GB"
 msgstr ""
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:178
+#: /home/frans/libosmscout/OSMScout/OSMScout/src/MapListModel.cpp:181
 msgctxt "MapListModel|"
 msgid "Free space:"
 msgstr ""
