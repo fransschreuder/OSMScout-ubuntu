@@ -63,9 +63,15 @@ int main(int argc, char* argv[])
   MainWindow      *window;
   int             result;
 
-  app.setOrganizationName("osmscout.fransschreuder");
-  app.setOrganizationDomain("osmscout.fransschreuder");
-  app.setApplicationName("osmscout");
+#ifdef __UBUNTU__
+  QString appId = getenv("APP_ID");
+  appId = appId.split("_")[0];
+#else
+  QString appId = "osmscout.fransschreuder";
+#endif
+  app.setOrganizationName(appId);
+  app.setOrganizationDomain(appId);
+  app.setApplicationName(appId.split(".")[0]);
 
 
   QTranslator qtTranslator;
