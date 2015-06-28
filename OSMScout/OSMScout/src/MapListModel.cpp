@@ -34,17 +34,19 @@ bool MapListModel::refreshItems()
 {
     beginResetModel();
     mapListItems.clear();
-    endResetModel();
+
     QStringList list_files = DBThread::GetInstance()->findValidMapDirs();
 
     for(int j=0; j<list_files.size(); j++)
     {
         QString name = list_files[j].split("/").back();
         MapListItem* item = new MapListItem(name, list_files[j]);
-        beginInsertRows(QModelIndex(), j, j);
+        //beginInsertRows(QModelIndex(), j, j);
         mapListItems.append(item);
-        endInsertRows();
+        //endInsertRows();
     }
+    qDebug()<<"Refreshed Items";
+    endResetModel();
     return true;
 }
 
