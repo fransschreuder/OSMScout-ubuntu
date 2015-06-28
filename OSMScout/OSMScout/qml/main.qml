@@ -41,6 +41,10 @@ Window{
         id: downloadMapDialog
     }
 
+    AboutDialog{
+        id: aboutDialog
+    }
+
     width: units.gu(100)
     height: units.gu(160)
 
@@ -70,12 +74,9 @@ Window{
     }
 
     function openAboutDialog() {
-        var component = Qt.createComponent("AboutDialog.qml")
-        var dialog = component.createObject(mainWindow, {})
-
-        dialog.opened.connect(onDialogOpened)
-        dialog.closed.connect(onDialogClosed)
-        dialog.open()
+        positionSource.processUpdateEvents = false;
+        var sd = PopupUtils.open(aboutDialog);
+        sd.closed.connect(onDialogClosed);
     }
 
     function openDownloadMapDialog() {

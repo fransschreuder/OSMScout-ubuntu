@@ -46,6 +46,7 @@ bool MapListModel::refreshItems()
         //endInsertRows();
     }
     qDebug()<<"Refreshed Items";
+    if(mapListItems.size()==0)mapListItems.append(new MapListItem("",""));
     endResetModel();
     return true;
 }
