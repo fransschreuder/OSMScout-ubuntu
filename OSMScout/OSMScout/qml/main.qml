@@ -638,7 +638,7 @@ Window{
                         Label{
                             fontSize: "x-large"
                             id: routeSpeed
-                            text: positionSource.position.speedValid?(positionSource.position.speed*(settings.metricSystem?3.6:2.23694)).toFixed(2)+(settings.metricSystem?" km/h":" mi/h"):" "
+                            text: positionSource.position.speedValid?(positionSource.position.speed*(settings.metricSystem?3.6:2.23694)).toFixed(1)+(settings.metricSystem?" km/h":" mi/h"):" "
                             color: "white"
                         }
                         Label{
