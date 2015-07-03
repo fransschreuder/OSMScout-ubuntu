@@ -113,7 +113,7 @@ Component{
                 delegate:Component{
                     id: mapsItem
                     OptionSelectorDelegate{
-                        text: model.name;
+                        text: "<b>"+model.name+"</b>";
                         subText: model.path;
                     }
                 }
@@ -291,7 +291,7 @@ Component{
                     id: downloadsViewDelegate
                     OptionSelectorDelegate{
                         id: downloadsItem
-                        text: model.name
+                        text: "<b>"+model.name+"</b>";
                         subText: model.size
                     }
                 }

@@ -66,12 +66,25 @@ void DownloadListModel::fileDownloaded(QNetworkReply* pReply) {
      if(splitLinks.size()<1)continue;
      QString name = splitLinks[0];
      QString size = splitLinks[1].split("</a> ")[1].split("<br/>")[0];
+     QString version;
+     if(splitLinks[1].split("</a> ")[1].split("<br/>").size()>1)
+     {
+        version = splitLinks[1].split("</a> ")[1].split("<br/>")[1];
+        version.replace("CEST ","");
+        size=size+" <i>"+version+"</i>";
+     }
+     else
+     {
+        version = "";
+     }
+
      DownloadListItem* item = new DownloadListItem(name, size);
      beginInsertRows(QModelIndex(), 0,0);
      downloadListItems.append(item);
      endInsertRows();
      std::cout<<"Map name: "<<name.toLocal8Bit().data()<<std::endl;
      std::cout<<"Map size: "<<size.toLocal8Bit().data()<<std::endl;
+     std::cout<<"Map version: "<<version.toLocal8Bit().data()<<std::endl;
  }
  std::cout<<"*DownloadListModel size: "<<downloadListItems.size()<<std::endl;
  //emit
