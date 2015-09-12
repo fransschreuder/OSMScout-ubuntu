@@ -2,6 +2,8 @@
     <qresource prefix="/">
         <file>qml/main.qml</file>
         <file>qml/AboutDialog.qml</file>
+        <file>qml/FavouritesDialog.qml</file>
+        <file>qml/FavouritesChoserDialog.qml</file>
         <file>qml/DownloadMapDialog.qml</file>
         <file>qml/RoutingDialog.qml</file>
         <file>qml/SearchDialog.qml</file>

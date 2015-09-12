@@ -16,7 +16,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 */
-
+//#include <algorithm>
 #include <osmscout/LocationIndex.h>
 
 #include <osmscout/system/Assert.h>
@@ -24,6 +24,7 @@
 #include <osmscout/util/File.h>
 #include <osmscout/util/Logger.h>
 #include <osmscout/util/StopClock.h>
+
 
 namespace osmscout {
 
@@ -98,11 +99,29 @@ namespace osmscout {
 
   bool LocationIndex::IsRegionIgnoreToken(const std::string& token) const
   {
+    /*for(auto it = regionIgnoreTokens.begin();  it!=regionIgnoreTokens.end(); it++)
+    {
+        std::string str1Cpy( *it );
+        std::string str2Cpy( token );
+        std::transform( str1Cpy.begin(), str1Cpy.end(), str1Cpy.begin(), ::tolower );
+        std::transform( str2Cpy.begin(), str2Cpy.end(), str2Cpy.begin(), ::tolower );
+        if ( str1Cpy == str2Cpy )return true;
+    }
+    return false;*/
     return regionIgnoreTokens.find(token)!=regionIgnoreTokens.end();
   }
 
   bool LocationIndex::IsLocationIgnoreToken(const std::string& token) const
   {
+      /*for(auto it = locationIgnoreTokens.begin();  it!=locationIgnoreTokens.end(); it++)
+      {
+          std::string str1Cpy( *it );
+          std::string str2Cpy( token );
+          std::transform( str1Cpy.begin(), str1Cpy.end(), str1Cpy.begin(), ::tolower );
+          std::transform( str2Cpy.begin(), str2Cpy.end(), str2Cpy.begin(), ::tolower );
+          if ( str1Cpy == str2Cpy )return true;
+      }
+      return false;*/
     return locationIgnoreTokens.find(token)!=locationIgnoreTokens.end();
   }
 

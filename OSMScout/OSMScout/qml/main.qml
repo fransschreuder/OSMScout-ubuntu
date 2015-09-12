@@ -45,6 +45,10 @@ Window{
         id: aboutDialog
     }
 
+    FavouritesDialog{
+        id: favouritesDialog
+    }
+
     width: units.gu(100)
     height: units.gu(160)
 
@@ -76,6 +80,13 @@ Window{
     function openAboutDialog() {
         positionSource.processUpdateEvents = false;
         var sd = PopupUtils.open(aboutDialog);
+        sd.closed.connect(onDialogClosed);
+    }
+
+    function openFavouritesDialog() {
+        positionSource.processUpdateEvents = false;
+        var sd = PopupUtils.open(favouritesDialog);
+        sd.opened();
         sd.closed.connect(onDialogClosed);
     }
 
@@ -139,13 +150,13 @@ Window{
         var secondDistance;
         if(index!==lastPlayedIndex1 || index!==lastPlayedIndex2)
         {
-            if(positionSource.position.speed*3.6 > 80)
+            if(positionSource.position.speed*3.6 > 50)
             {
                 distAudio = sound800m;
                 firstDistance = 0.800;
                 secondDistance = 0.200;
             }
-            else if(positionSource.position.speed*3.6 > 50)
+            else if(positionSource.position.speed*3.6 > 15)
             {
                 distAudio = sound200m;
                 firstDistance = 0.200;
@@ -848,8 +859,13 @@ Window{
                                    anchors.centerIn: parent
                                    source: settings.drivingDirUp?"qrc:///pics/directionUp.svg":"qrc:///pics/northUp.svg"
                                }
-
-
+                           }
+                           MapButton {
+                               id: manageFavouritesButton
+                               onClicked: {
+                                   openFavouritesDialog();
+                               }
+                               iconName: "starred"
                            }
                        }
                        Row{

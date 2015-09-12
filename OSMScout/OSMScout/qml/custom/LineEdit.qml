@@ -42,7 +42,7 @@ FocusScope {
 
             TextInput {
                 id: input
-
+                inputMethodHints: Qt.ImhNoPredictiveText
                 Layout.fillWidth: true
                 Layout.fillHeight: false
                 Layout.alignment: Qt.AlignVCenter

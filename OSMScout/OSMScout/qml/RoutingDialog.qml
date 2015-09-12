@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.1
 import net.sf.libosmscout.map 1.0
 import Ubuntu.Components 1.1
 import Qt.labs.settings 1.0
+import Ubuntu.Components.Popups 1.0
 import "custom"
 
 MapDialog {
@@ -12,15 +13,62 @@ MapDialog {
     fullscreen: true
     label: qsTr("Route...")
 
-
-
     content : ColumnLayout {
         id: mainFrame
+
+        FavouritesChoserDialog{
+            id: favouritesChoserDialog
+        }
 
         Settings{
             id: routeSettings
             category: "routing"
             property int vehicle: 3 //Car, Bicycle=2
+        }
+
+        Settings{
+            id: favSettings
+            category: "favourites"
+            property string favs: "";
+            property string home: "";
+
+        }
+
+        ListModel {
+            id: favModel
+        }
+
+
+
+        Timer{
+            property string tempfavs;
+            id: startupTimer
+            repeat: true
+            interval: 1000
+            running: true
+            onTriggered: {
+                if(favSettings.favs!==tempfavs){
+                    console.log("Timer expired");
+                    mainFrame.loadFavourites();
+                    tempfavs = favSettings.favs;
+                }
+            }
+        }
+
+
+
+        function loadFavourites(){
+            var favs=favSettings.favs.split(";");
+            favModel.clear();
+            console.log("Loading favourites...");
+            for(var i=0; i<favs.length; i++)
+            {
+                if(favs[i]!=="")
+                {
+                    console.log("Appending: "+favs[i]);
+                    favModel.append({'title':favs[i]});
+                }
+            }
         }
 
         Layout.fillWidth: true
@@ -65,6 +113,69 @@ MapDialog {
                 horizontalAlignment: TextInput.AlignLeft
             }
 
+        }
+        Row {
+            id: favRow
+            width: parent.width
+            spacing: Theme.horizSpace
+
+            Rectangle
+            {
+                color: UbuntuColors.lightGrey
+                width: close.height
+                height: close.height
+                radius: units.gu(1)
+                Icon {
+                    id: homeButton
+                    name: "home"
+                    color: "black"
+                    width: close.height
+                    height: close.height
+
+                    MouseArea {
+                        anchors.fill: homeButton
+
+                        onClicked: {
+                            targetInput.text = favSettings.home
+                        }
+                    }
+                }
+
+            }
+            Rectangle{
+                color: UbuntuColors.lightGrey
+                width: close.height
+                height: close.height
+                radius: units.gu(1)
+                Icon {
+                    name: "starred"
+                    id: starIcon
+                    width: close.height
+                    height: close.height
+                    color: "black"
+                    MouseArea{
+                        anchors.fill: starIcon
+                        onClicked:{
+                            mainFrame.openFavouritesChoserDialog();
+                        }
+                    }
+                }
+            }
+        }
+        property var sd
+
+        function openFavouritesChoserDialog()
+        {
+            dialog.visible = false;
+            sd = PopupUtils.open(favouritesChoserDialog);
+            sd.opened();
+            sd.closed.connect(onFavouritesChoserDialogClosed);
+        }
+
+        function onFavouritesChoserDialogClosed(){
+            console.log("Favourites dialog closed");
+            targetInput.text = sd.getValue();
+            dialog.visible = true;
         }
 
         Row {

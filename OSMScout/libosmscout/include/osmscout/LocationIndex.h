@@ -24,6 +24,8 @@
 #include <memory>
 #include <set>
 #include <unordered_set>
+#include <algorithm>
+#include <string>
 
 #include <osmscout/Location.h>
 #include <osmscout/TypeConfig.h>

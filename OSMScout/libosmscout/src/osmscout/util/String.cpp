@@ -25,6 +25,7 @@
 #include <osmscout/system/Math.h>
 
 #include <osmscout/private/Config.h>
+#include <iostream>
 
 namespace osmscout {
 
@@ -220,7 +221,7 @@ namespace osmscout {
       }
 
       std::string token=input.substr(wordBegin,wordEnd-wordBegin+1);
-
+      token[0] = toupper(token[0]);
       tokens.push_back(token);
 
       wordBegin=wordEnd+1;

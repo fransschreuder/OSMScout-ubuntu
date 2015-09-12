@@ -143,39 +143,31 @@ msgctxt "RoutingListModel|"
 msgid "Recalulating route..."
 msgstr "Route herberekenen..."
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:61
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:723
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:65
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:737
 msgctxt "main|"
 msgid "<current position>"
 msgstr "<huidige positie>"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:669
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:683
 msgctxt "main|"
 msgid "Recalculating route"
 msgstr "Route herberekenen"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:688
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:702
 msgctxt "main|"
 msgid " © OpenStreetMap contributors"
 msgstr " © OpenStreetMap contributors"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:708
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:722
 msgctxt "main|"
 msgid "Navigate here"
 msgstr "Navigeer hier"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:756
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:770
 msgctxt "main|"
 msgid "Cancel"
 msgstr "Annuleren"
-
-#~ msgctxt "AboutDialog|"
-#~ msgid "About..."
-#~ msgstr "Over..."
-
-#~ msgctxt "AboutDialog|"
-#~ msgid "OSMScout"
-#~ msgstr "OSMScout"
 
 #: /home/frans/libosmscout/OSMScout/OSMScout/qml/AboutDialog.qml:14
 msgctxt "AboutDialog|"
@@ -217,10 +209,6 @@ msgctxt "DownloadMapDialog|"
 msgid "Download Maps..."
 msgstr "Download Kaarten..."
 
-#~ msgctxt "DownloadMapDialog|"
-#~ msgid "Are you sure?"
-#~ msgstr "Weet u het zeker?"
-
 #: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:129
 #: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:147
 msgctxt "DownloadMapDialog|"
@@ -236,10 +224,6 @@ msgstr "OK"
 msgctxt "DownloadMapDialog|"
 msgid "Cancel"
 msgstr "Annuleren"
-
-#~ msgctxt "DownloadMapDialog|"
-#~ msgid "Error"
-#~ msgstr "Fout"
 
 #: /home/frans/libosmscout/OSMScout/OSMScout/qml/DownloadMapDialog.qml:105
 msgctxt "DownloadMapDialog|"
@@ -293,32 +277,32 @@ msgctxt "DownloadMapDialog|"
 msgid "failed"
 msgstr "mislukt"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:13
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:14
 msgctxt "RoutingDialog|"
 msgid "Route..."
 msgstr "Route..."
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:37
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:85
 msgctxt "RoutingDialog|"
 msgid "Start:"
 msgstr "Start:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:55
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:103
 msgctxt "RoutingDialog|"
 msgid "Target:"
 msgstr "Doel:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:83
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:194
 msgctxt "RoutingDialog|"
 msgid "Route"
 msgstr "Route"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:115
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:226
 msgctxt "RoutingDialog|"
 msgid "Close"
 msgstr "Sluiten"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:218
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:329
 msgctxt "RoutingDialog|"
 msgid "No route found"
 msgstr "Geen route gevonden"
@@ -388,3 +372,54 @@ msgstr "GB"
 msgctxt "MapListModel|"
 msgid "Free space:"
 msgstr "Ruimte beschikbaar:"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesChoserDialog.qml:16
+msgctxt "FavouritesChoserDialog|"
+msgid "Favourites"
+msgstr "Favorieten"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesChoserDialog.qml:71
+msgctxt "FavouritesChoserDialog|"
+msgid "OK"
+msgstr "OK"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesDialog.qml:16
+msgctxt "FavouritesDialog|"
+msgid "Favourites"
+msgstr "Favorieten"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesDialog.qml:61
+msgctxt "FavouritesDialog|"
+msgid "<current position>"
+msgstr "<huidige positie>"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesDialog.qml:71
+msgctxt "FavouritesDialog|"
+msgid "Add to Favourites"
+msgstr "Toevoegen aan Favorieten"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesDialog.qml:125
+msgctxt "FavouritesDialog|"
+msgid "Save as home"
+msgstr "Opslaan als thuis"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesDialog.qml:147
+msgctxt "FavouritesDialog|"
+msgid "OK"
+msgstr "OK"
+
+#~ msgctxt "AboutDialog|"
+#~ msgid "About..."
+#~ msgstr "Over..."
+
+#~ msgctxt "AboutDialog|"
+#~ msgid "OSMScout"
+#~ msgstr "OSMScout"
+
+#~ msgctxt "DownloadMapDialog|"
+#~ msgid "Are you sure?"
+#~ msgstr "Weet u het zeker?"
+
+#~ msgctxt "DownloadMapDialog|"
+#~ msgid "Error"
+#~ msgstr "Fout"

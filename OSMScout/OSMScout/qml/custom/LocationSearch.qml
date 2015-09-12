@@ -220,6 +220,7 @@ LineEdit {
         repeat: false
 
         onTriggered: {
+
             updateSuggestions();
         }
     }

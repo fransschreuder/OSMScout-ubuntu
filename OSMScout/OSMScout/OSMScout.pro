@@ -68,6 +68,8 @@ QMLFILES += \
     qml/main.qml \
     qml/RoutingDialog.qml \
     qml/AboutDialog.qml \
+    qml/FavouritesChoserDialog.qml \
+    qml/FavouritesDialog.qml \
     qml/DownloadMapDialog.qml \
     qml/SearchDialog.qml \
     qml/SettingsDialog.qml

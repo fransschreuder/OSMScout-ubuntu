@@ -708,16 +708,13 @@ namespace osmscout {
     }
 
     std::list<std::string> tokens;
-
     locationSearch.searches.clear();
 
     if (searchPattern.empty()) {
       return true;
     }
-
     TokenizeString(searchPattern,
                    tokens);
-
     if (tokens.empty()) {
       return true;
     }

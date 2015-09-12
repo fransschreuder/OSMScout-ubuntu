@@ -682,7 +682,6 @@ bool DBThread::SearchForLocations(const std::string& searchPattern,
   osmscout::LocationSearch search;
 
   search.limit=limit;
-
   if (!locationService->InitializeLocationSearchEntries(searchPattern,
                                                         search)) {
       return false;

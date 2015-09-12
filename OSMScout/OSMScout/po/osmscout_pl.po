@@ -143,28 +143,28 @@ msgctxt "RoutingListModel|"
 msgid "Recalulating route..."
 msgstr "Przeliczanie trasy..."
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:61
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:723
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:65
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:737
 msgctxt "main|"
 msgid "<current position>"
 msgstr "<aktualna pozycja>"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:669
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:683
 msgctxt "main|"
 msgid "Recalculating route"
 msgstr "Przeliczanie trasy"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:688
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:702
 msgctxt "main|"
 msgid " © OpenStreetMap contributors"
 msgstr " © Twórcy OpenStreetMap"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:708
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:722
 msgctxt "main|"
 msgid "Navigate here"
 msgstr ""
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:756
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/main.qml:770
 msgctxt "main|"
 msgid "Cancel"
 msgstr "Anuluj"
@@ -285,32 +285,32 @@ msgctxt "DownloadMapDialog|"
 msgid "failed"
 msgstr ""
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:13
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:14
 msgctxt "RoutingDialog|"
 msgid "Route..."
 msgstr "Trasa..."
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:37
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:85
 msgctxt "RoutingDialog|"
 msgid "Start:"
 msgstr "Start:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:55
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:103
 msgctxt "RoutingDialog|"
 msgid "Target:"
 msgstr "Cel:"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:83
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:194
 msgctxt "RoutingDialog|"
 msgid "Route"
 msgstr "Trasa"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:115
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:226
 msgctxt "RoutingDialog|"
 msgid "Close"
 msgstr "Zamknij"
 
-#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:218
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/RoutingDialog.qml:329
 msgctxt "RoutingDialog|"
 msgid "No route found"
 msgstr "Nie znaleziono trasy"
@@ -380,3 +380,41 @@ msgstr ""
 msgctxt "MapListModel|"
 msgid "Free space:"
 msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesChoserDialog.qml:16
+msgctxt "FavouritesChoserDialog|"
+msgid "Favourites"
+msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesChoserDialog.qml:71
+#, fuzzy
+msgctxt "FavouritesChoserDialog|"
+msgid "OK"
+msgstr "OK"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesDialog.qml:16
+msgctxt "FavouritesDialog|"
+msgid "Favourites"
+msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesDialog.qml:61
+#, fuzzy
+msgctxt "FavouritesDialog|"
+msgid "<current position>"
+msgstr "<aktualna pozycja>"
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesDialog.qml:71
+msgctxt "FavouritesDialog|"
+msgid "Add to Favourites"
+msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesDialog.qml:125
+msgctxt "FavouritesDialog|"
+msgid "Save as home"
+msgstr ""
+
+#: /home/frans/libosmscout/OSMScout/OSMScout/qml/FavouritesDialog.qml:147
+#, fuzzy
+msgctxt "FavouritesDialog|"
+msgid "OK"
+msgstr "OK"
