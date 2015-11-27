@@ -12,18 +12,6 @@ MapDialog {
 
     fullscreen: true
     label: qsTr("Route...")
-     property bool updateroute: true;
-
-    Timer{
-        id: updateTimer
-        repeat: false
-        interval: 3000
-        running: false
-        onTriggered: {
-            console.log("Timer expired");
-            updateroute = true;
-        }
-    }
 
     content : ColumnLayout {
         id: mainFrame
@@ -176,7 +164,6 @@ MapDialog {
         }
         property var sd
 
-
         function openFavouritesChoserDialog()
         {
             dialog.visible = false;
@@ -207,19 +194,12 @@ MapDialog {
                 text: qsTr("Route")
 
                 onClicked: {
-                    if (!updateroute)
-                    {
-                        console.log("only one instance at time");
-                        return;
-                    }
-                    updateroute = false;
-                    updateTimer.start()
                     startInput.enforceLocationValue()
                     targetInput.enforceLocationValue()
 
                     if (startInput.location && targetInput.location) {
-                        routingModel.setStartAndTarget(startInput.location,targetInput.location);
-
+                        routingModel.setStartAndTarget(startInput.location,
+                                                       targetInput.location)
                     }
                     mainWindow.routeTo = targetInput.text;
                     mainWindow.routeToLoc = targetInput.location;
@@ -235,6 +215,7 @@ MapDialog {
                         noRouteText.visible = false;
                         routeView.visible = true;
                     }
+
                     console.log("routingModel.size: "+ routingModel.count);
                 }
 
