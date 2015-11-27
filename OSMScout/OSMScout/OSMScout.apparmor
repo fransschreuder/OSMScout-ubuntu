@@ -2,7 +2,8 @@
     "policy_groups": [
         "location",
         "networking",
-        "audio"
+        "audio",
+        "keep-display-on"
     ],
     "policy_version": 1.3
 }

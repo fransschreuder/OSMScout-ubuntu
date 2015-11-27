@@ -60,6 +60,8 @@ Window{
     property double oldY: 0;
     property double previousX: 0;
     property double previousY: 0;
+    property double deltaX: 0;
+    property double deltaY: 0;
     property bool followMe: true;
     //property bool drivingDirUp: false;
     property string routeFrom: qsTr("<current position>");
@@ -67,23 +69,34 @@ Window{
     property Location routeFromLoc;
     property Location routeToLoc;
     property bool allowRecalculation: true;
+    property bool navigatehere: false;
+    property bool aspectratio: false;
+    //property bool pinchUpd: false;
+    property bool pinchfin: false;
+    property bool routeupd: false;
+    property bool mouseupd: false;
 
     function openRoutingDialog() {
+        updatescreen.stop();
         var component = Qt.createComponent("RoutingDialog.qml")
         var dialog = component.createObject(mainWindow, {})
+        map.visible = false;
         positionSource.processUpdateEvents=false;
+        map.enabled = false;
         dialog.opened.connect(onDialogOpened)
         dialog.closed.connect(onDialogClosed)
         dialog.open()
     }
 
     function openAboutDialog() {
+        updatescreen.stop();
         positionSource.processUpdateEvents = false;
         var sd = PopupUtils.open(aboutDialog);
         sd.closed.connect(onDialogClosed);
     }
 
     function openFavouritesDialog() {
+        updatescreen.stop();
         positionSource.processUpdateEvents = false;
         var sd = PopupUtils.open(favouritesDialog);
         sd.opened();
@@ -91,34 +104,29 @@ Window{
     }
 
     function openDownloadMapDialog() {
+        updatescreen.stop();
         positionSource.processUpdateEvents=false;
         var sd = PopupUtils.open(downloadMapDialog);
         sd.closed.connect(onDialogClosed);
     }
 
     function openSettingsDialog() {
-        positionSource.processUpdateEvents=false;
+        updatescreen.stop();
+         positionSource.processUpdateEvents=false;
         var sd = PopupUtils.open(settingsDialog);
         sd.closed.connect(onDialogClosed);
     }
 
-
-    function showLocation(location) {
-        map.showLocation(location)
-    }
-
     function onDialogOpened() {
-        //menu.visible = false;
-        //navigation.visible = false;
         positionSource.processUpdateEvents=false;
     }
 
     function onDialogClosed() {
-        //menu.visible = true;
-        //navigation.visible = true;
-        //timer.running = true;
+        updatescreen.start();
         map.focus = true;
         positionSource.processUpdateEvents=true;
+        map.enabled = true;
+        map.visible = true;
     }
     Timer{
         id: followMeTimer
@@ -140,6 +148,167 @@ Window{
             allowRecalculation = true;
         }
     }
+    Timer{
+        id: updatescreen
+        repeat: true
+        interval: 1000
+        running: true
+        onTriggered: {
+            console.log("recalculating");
+            updatemap()
+        }
+    }
+    function updatemap(){
+        if(navigatehere){
+            navigatehere=false;
+            positionSource.processUpdateEvents = false;
+            quickNav.visible=false;
+            console.log("Navigate here");
+            var lon, lat;
+
+            lon = positionSource.position.coordinate.longitude;
+            lat = positionSource.position.coordinate.latitude;
+            console.log("Navigating from: "+lon+" "+lat);
+            //var locString = (lat>0?"N":"S")+Math.abs(lat)+" "+(lon>0?"E":"W")+Math.abs(lon);
+            var locString = Math.abs(lat)+(lat>0?" N ":" S ")+Math.abs(lon)+(lon>0?" E ":" W ");
+
+            suggestionModel.setPattern(locString);
+            if (suggestionModel.count>=1) {
+                routeFromLoc=suggestionModel.get(0);
+                routeFrom = qsTr("<current position>");
+            }
+            lon = map.pixelToGeoLon(quickNav.x, quickNav.y);
+            lat = map.pixelToGeoLat(quickNav.x, quickNav.y);
+            console.log("Navigating to: "+lon+" "+lat);
+            //locString = (lat>0?"N":"S")+Math.abs(lat)+" "+(lon>0?"E":"W")+Math.abs(lon);
+            locString = Math.abs(lat)+(lat>0?" N ":" S ")+Math.abs(lon)+(lon>0?" E ":" W ");
+            suggestionModel.setPattern(locString);
+            if (suggestionModel.count>=1) {
+                routeToLoc=suggestionModel.get(0);
+                routeTo = locString;
+                console.log("routeto_tets: " +routeToLoc);
+            }
+            if(routeToLoc && routeFromLoc){
+                console.log("Setting target");
+                routingModel.setStartAndTarget(routeFromLoc, routeToLoc);
+            }
+            console.log("routing OK");
+            positionSource.processUpdateEvents = true;
+            //return;
+        }
+
+        if (aspectratio){
+            aspectratio=false;
+            map.updateFreeRect();
+        }
+
+//        if (pinchUpd*false){
+//            if(!positionSource.awayFromRoute)
+//                 map.zoomQuick(pinch.scale1);
+//             //map.moveQuick(pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
+//             var hw = map.width/2;
+//             var hh = map.height/2;
+
+//             positionCursor.x += (positionCursor.x - hw) - (positionCursor.x - hw)/(pinch.scale1/pinch.previousScale1);
+//             positionCursor.y += (positionCursor.y - hh) - (positionCursor.y - hh)/(pinch.scale1/pinch.previousScale1);
+//             if(quickNav.visible)
+//             {
+//                 quickNav.x += (quickNav.x - hw) - (quickNav.x - hw)/(pinch.scale1/pinch.previousScale1);
+//                 quickNav.y += (quickNav.y - hh) - (quickNav.y - hh)/(pinch.scale1/pinch.previousScale1);
+//             }
+//        }
+
+        if (pinchfin){
+            pinchfin=false;
+            if(followMeTimer.running)
+                followMeTimer.restart();
+            if(followMe)
+            {
+                followMe = false;
+                followMeTimer.start(); //re-enable after 30 seconds
+            }
+            map.zoom(pinch.scale1);//, pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
+            positionSource.processUpdateEvents = true;
+        }
+
+        if (mouseupd){
+            mouseupd=false;
+            positionSource.processUpdateEvents = true;
+            map.move(deltaX, deltaY);
+
+        }
+
+
+        if (positionSource.position.latitudeValid&&routeupd) {
+            routeupd=false;
+            if(positionSource.position.directionValid && settings.drivingDirUp===true){
+                map.setRotation(-1*positionSource.position.direction);
+            }
+            var routeStep = routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
+            positionSource.awayFromRoute = routingModel.getAwayFromRoute();
+            if(reCalculatingMessage.visible === true) positionSource.awayFromRoute=true;
+            if(positionSource.awayFromRoute===true)
+            {
+                if(allowRecalculation===false)
+                {
+                    positionSource.awayFromRoute = false;
+                    return;
+                }
+                if(reCalculatingMessage.visible === false)
+                {
+                    reCalculatingMessage.visible = true;
+                    reCalculatingMessage.update();
+                    return; ///will continue on next gps update
+                }
+                if(map.isRendering()){
+                    return;
+                }
+                positionSource.processUpdateEvents = false;
+                console.log("Recalculating route");
+                var lat = positionSource.position.coordinate.latitude;
+                var lon = positionSource.position.coordinate.longitude;
+                var locString = (lat>0?"N":"S")+Math.abs(lat)+" "+(lon>0?"E":"W")+Math.abs(lon);
+                var tempLoc = routeFromLoc; // temporarily store current start location in case recalculation fails.
+                suggestionModel.setPattern(locString);
+                if (suggestionModel.count>=1) {
+                    routeFromLoc=suggestionModel.get(0);
+                }
+                if(routeToLoc && routeFromLoc){
+                    console.log("Old route had "+routingModel.count+" points");
+                    routingModel.setStartAndTarget(routeFromLoc,routeToLoc);
+                    console.log("New route has "+routingModel.count+" points");
+                    if(routingModel.count === 0)
+                    {
+                        routeFromLoc = tempLoc;
+                        routingModel.setStartAndTarget(routeFromLoc,routeToLoc);
+
+                    }
+                }
+                reCalculatingMessage.visible = false;
+                reCalculatingMessage.update();
+                allowRecalculation = false;
+                stopRecalucationTimer.start();
+                positionSource.processUpdateEvents = true;
+                return;
+            }
+            positionSource.awayFromRoute = false;
+            playRouteInstruction(routeStep.dCurrentDistance, routeStep.icon, routeStep.index);
+            routeIcon.source = "qrc:///pics/"+routeStep.icon;
+            routeDistance.text = routeStep.currentDistance;
+            routeDist.text = routeStep.targetDistance;
+            routeTime.text = routeStep.targetTime;
+            //routeInstructionText.text = "<b>"+ routeStep.description + "</b><br/>"+routeStep.distance;
+            positionCursor.x = map.geoToPixelX(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.width/2;
+            positionCursor.y = map.geoToPixelY(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.height/2;
+
+            if(followMe==true)
+            {
+                map.showCoordinates(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
+            }
+        }
+    }
+
+
     property int lastPlayedIndex1: -1;
     property int lastPlayedIndex2: -1;
     property var nextAudio: soundstraight;
@@ -281,96 +450,7 @@ Window{
         }
 
         onPositionChanged: {
-            console.log("Position changed:")
-            if(!processUpdateEvents) return;
-            if (position.latitudeValid) {
-                if(positionSource.position.directionValid && settings.drivingDirUp===true){
-                    map.setRotation(-1*positionSource.position.direction);
-                }
-                var routeStep = routingModel.getNext(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude);
-                awayFromRoute = routingModel.getAwayFromRoute();
-                if(reCalculatingMessage.visible === true) awayFromRoute=true;
-                if(awayFromRoute===true)
-                {
-                    if(allowRecalculation===false)
-                    {
-                        awayFromRoute = false;
-                        return;
-                    }
-                    if(reCalculatingMessage.visible === false)
-                    {
-                        reCalculatingMessage.visible = true;
-                        reCalculatingMessage.update();
-                        return; ///will continue on next gps update
-                    }
-                    if(map.isRendering())return;
-                    processUpdateEvents = false;
-                    console.log("Recalculating route");
-                    var lat = positionSource.position.coordinate.latitude;
-                    var lon = positionSource.position.coordinate.longitude;
-                    var locString = (lat>0?"N":"S")+Math.abs(lat)+" "+(lon>0?"E":"W")+Math.abs(lon);
-                    var tempLoc = routeFromLoc; // temporarily store current start location in case recalculation fails.
-                    suggestionModel.setPattern(locString);
-                    if (suggestionModel.count>=1) {
-                        routeFromLoc=suggestionModel.get(0);
-                    }
-                    if(routeToLoc && routeFromLoc){
-                        console.log("Old route had "+routingModel.count+" points");
-                        routingModel.setStartAndTarget(routeFromLoc,
-                                                       routeToLoc);
-                        console.log("New route has "+routingModel.count+" points");
-                        if(routingModel.count === 0)
-                        {
-                            console.log("Recalculation failed, restore old route...");
-                            routeFromLoc = tempLoc;
-                            routingModel.setStartAndTarget(routeFromLoc,
-                                                           routeToLoc);
-
-                        }
-                    }
-                    reCalculatingMessage.visible = false;
-                    reCalculatingMessage.update();
-                    allowRecalculation = false;
-                    stopRecalucationTimer.start();
-                    processUpdateEvents = true;
-                    return;
-                }
-                awayFromRoute = false;
-                playRouteInstruction(routeStep.dCurrentDistance, routeStep.icon, routeStep.index);
-                routeIcon.source = "qrc:///pics/"+routeStep.icon;
-                routeDistance.text = routeStep.currentDistance;
-                routeDist.text = routeStep.targetDistance;
-                routeTime.text = routeStep.targetTime;
-                //routeInstructionText.text = "<b>"+ routeStep.description + "</b><br/>"+routeStep.distance;
-                positionCursor.x = map.geoToPixelX(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.width/2;
-                positionCursor.y = map.geoToPixelY(positionSource.position.coordinate.longitude, positionSource.position.coordinate.latitude)-positionCursor.height/2;
-
-                //console.log("  latitude: " + position.coordinate.latitude)
-                if(followMe==true)
-                {
-                    map.showCoordinates(position.coordinate.latitude, position.coordinate.longitude);
-                }
-            }
-
-            if (position.longitudeValid) {
-                //console.log("  longitude: " + position.coordinate.longitude)
-            }
-
-            if (position.altitudeValid) {
-                //console.log("  altitude: " + position.coordinate.altitude)
-            }
-
-            if (position.speedValid) {
-                //console.log("  speed: " + position.speed)
-            }
-
-            if (position.horizontalAccuracyValid) {
-                //console.log("  horizontal accuracy: " + position.horizontalAccuracy)
-            }
-
-            if (position.verticalAccuracyValid) {
-                //console.log("  vertical accuracy: " + position.verticalAccuracy)
-            }
+            routeupd=true;
         }
     }
 
@@ -401,59 +481,13 @@ Window{
             }
 
             onWidthChanged: {
-                updateFreeRect()
+                aspectratio=true;
             }
 
             onHeightChanged: {
-                updateFreeRect()
+                aspectratio=true;
             }
 
-            /*Keys.onPressed: {
-                if (event.key === Qt.Key_Plus) {
-                    map.zoom(2.0)
-                    event.accepted = true
-                }
-                else if (event.key === Qt.Key_Minus) {
-                    map.zoom(0.5)
-                    event.accepted = true
-                }
-                else if (event.key === Qt.Key_Up) {
-                    map.up()
-                    event.accepted = true
-                }
-                else if (event.key === Qt.Key_Down) {
-                    map.down()
-                    event.accepted = true
-                }
-                else if (event.key === Qt.Key_Left) {
-                    if (event.modifiers & Qt.ShiftModifier) {
-                        map.rotateLeft();
-                    }
-                    else {
-                        map.left();
-                    }
-                    event.accepted = true
-                }
-                else if (event.key === Qt.Key_Right) {
-                    if (event.modifiers & Qt.ShiftModifier) {
-                        map.rotateRight();
-                    }
-                    else {
-                        map.right();
-                    }
-                    event.accepted = true
-                }
-                else if (event.modifiers===Qt.ControlModifier &&
-                         event.key === Qt.Key_F) {
-                    searchDialog.focus = true
-                    event.accepted = true
-                }
-                else if (event.modifiers===Qt.ControlModifier &&
-                         event.key === Qt.Key_R) {
-                    openRoutingDialog()
-                    event.accepted = true
-                }
-            }*/
 
             RoutingListModel {
                 id: routingModel
@@ -484,12 +518,6 @@ Window{
                     source: "qrc:///pics/route.svg"
                     rotation: settings.drivingDirUp?0:(positionSource.position.directionValid?positionSource.position.direction:0)
                 }
-                /*Icon{
-                    visible: positionSource.position.latitudeValid
-                    anchors.fill: parent
-                    name: "location"
-
-                }*/
             }
 
 
@@ -497,6 +525,9 @@ Window{
 
             PinchArea{
                 id: pinch
+                property real scale1: 1.0
+                property real previousScale1: 1.0
+
                 anchors.fill: parent
                 //pinch.dragAxis: Pinch.XAndYAxis
                 onPinchStarted: {
@@ -504,38 +535,17 @@ Window{
                     positionSource.processUpdateEvents = false;
                 }
                 onPinchUpdated: {
-                    if(!positionSource.awayFromRoute)
-                        map.zoomQuick(pinch.scale);
-                    //map.moveQuick(pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
-                    var hw = map.width/2;
-                    var hh = map.height/2;
-
-                    positionCursor.x += (positionCursor.x - hw) - (positionCursor.x - hw)/(pinch.scale/pinch.previousScale);
-                    positionCursor.y += (positionCursor.y - hh) - (positionCursor.y - hh)/(pinch.scale/pinch.previousScale);
-                    if(quickNav.visible)
-                    {
-                        quickNav.x += (quickNav.x - hw) - (quickNav.x - hw)/(pinch.scale/pinch.previousScale);
-                        quickNav.y += (quickNav.y - hh) - (quickNav.y - hh)/(pinch.scale/pinch.previousScale);
-                    }
-
-                    //positionCursor.x += (pinch.center.x - pinch.previousCenter.x)/(pinch.scale/pinch.previousScale);
-                    //positionCursor.y += (pinch.center.y - pinch.previousCenter.y)/(pinch.scale/pinch.previousScale);
-
+                    scale1=pinch.scale;
+                    previousScale1=pinch.previousScale;
+                   //pinchUpd=true;
 
                 }
 
                 onPinchFinished: {
-                    //console.log(pinch.center.x + " " + pinch.center.y);
-                    //console.log(pinch.scale);
-                    if(followMeTimer.running)
-                        followMeTimer.restart();
-                    if(followMe)
-                    {
-                        followMe = false;
-                        followMeTimer.start(); //re-enable after 30 seconds
-                    }
-                    map.zoom(pinch.scale);//, pinch.startCenter.x-pinch.center.x, pinch.startCenter.y-pinch.center.y);
-                    positionSource.processUpdateEvents = true;
+                    scale1=pinch.scale;
+                    //QpinchUpd=false;
+                    pinchfin=true;
+
                 }
                 MouseArea{
 
@@ -551,7 +561,7 @@ Window{
 
                     }
 
-                    onPositionChanged:
+                    /*onPositionChanged:
                     {
                         if(!positionSource.awayFromRoute)
                             map.moveQuick(oldX - mouse.x, oldY - mouse.y);
@@ -566,25 +576,26 @@ Window{
 
                         previousX = mouse.x;
                         previousY = mouse.y;
-                    }
+                    }*/
 
                     onReleased:
                     {
-                        positionSource.processUpdateEvents = true;
-                        map.move(oldX - mouse.x, oldY - mouse.y);
-                        if(Math.abs(oldX - mouse.x)>20||Math.abs(oldY - mouse.y)>20)
-                        {
-                            if(followMeTimer.running)
-                                followMeTimer.restart();
-                            if(followMe)
+                        deltaX=oldX - mouse.x;
+                        deltaY=oldY - mouse.y;
+                        if(Math.abs(deltaX)>20||Math.abs(delta.y)>20)
                             {
-                                followMe = false;
-                                followMeTimer.start(); //re-enable after 30 seconds
-                            }
+                                if(followMeTimer.running) followMeTimer.restart();
+                                 if(followMe)
+                                 {
+                                     followMe = false;
+                                     followMeTimer.start(); //re-enable after 30 seconds
+                                 }
 
-                        }
+                           }
                         oldX = mouse.x;
                         oldY = mouse.y;
+                        mouseupd=true;
+
                     }
                     onPressAndHold: {
                         if(Math.abs(oldX - mouse.x)<20&&Math.abs(oldY - mouse.y)<20)
@@ -722,47 +733,9 @@ Window{
                         text: qsTr("Navigate here");
                         onClicked:
                         {
-                            positionSource.processUpdateEvents = false;
-                            quickNav.visible=false;
-                            console.log("Navigate here");
-                            var lon, lat;
-
-                            lon = positionSource.position.coordinate.longitude;
-                            lat = positionSource.position.coordinate.latitude;
-                            console.log("Navigating from: "+lon+" "+lat);
-                            var locString = (lat>0?"N":"S")+Math.abs(lat)+" "+(lon>0?"E":"W")+Math.abs(lon);
-                            suggestionModel.setPattern(locString);
-                            if (suggestionModel.count>=1) {
-                                routeFromLoc=suggestionModel.get(0);
-                                routeFrom = qsTr("<current position>");
-                            }
-
-                            lon = map.pixelToGeoLon(quickNav.x, quickNav.y);
-                            lat = map.pixelToGeoLat(quickNav.x, quickNav.y);
-                            console.log("Navigating to: "+lon+" "+lat);
-                            locString = (lat>0?"N":"S")+Math.abs(lat)+" "+(lon>0?"E":"W")+Math.abs(lon);
-                            suggestionModel.setPattern(locString);
-                            if (suggestionModel.count>=1) {
-                                routeToLoc=suggestionModel.get(0);
-                                routeTo = locString;
-                            }
-                            if(routeToLoc && routeFromLoc){
-                                routingModel.setStartAndTarget(routeFromLoc, routeToLoc);
-                            }
-                            positionSource.processUpdateEvents = true;
+                           navigatehere=true
                         }
-                    }/*
-                    Button{
-                        anchors.horizontalCenter: qnCol.horizontalCenter
-                        color: UbuntuColors.orange
-                        id: addFav
-                        text: qsTr("Add to Favourites");
-                        onClicked:
-                        {
-                            quickNav.visible=false;
-                            console.log("Add to Favourites");
-                        }
-                    }*/
+                    }
                     Button{
                         anchors.horizontalCenter: qnCol.horizontalCenter
                         color: UbuntuColors.lightGrey
