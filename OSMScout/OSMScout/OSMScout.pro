@@ -60,7 +60,8 @@ HEADERS = src/Settings.h \
           src/DownloadListModel.h
 
 
-TRANSLATIONS += po/osmscout_nl.po \
+TRANSLATIONS += po/osmscout_de.po \
+                po/osmscout_nl.po \
                 po/osmscout_pl.po
 
 
