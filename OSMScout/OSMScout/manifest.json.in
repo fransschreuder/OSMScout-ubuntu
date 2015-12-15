@@ -1,5 +1,5 @@
 {
-    "name": "osmscout.fransschreuder",
+    "name": "osmscout-support.fransschreuder",
     "description": "OSMScout is an offline routing application based on libosmscout, it is capable of step by step navigation with downloaded maps",
     "architecture": "armhf",
     "title": "OSMScout",
@@ -9,7 +9,7 @@
             "desktop": "OSMScout/OSMScout.desktop"
         }
     },
-    "version": "0.5.2",
+    "version": "0.5.3",
     "maintainer": "Frans Schreuder <fransschreuder@gmail.com>",
     "framework": "ubuntu-sdk-15.04"
 }

@@ -37,6 +37,7 @@
         <file>pics/routeMotorwayLeave.svg</file>
         <file>pics/northUp.svg</file>
         <file>pics/directionUp.svg</file>
+        <file>po/osmscout_de.qm</file>
         <file>po/osmscout_nl.qm</file>
         <file>po/osmscout_pl.qm</file>
     </qresource>
