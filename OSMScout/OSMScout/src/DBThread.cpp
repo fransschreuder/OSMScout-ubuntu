@@ -363,10 +363,10 @@ void DBThread::TriggerMapRendering()
     drawParameter.SetBreaker(renderBreakerRef);
     double fs = drawParameter.GetFontSize();
     QSettings s;
-    double fsMul = s.value("fontSize", 1).toDouble();
+    double fsMul = s.value("fontSize", .5).toDouble();
     qDebug()<<"FontSize: "<<fs;
     qDebug()<<"DPI:" << dpi;
-    fs*=(dpi/50)*fsMul; //for 100DPI, multiply by 1.5
+    fs=(dpi/50)*fsMul; //for 100DPI, multiply by 1.5
     drawParameter.SetFontSize(fs);
 
     std::cout << std::endl;

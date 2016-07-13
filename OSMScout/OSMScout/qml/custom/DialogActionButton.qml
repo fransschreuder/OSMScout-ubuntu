@@ -1,7 +1,7 @@
 import QtQuick 2.2
 
 import net.sf.libosmscout.map 1.0
-import Ubuntu.Components 1.1
+import Ubuntu.Components 1.3
 
 Rectangle {
   id: dialogActionButton
@@ -40,9 +40,8 @@ Rectangle {
     }
   }
   
-  Text {
+  Label {
     id: label
-    font.pixelSize: Theme.textFontSize
     anchors.centerIn: parent
     color: textColor
   }

@@ -45,7 +45,7 @@ qreal Theme::mmToPixel(qreal mm) const
 
 qreal Theme::pointToPixel(qreal point) const
 {
-    return point*96.0/*GetDPI()*//72.0;
+    return point*GetDPI()/72.0;
 }
 
 qreal Theme::GetDPI() const
@@ -59,7 +59,7 @@ qreal Theme::GetDPI() const
 int Theme::GetTextFontSize() const
 {
     if (textFontSize==0) {
-#if defined(__ANDROID__) || defined (__UBUNTU__)
+#if defined(__ANDROID__)
         textFontSize=(int)mmToPixel(6.0);
 #else
         QFont font;
