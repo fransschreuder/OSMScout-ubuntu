@@ -1,5 +1,6 @@
-import QtQuick 2.3
+import QtQuick 2.4
 import QtQuick.Layouts 1.1
+import Ubuntu.Components 1.3
 
 import net.sf.libosmscout.map 1.0
 
@@ -268,13 +269,12 @@ LineEdit {
 
                 model: suggestionModel
 
-                delegate: Text {
+                delegate: Label {
                     id: text
 
                     width: suggestionView.width
 
                     text: label
-                    font.pixelSize: Theme.textFontSize
 
                     MouseArea {
                         anchors.fill: parent

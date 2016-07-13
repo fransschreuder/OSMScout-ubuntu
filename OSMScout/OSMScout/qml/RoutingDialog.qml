@@ -78,12 +78,11 @@ MapDialog {
             Layout.fillWidth: true
             columns: 2
 
-            Text {
+            Label {
                 id: startText
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBaseline
 
                 text: qsTr("Start:")
-                font.pixelSize: Theme.textFontSize
             }
 
             LocationEdit {
@@ -96,12 +95,11 @@ MapDialog {
                 horizontalAlignment: TextInput.AlignLeft
             }
 
-            Text {
+            Label {
                 id: targetText
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBaseline
 
                 text: qsTr("Target:")
-                font.pixelSize: Theme.textFontSize
             }
 
             LocationEdit {
@@ -346,14 +344,14 @@ MapDialog {
                     anchors.left: parent.left;
                     height: text.implicitHeight+5
 
-                    Text {
+                    Label {
                         id: text
 
                         y:2
                         x: 2
                         width: parent.width-4
                         text: label
-                        font.pixelSize: Theme.textFontSize
+                        font.pointSize: Theme.textFontSize
                     }
 
                     Rectangle {

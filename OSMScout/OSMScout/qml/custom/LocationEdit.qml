@@ -1,4 +1,5 @@
-import QtQuick 2.3
+import QtQuick 2.4
+import Ubuntu.Components 1.3
 
 import net.sf.libosmscout.map 1.0
 
@@ -225,13 +226,10 @@ LineEdit {
                         height: text.implicitHeight+4
                         width: suggestionView.width
 
-                        Text {
+                        Label {
                             id: text
-
                             anchors.fill: parent
-
                             text: label
-                            font.pixelSize: Theme.textFontSize
                         }
 
                         MouseArea {

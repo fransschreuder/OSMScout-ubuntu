@@ -109,14 +109,12 @@ Item {
 
         spacing: Theme.vertSpace
 
-        Text {
+        Label {
             id: title
 
             Layout.fillWidth: true
 
-            color: "black"
-            font.bold: true
-            font.pixelSize: Theme.textFontSize
+            fontSize: "large"
             horizontalAlignment: Text.AlignHCenter
         }
 
